@@ -1,0 +1,11 @@
+# Pengaturan lokal Claude Code (tidak perlu diunggah)
+.claude/
+
+# Berkas sistem
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Log / sementara
+*.log
+node_modules/

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ujian Live Coding — Kelas OOP C++</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="exam-page">
+  <div class="exam-shell">
+    <!-- Top bar -->
+    <div class="exam-topbar">
+      <div class="title">
+        <span id="exam-title">Ujian</span>
+        <small id="exam-sub">Pertemuan —</small>
+      </div>
+      <span class="spacer"></span>
+      <div class="violation-counter" id="violation-counter" title="Jumlah kali berpindah tab">
+        👁️ Pindah tab: <b id="vio-count">0</b>/2
+      </div>
+      <div class="timer" id="timer">--:--</div>
+      <a class="btn btn-ghost btn-sm" href="#" id="quit-btn" style="color:#cbd5e1;border-color:rgba(255,255,255,.15)">Keluar</a>
+    </div>
+
+    <!-- Split -->
+    <div class="exam-split">
+      <!-- Kiri: soal -->
+      <div class="pane pane-problem">
+        <div class="pane-head">
+          📋 Soal
+          <span class="spacer"></span>
+          <span id="soal-nav" style="text-transform:none;letter-spacing:0"></span>
+        </div>
+        <div class="problem-content" id="problem-content">
+          Memuat soal…
+        </div>
+      </div>
+
+      <!-- Kanan: editor + output -->
+      <div class="pane pane-code">
+        <div class="pane-head">
+          💻 Editor Kode C++
+          <span class="spacer"></span>
+          <span style="text-transform:none;letter-spacing:0;color:var(--muted)">Dikompilasi dengan g++ (Wandbox)</span>
+        </div>
+        <div class="editor-wrap">
+          <textarea class="code-editor" id="code-editor" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+        </div>
+
+        <div class="exam-actions">
+          <button class="btn btn-primary" id="run-btn">▶ Jalankan</button>
+          <button class="btn btn-success" id="submit-btn">✓ Kumpulkan &amp; Nilai</button>
+          <button class="btn btn-ghost btn-sm" id="reset-btn" style="color:#cbd5e1;border-color:rgba(255,255,255,.15)">↺ Reset kode</button>
+          <span class="spacer"></span>
+          <button class="btn btn-ghost btn-sm" id="prev-soal" style="color:#cbd5e1;border-color:rgba(255,255,255,.15)">‹ Soal sebelumnya</button>
+          <button class="btn btn-ghost btn-sm" id="next-soal" style="color:#cbd5e1;border-color:rgba(255,255,255,.15)">Soal berikutnya ›</button>
+        </div>
+
+        <div class="verdict" id="verdict"></div>
+
+        <div class="output-pane">
+          <div class="output-head">🖥️ Output <span class="spacer"></span><span id="run-status" style="text-transform:none;letter-spacing:0"></span></div>
+          <pre class="output-body" id="output-body"><span class="muted">Output program akan muncul di sini setelah Anda menekan "Jalankan".</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay penguncian anti-mencontek -->
+  <div class="lock-overlay" id="lock-overlay">
+    <div class="lock-card">
+      <div class="icon">🔒</div>
+      <h2 id="lock-title">Ujian Dikunci</h2>
+      <p id="lock-msg">Anda terdeteksi berpindah tab lebih dari 2 kali.</p>
+      <p style="color:var(--muted);font-size:.82rem;margin-top:14px">Hubungi pengajar Anda, atau muat ulang halaman untuk memulai ujian dari awal.</p>
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center">
+        <a class="btn btn-ghost" href="index.html" style="color:#cbd5e1;border-color:rgba(255,255,255,.2)">Kembali ke Materi</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/kurikulum.js"></script>
+  <script src="assets/js/runner.js"></script>
+  <script src="assets/js/ujian.js"></script>
+</body>
+</html>
