@@ -219,12 +219,11 @@
   let violations = 0;
   const MAX_VIOLATION = 2; // lebih dari 2 -> kunci
   function armAntiCheat() {
+    // Hanya menghitung PERPINDAHAN TAB / minimize jendela yang sungguhan
+    // (visibilitychange). Ini menghindari kesalahan-hitung saat murid tak
+    // sengaja kehilangan fokus (mis. klik taskbar/notifikasi) tanpa pindah tab.
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) registerViolation();
-    });
-    window.addEventListener("blur", () => {
-      // beri jeda kecil: abaikan blur akibat interaksi internal
-      setTimeout(() => { if (!document.hasFocus()) registerViolation(); }, 150);
     });
   }
   let lastViolation = 0;

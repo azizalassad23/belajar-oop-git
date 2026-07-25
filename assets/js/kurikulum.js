@@ -53,9 +53,9 @@ window.KURIKULUM = {
   pertemuan: [
     { id: 1,  modul: 1, judul: "Pengantar OOP & Paradigma Pemrograman", ringkas: "Apa itu OOP, mengapa dipakai, dan bedanya dengan pemrograman prosedural.", status: "ready" },
     { id: 2,  modul: 1, judul: "Review C++ Dasar: Variabel, Tipe Data & I/O", ringkas: "Menyegarkan sintaks dasar C++ sebagai bekal materi OOP.", status: "ready" },
-    { id: 3,  modul: 1, judul: "Kontrol Alur & Fungsi", ringkas: "Percabangan, perulangan, dan memecah program menjadi fungsi.", status: "todo" },
-    { id: 4,  modul: 1, judul: "Array, Pointer & Reference", ringkas: "Konsep memori yang menjadi fondasi objek dan relasinya.", status: "todo" },
-    { id: 5,  modul: 1, judul: "Struct & Pengenalan Objek", ringkas: "Dari struct menuju konsep objek sebagai kesatuan data + perilaku.", status: "todo" },
+    { id: 3,  modul: 1, judul: "Kontrol Alur & Fungsi", ringkas: "Percabangan, perulangan, dan memecah program menjadi fungsi.", status: "ready" },
+    { id: 4,  modul: 1, judul: "Array, Pointer & Reference", ringkas: "Konsep memori yang menjadi fondasi objek dan relasinya.", status: "ready" },
+    { id: 5,  modul: 1, judul: "Struct & Pengenalan Objek", ringkas: "Dari struct menuju konsep objek sebagai kesatuan data + perilaku.", status: "ready" },
 
     { id: 6,  modul: 2, judul: "Class & Object Pertama", ringkas: "Mendefinisikan class dan membuat objek pertama Anda.", status: "ready" },
     { id: 7,  modul: 2, judul: "Atribut & Method", ringkas: "Menyimpan data (atribut) dan perilaku (method) dalam class.", status: "todo" },

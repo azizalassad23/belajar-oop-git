@@ -1,24 +1,108 @@
 /* =========================================================
    Pertemuan 5: Struct & Pengenalan Objek
    Modul 1 — Fondasi & Dasar C++
-   STATUS: STUB (kerangka). Isi 'konten' dan 'soal' di bawah.
-
-   Format tiap soal:
-     { judul, deskripsi(HTML), starter, stdin?, expected? | cek?, petunjuk? }
-     - expected : string  -> output dibandingkan persis (setelah normalisasi)
-     - cek(output,res)    -> fungsi penilaian custom: return true / {pass, message}
+   STATUS: READY
    ========================================================= */
 window.MATERI = window.MATERI || {};
 window.MATERI[5] = {
-  waktuMenit: 20,
-  konten: "<div class=\"stub-note\">\n  <strong>📝 Materi ini masih kerangka (stub) — siap Anda isi.</strong>\n  Ganti bagian di bawah dengan penjelasan Anda. Struktur di bawah hanyalah template.\n  Edit file: <code>data/pertemuan/p05.js</code>\n</div>\n\n<h2>🎯 Tujuan Pembelajaran</h2>\n<ul>\n  <li>Memahami konsep: <strong>Struct & Pengenalan Objek</strong>.</li>\n  <li>(Tambahkan tujuan spesifik lain di sini.)</li>\n</ul>\n\n<h2>📖 Materi</h2>\n<p>Dari struct menuju konsep objek sebagai kesatuan data + perilaku. <em>(Tuliskan penjelasan lengkap di sini.)</em></p>\n<h3>Sub-bagian</h3>\n<p>Isi penjelasan…</p>\n\n<h2>💻 Contoh Kode</h2>\n<pre><code>#include &lt;iostream&gt;\nusing namespace std;\n\nint main() {\n    // Contoh kode untuk materi \"Struct & Pengenalan Objek\"\n    return 0;\n}</code></pre>\n\n<div class=\"callout tip\"><strong>💡 Tips Mengajar</strong>\nTambahkan analogi atau kesalahan umum siswa di bagian ini.</div>\n\n<h2>📌 Rangkuman</h2>\n<ul><li>Poin kunci 1…</li><li>Poin kunci 2…</li></ul>",
+  waktuMenit: 25,
+
+  konten: `
+  <h2>🎯 Tujuan Pembelajaran</h2>
+  <ul>
+    <li>Mengelompokkan data yang berkaitan menggunakan <strong>struct</strong>.</li>
+    <li>Mengakses dan mengisi anggota struct.</li>
+    <li>Memahami struct sebagai <strong>jembatan menuju class &amp; objek</strong>.</li>
+  </ul>
+
+  <h2>📖 Masalah: Data yang Berserakan</h2>
+  <p>Bayangkan menyimpan data seorang mahasiswa. Tanpa struct, datanya terpisah-pisah:</p>
+  <pre><code>string nama = "Andi";
+int    umur = 20;
+double ipk  = 3.75;
+// Bagaimana kalau ada 100 mahasiswa? Sangat merepotkan!</code></pre>
+
+  <h2>🗂️ Solusi: <code>struct</code></h2>
+  <p><strong>Struct</strong> (structure) menggabungkan beberapa variabel yang berkaitan menjadi
+     satu tipe data baru buatan kita sendiri.</p>
+  <pre><code>struct Mahasiswa {
+    string nama;
+    int    umur;
+    double ipk;
+};   // jangan lupa titik koma
+
+int main() {
+    Mahasiswa m;          // membuat satu variabel bertipe Mahasiswa
+    m.nama = "Andi";      // akses anggota dengan titik ( . )
+    m.umur = 20;
+    m.ipk  = 3.75;
+
+    cout &lt;&lt; m.nama &lt;&lt; " (" &lt;&lt; m.umur &lt;&lt; " th)";
+    return 0;
+}</code></pre>
+
+  <div class="callout tip">
+    <strong>💡 Sudah terasa familier?</strong>
+    Sintaks <code>m.nama</code> ini persis seperti mengakses anggota objek! Struct adalah
+    langkah kecil sebelum class.
+  </div>
+
+  <h2>🔑 Dari Struct ke Object</h2>
+  <p>Struct menyatukan <strong>data</strong>. Tetapi dalam OOP, sebuah objek menyatukan
+     <strong>data DAN perilaku (fungsi)</strong> sekaligus. Perhatikan perbandingannya:</p>
+  <table style="width:100%;border-collapse:collapse;font-size:.9rem">
+    <tr style="text-align:left;border-bottom:2px solid var(--border)">
+      <th style="padding:6px"></th><th>Struct (dasar)</th><th>Class / Object (OOP)</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Data (atribut)</strong></td><td>✅ Ya</td><td>✅ Ya</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px"><strong>Perilaku (method)</strong></td><td>Jarang dipakai</td><td>✅ Inti utamanya</td></tr>
+    <tr><td style="padding:6px"><strong>Penyembunyian data</strong></td><td>Default terbuka</td><td>✅ Bisa <code>private</code></td></tr>
+  </table>
+  <p>Sebenarnya di C++, <code>struct</code> dan <code>class</code> hampir identik — bedanya hanya
+     <code>struct</code> bersifat <code>public</code> secara default. Mulai Pertemuan 6, kita akan
+     resmi menggunakan <code>class</code>.</p>
+
+  <div class="callout">
+    <strong>Analogi 🧱</strong>
+    Struct itu seperti <em>kotak berlabel</em> berisi beberapa data. Class/Object menambahkan
+    <em>"kemampuan"</em> pada kotak itu — ia bukan hanya menyimpan data, tetapi juga bisa
+    <em>melakukan sesuatu</em> terhadap datanya.
+  </div>
+
+  <h2>📌 Rangkuman</h2>
+  <ul>
+    <li><code>struct</code> menggabungkan beberapa data terkait menjadi satu tipe baru.</li>
+    <li>Akses anggota dengan operator titik <code>.</code></li>
+    <li>Struct = data saja; Object (class) = data + perilaku + penyembunyian data.</li>
+    <li>Ini adalah gerbang menuju class di pertemuan berikutnya.</li>
+  </ul>
+  `,
+
   soal: [
     {
-      "judul": "Latihan Pemanasan (placeholder)",
-      "deskripsi": "<p>Ini soal contoh bawaan. <strong>Ganti dengan soal asli</strong> untuk materi <em>Struct & Pengenalan Objek</em>.</p><p>Tugas: cetak tepat tulisan <code>Pertemuan 5 siap!</code></p>",
-      "starter": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Tulis kode Anda di sini\n    \n    return 0;\n}\n",
-      "expected": "Pertemuan 5 siap!",
-      "petunjuk": "Gunakan <code>cout &lt;&lt; \"Pertemuan 5 siap!\";</code>"
+      judul: "Struct Titik Koordinat",
+      deskripsi: `<p>Definisikan sebuah <code>struct</code> bernama <code>Titik</code> dengan dua anggota bertipe
+                  bilangan bulat: <code>x</code> dan <code>y</code>. Baca nilai <code>x</code> dan <code>y</code>,
+                  lalu cetak dengan format <code>(x, y)</code>.</p>
+                  <p>Contoh: input <code>3 4</code> menghasilkan:</p>
+                  <pre>(3, 4)</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\n// Definisikan struct Titik di sini\n\n\nint main() {\n    Titik t;\n    cin >> t.x >> t.y;\n    // Cetak dengan format (x, y)\n    \n    return 0;\n}\n",
+      stdin: "3 4\n",
+      expected: "(3, 4)",
+      petunjuk: "Perhatikan ada spasi setelah koma: <code>cout &lt;&lt; \"(\" &lt;&lt; t.x &lt;&lt; \", \" &lt;&lt; t.y &lt;&lt; \")\";</code>"
+    },
+    {
+      judul: "Struct Mahasiswa & Kelulusan",
+      deskripsi: `<p>Definisikan <code>struct Mahasiswa</code> dengan anggota <code>nama</code> (teks) dan
+                  <code>nilai</code> (bilangan bulat). Baca <code>nama</code> lalu <code>nilai</code>.
+                  Jika <code>nilai</code> &ge; 70 cetak <code>Lulus</code>, selain itu <code>Tidak Lulus</code>,
+                  dengan format <code>&lt;nama&gt;: &lt;status&gt;</code>.</p>
+                  <p>Contoh: input <code>Andi 85</code> menghasilkan:</p>
+                  <pre>Andi: Lulus</pre>`,
+      starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\n// Definisikan struct Mahasiswa di sini\n\n\nint main() {\n    Mahasiswa m;\n    cin >> m.nama >> m.nilai;\n    // Tentukan dan cetak status kelulusan\n    \n    return 0;\n}\n",
+      stdin: "Andi 85\n",
+      expected: "Andi: Lulus",
+      petunjuk: "Gunakan ternary: <code>(m.nilai &gt;= 70) ? \"Lulus\" : \"Tidak Lulus\"</code>."
     }
   ]
 };
