@@ -58,8 +58,8 @@ window.KURIKULUM = {
     { id: 5,  modul: 1, judul: "Struct & Pengenalan Objek", ringkas: "Dari struct menuju konsep objek sebagai kesatuan data + perilaku.", status: "ready" },
 
     { id: 6,  modul: 2, judul: "Class & Object Pertama", ringkas: "Mendefinisikan class dan membuat objek pertama Anda.", status: "ready" },
-    { id: 7,  modul: 2, judul: "Atribut & Method", ringkas: "Menyimpan data (atribut) dan perilaku (method) dalam class.", status: "todo" },
-    { id: 8,  modul: 2, judul: "Access Modifier: public, private, protected", ringkas: "Mengatur hak akses anggota class.", status: "todo" },
+    { id: 7,  modul: 2, judul: "Atribut & Method", ringkas: "Menyimpan data (atribut) dan perilaku (method) dalam class.", status: "ready" },
+    { id: 8,  modul: 2, judul: "Access Modifier: public, private, protected", ringkas: "Mengatur hak akses anggota class.", status: "ready" },
     { id: 9,  modul: 2, judul: "Constructor", ringkas: "Menginisialisasi objek secara otomatis saat dibuat.", status: "todo" },
     { id: 10, modul: 2, judul: "Destructor", ringkas: "Membersihkan sumber daya saat objek dihancurkan.", status: "todo" },
     { id: 11, modul: 2, judul: "Encapsulation & Getter/Setter", ringkas: "Menyembunyikan data dan mengaksesnya dengan aman.", status: "todo" },
