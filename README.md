@@ -107,6 +107,21 @@ soal: [
 Di `assets/js/kurikulum.js`, ubah `status: "todo"` menjadi `status: "ready"` agar kartunya
 di halaman utama bertuliskan **"Materi siap"**.
 
+### Aturan "selesai" — penting
+
+**Hanya lulus ujian yang membuat materi dihitung selesai.** Tidak ada tombol
+"tandai selesai" bagi siswa, jadi angka progres 35/35 tidak bisa dinaikkan dengan
+mengklik saja.
+
+Akibatnya, **materi dengan `soal: []` terkunci sepenuhnya**: tombol ujiannya mati
+dan materi itu tak akan pernah bisa dihitung selesai. Ini disengaja — supaya siswa
+tidak bisa mengumpulkan kelulusan dari materi yang soalnya belum Anda buat.
+
+Untuk membuka sebuah pertemuan, dua hal harus dilakukan:
+
+1. Isi `soal: [...]` di `data/pertemuan/pNN.js`
+2. Ubah `status` pertemuan itu jadi `"ready"` di `assets/js/kurikulum.js`
+
 ---
 
 ## 🖥️ Pratinjau di Komputer (Lokal)

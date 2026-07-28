@@ -26,6 +26,8 @@
     lock: document.getElementById("lock-overlay"),
     lockTitle: document.getElementById("lock-title"),
     lockMsg: document.getElementById("lock-msg"),
+    lockBack: document.getElementById("lock-back"),
+    submitLabel: document.getElementById("submit-label"),
     runBtn: document.getElementById("run-btn"),
     submitBtn: document.getElementById("submit-btn"),
     resetBtn: document.getElementById("reset-btn"),
@@ -35,13 +37,30 @@
   };
 
   if (!info) {
-    el.problem.innerHTML = "ID ujian tidak valid. <a href='index.html' style='color:#93c5fd'>Kembali</a>.";
+    el.problem.innerHTML =
+      "ID ujian tidak valid. <a class='exam-link' href='index.html'>Kembali</a>.";
     return;
   }
 
   el.title.textContent = "Ujian: " + info.judul;
   el.sub.textContent = "Pertemuan " + id;
   el.quitBtn.href = "materi.html?id=" + id;
+
+  // Tanpa identitas, hasil ujian tidak bisa dilacak milik siapa —
+  // jadi lebih baik dihentikan di sini daripada dikerjakan lalu hilang.
+  const cfg = window.KONFIGURASI || {};
+  if (cfg.wajibIdentitas && typeof Sinkron !== "undefined" && !Sinkron.sudahKenal()) {
+    el.problem.innerHTML =
+      '<h2>Isi identitas dulu</h2>' +
+      '<p>Kamu belum mengisi nama dan NIS, jadi hasil ujian ini tidak bisa dicatat.</p>' +
+      '<p>Buka halaman materi, klik tombol <strong>Masuk</strong> di kanan atas, ' +
+      'isi nama dan NIS, lalu mulai ujian lagi dari sini.</p>' +
+      `<p><a class="exam-link" href="materi.html?id=${id}">Kembali ke materi</a></p>`;
+    el.runBtn.disabled = el.submitBtn.disabled = el.resetBtn.disabled = true;
+    el.editor.readOnly = true;
+    el.timer.textContent = "--:--";
+    return;
+  }
 
   let SOAL = [];
   let current = 0;
@@ -56,7 +75,7 @@
   script.onload = initSoal;
   script.onerror = () => {
     el.problem.innerHTML =
-      "<div style='color:#f87171'>Soal untuk pertemuan ini belum tersedia.</div>";
+      "<div style='color:#f87171'>Soal untuk pertemuan ini belum ada.</div>";
   };
   document.body.appendChild(script);
 
@@ -66,7 +85,7 @@
     const data = (window.MATERI || {})[id];
     if (!data || !data.soal || !data.soal.length) {
       el.problem.innerHTML =
-        "<div style='color:#fbbf24'>Bank soal untuk pertemuan ini belum diisi.</div>";
+        "<div style='color:#fbbf24'>Soal untuk pertemuan ini belum diisi gurumu.</div>";
       el.runBtn.disabled = el.submitBtn.disabled = true;
       return;
     }
@@ -79,7 +98,7 @@
   }
 
   function defaultStarter() {
-    return "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Tulis kode Anda di sini\n    \n    return 0;\n}\n";
+    return "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Tulis kodemu di sini\n    \n    return 0;\n}\n";
   }
 
   // ---------- Render soal ----------
@@ -121,7 +140,8 @@
   }
 
   function updateSubmitLabel() {
-    el.submitBtn.textContent = passed[current] ? "✓ Sudah lulus" : "✓ Kumpulkan & Nilai";
+    // Write to the label span only — textContent on the button would wipe the SVG.
+    el.submitLabel.textContent = passed[current] ? "Sudah lulus" : "Kumpulkan & Nilai";
   }
 
   // ---------- Editor: dukungan tombol Tab ----------
@@ -139,8 +159,15 @@
     if (locked) return null;
     const s = SOAL[current];
     el.output.innerHTML = '<span class="muted">Menjalankan…</span>';
-    el.runStatus.textContent = "⏳ menjalankan";
-    const res = await runCpp(el.editor.value, s.stdin || "");
+    el.runStatus.textContent = "menjalankan…";
+    // Disable while in flight so a double-click can't queue two compiles.
+    el.runBtn.disabled = el.submitBtn.disabled = true;
+    let res;
+    try {
+      res = await runCpp(el.editor.value, s.stdin || "");
+    } finally {
+      if (!locked) el.runBtn.disabled = el.submitBtn.disabled = false;
+    }
     if (res.ok) {
       el.output.innerHTML = res.output
         ? escapeHtml(res.output)
@@ -149,7 +176,7 @@
     } else {
       el.output.innerHTML =
         (res.output ? escapeHtml(res.output) + "\n" : "") +
-        `<span class="err">✖ ${escapeHtml(res.error)}</span>`;
+        `<span class="err">Error: ${escapeHtml(res.error)}</span>`;
       el.runStatus.innerHTML = '<span class="err">error</span>';
     }
     return res;
@@ -176,11 +203,11 @@
     passed[current] = lulus;
     el.verdict.className = "verdict " + (lulus ? "pass" : "fail");
     if (lulus) {
-      el.verdict.textContent = "✓ BENAR — " + (pesan || "Output sesuai. Kerja bagus!");
+      el.verdict.textContent = "BENAR — " + (pesan || "Hasilnya sudah pas. Kerja bagus!");
     } else if (!res.ok) {
-      el.verdict.textContent = "✖ Program error — perbaiki kode Anda lalu coba lagi.";
+      el.verdict.textContent = "Kodenya masih error — perbaiki dulu, lalu coba lagi.";
     } else {
-      el.verdict.textContent = "✖ BELUM SESUAI — " + (pesan || "Output belum cocok dengan yang diharapkan.");
+      el.verdict.textContent = "BELUM PAS — " + (pesan || "Hasilnya belum sama dengan yang diminta soal.");
     }
     updateSubmitLabel();
 
@@ -191,7 +218,13 @@
         P[id] = { at: Date.now(), lulusUjian: true };
         localStorage.setItem("oopcpp_progress_v1", JSON.stringify(P));
       } catch (e) {}
-      showExamToast("🎉 Semua soal lulus! Materi ditandai selesai.");
+      if (typeof Sinkron !== "undefined") {
+        Sinkron.catat(id, "lulus-ujian", {
+          skor: `${SOAL.length}/${SOAL.length}`,
+          sisaWaktu: `${Math.floor(remaining / 60)}m ${remaining % 60}d`,
+        });
+      }
+      showExamToast("Semua soal benar! Materi ini ditandai selesai.");
     }
   }
 
@@ -202,14 +235,33 @@
     tick();
     timerId = setInterval(tick, 1000);
   }
+  // Milestones only. The timer element itself is aria-live="off" because a
+  // screen reader announcing every single second would make the exam unusable.
+  const ANNOUNCE_AT = [300, 60, 20];
+  function announceTime(sec) {
+    let r = document.getElementById("timer-announce");
+    if (!r) {
+      r = document.createElement("div");
+      r.id = "timer-announce";
+      r.className = "sr-only";
+      r.setAttribute("role", "status");
+      r.setAttribute("aria-live", "polite");
+      document.body.appendChild(r);
+    }
+    r.textContent = sec >= 60
+      ? `Sisa waktu ${Math.round(sec / 60)} menit.`
+      : `Sisa waktu ${sec} detik.`;
+  }
+
   function tick() {
     const m = Math.floor(remaining / 60), s = remaining % 60;
     el.timer.textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
     el.timer.classList.toggle("warn", remaining <= 60 && remaining > 20);
     el.timer.classList.toggle("danger", remaining <= 20);
+    if (ANNOUNCE_AT.includes(remaining)) announceTime(remaining);
     if (remaining <= 0) {
       clearInterval(timerId);
-      lockExam("⏰ Waktu Habis", "Waktu ujian telah berakhir. Kode Anda tidak dapat diubah lagi.");
+      lockExam("Waktu Habis", "Waktu ujian sudah selesai. Kodemu tidak bisa diubah lagi.");
       return;
     }
     remaining--;
@@ -236,29 +288,51 @@
     violations++;
     el.vioCount.textContent = violations;
     if (violations > MAX_VIOLATION) {
-      lockExam("🔒 Ujian Dikunci",
-        `Anda berpindah tab/keluar jendela sebanyak ${violations} kali (batas ${MAX_VIOLATION}). Ujian dihentikan.`);
+      lockExam("Ujian Dikunci",
+        `Kamu keluar dari halaman ujian sebanyak ${violations} kali (batasnya ${MAX_VIOLATION}). Ujian dihentikan.`);
     } else {
       const sisa = MAX_VIOLATION - violations + 1;
-      showExamToast(`⚠️ Peringatan ${violations}/${MAX_VIOLATION}: jangan tinggalkan halaman ujian! ` +
-        (violations === MAX_VIOLATION ? "Sekali lagi ujian akan dikunci." : `Sisa ${sisa} kesempatan.`), true);
+      showExamToast(`Peringatan ${violations}/${MAX_VIOLATION}: jangan keluar dari halaman ujian! ` +
+        (violations === MAX_VIOLATION ? "Sekali lagi, ujian langsung dikunci." : `Sisa ${sisa} kesempatan.`), true);
     }
   }
 
   function lockExam(title, msg) {
     locked = true;
     if (timerId) clearInterval(timerId);
+    // Guru perlu tahu ujian siapa yang terkunci dan karena apa.
+    if (typeof Sinkron !== "undefined") {
+      Sinkron.catat(id, "terkunci", { detail: title + " — " + msg });
+    }
     el.lockTitle.textContent = title;
     el.lockMsg.textContent = msg;
+    el.lock.hidden = false;
     el.lock.classList.add("active");
     el.runBtn.disabled = el.submitBtn.disabled = el.resetBtn.disabled = true;
     el.editor.readOnly = true;
+
+    // The overlay is a modal: move focus into it and keep it there, otherwise
+    // keyboard and screen-reader users keep tabbing through the locked exam
+    // behind it as if nothing happened.
+    if (el.lockBack) el.lockBack.focus();
+    document.addEventListener("keydown", trapLockFocus, true);
+  }
+
+  function trapLockFocus(e) {
+    if (e.key !== "Tab" || !locked) return;
+    e.preventDefault();
+    if (el.lockBack) el.lockBack.focus();
   }
 
   // ---------- Toast khusus halaman ujian ----------
   function showExamToast(msg, danger) {
     let t = document.querySelector(".toast");
-    if (!t) { t = document.createElement("div"); t.className = "toast"; document.body.appendChild(t); }
+    if (!t) {
+      t = document.createElement("div");
+      t.className = "toast";
+      t.setAttribute("role", "alert");
+      document.body.appendChild(t);
+    }
     t.textContent = msg;
     t.classList.toggle("danger", !!danger);
     t.classList.add("show");
@@ -276,7 +350,7 @@
   el.submitBtn.addEventListener("click", nilai);
   el.resetBtn.addEventListener("click", () => {
     if (locked) return;
-    if (confirm("Kembalikan kode ke kondisi awal? Perubahan Anda akan hilang.")) {
+    if (confirm("Balikkan kode ke bentuk awal? Semua yang sudah kamu tulis akan hilang.")) {
       el.editor.value = SOAL[current].starter || defaultStarter();
     }
   });

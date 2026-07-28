@@ -3,6 +3,11 @@
    Modul 6 — Topik Lanjutan
    STATUS: STUB (kerangka). Isi 'konten' dan 'soal' di bawah.
 
+   PANDUAN PENGISIAN (tidak tampil di halaman siswa):
+     - 'konten' diisi HTML materi: <h2>, <p>, <ul>, <pre><code>, <div class="callout">
+     - Tulis analogi & kesalahan umum siswa di dalam <div class="callout tip">
+     - Setelah terisi, ubah status pertemuan ini jadi "ready" di assets/js/kurikulum.js
+
    Format tiap soal:
      { judul, deskripsi(HTML), starter, stdin?, expected? | cek?, petunjuk? }
      - expected : string  -> output dibandingkan persis (setelah normalisasi)
@@ -11,14 +16,19 @@
 window.MATERI = window.MATERI || {};
 window.MATERI[33] = {
   waktuMenit: 20,
-  konten: "<div class=\"stub-note\">\n  <strong>📝 Materi ini masih kerangka (stub) — siap Anda isi.</strong>\n  Ganti bagian di bawah dengan penjelasan Anda. Struktur di bawah hanyalah template.\n  Edit file: <code>data/pertemuan/p33.js</code>\n</div>\n\n<h2>🎯 Tujuan Pembelajaran</h2>\n<ul>\n  <li>Memahami konsep: <strong>Smart Pointer & Manajemen Memori</strong>.</li>\n  <li>(Tambahkan tujuan spesifik lain di sini.)</li>\n</ul>\n\n<h2>📖 Materi</h2>\n<p>unique_ptr, shared_ptr, dan RAII. <em>(Tuliskan penjelasan lengkap di sini.)</em></p>\n<h3>Sub-bagian</h3>\n<p>Isi penjelasan…</p>\n\n<h2>💻 Contoh Kode</h2>\n<pre><code>#include &lt;iostream&gt;\nusing namespace std;\n\nint main() {\n    // Contoh kode untuk materi \"Smart Pointer & Manajemen Memori\"\n    return 0;\n}</code></pre>\n\n<div class=\"callout tip\"><strong>💡 Tips Mengajar</strong>\nTambahkan analogi atau kesalahan umum siswa di bagian ini.</div>\n\n<h2>📌 Rangkuman</h2>\n<ul><li>Poin kunci 1…</li><li>Poin kunci 2…</li></ul>",
-  soal: [
-    {
-      "judul": "Latihan Pemanasan (placeholder)",
-      "deskripsi": "<p>Ini soal contoh bawaan. <strong>Ganti dengan soal asli</strong> untuk materi <em>Smart Pointer & Manajemen Memori</em>.</p><p>Tugas: cetak tepat tulisan <code>Pertemuan 33 siap!</code></p>",
-      "starter": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Tulis kode Anda di sini\n    \n    return 0;\n}\n",
-      "expected": "Pertemuan 33 siap!",
-      "petunjuk": "Gunakan <code>cout &lt;&lt; \"Pertemuan 33 siap!\";</code>"
-    }
-  ]
+  konten: "<div class=\"stub-note\">\n  <strong>Materi ini belum diisi</strong>\n  Penjelasan dan soal ujiannya belum disiapkan gurumu.\n</div>\n\n<h2>🎯 Yang akan kamu pelajari</h2>\n<ul>\n  <li><strong>Smart Pointer & Manajemen Memori</strong> — unique_ptr, shared_ptr, dan cara aman mengatur pemakaian memori.</li>\n</ul>",
+  // Belum ada soal, jadi materi ini TERKUNCI di situs: ujiannya tidak bisa
+  // dibuka, dan tidak ada cara lain bagi siswa untuk menandainya selesai.
+  //
+  // Cara membuka: isi array soal di bawah, lalu ubah status pertemuan ini
+  // menjadi "ready" di assets/js/kurikulum.js.
+  //
+  // Bentuk satu soal (lihat p01.js untuk contoh yang sudah jadi):
+  //   judul     -> judul soal
+  //   deskripsi -> penjelasan soal dalam HTML
+  //   starter   -> kode awal di editor
+  //   stdin     -> input untuk program (opsional)
+  //   expected  -> output yang benar, dibandingkan otomatis
+  //   petunjuk  -> petunjuk singkat (opsional)
+  soal: []
 };

@@ -65,7 +65,7 @@ async function runCpp(code, stdin) {
         error: "Waktu eksekusi habis (lebih dari " + (RUN_TIMEOUT_MS / 1000) + " detik). Mungkin ada perulangan tak terbatas?" };
     }
     return { ok: false, output: "", exitCode: null,
-      error: "Tidak dapat terhubung ke server compiler. Periksa koneksi internet Anda." };
+      error: "Gagal terhubung ke server compiler. Coba cek dulu koneksi internetmu." };
   }
 
   // ---- Petakan respons Wandbox ke kontrak runCpp ----
