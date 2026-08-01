@@ -25,6 +25,8 @@ function showToast(msg, danger) {
   if (!t) {
     t = document.createElement("div");
     t.className = "toast";
+    t.setAttribute("role", "status");
+    t.setAttribute("aria-live", "polite");
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -44,10 +46,23 @@ function renderIndex() {
   const done = K.pertemuan.filter(p => Progress.isDone(p.id)).length;
   const pct = total ? Math.round((done / total) * 100) : 0;
 
-  const bar = document.querySelector(".progress-wrap .bar > span");
-  const lbl = document.querySelector(".progress-wrap .label");
-  if (bar) bar.style.width = pct + "%";
-  if (lbl) lbl.textContent = `${done} dari ${total} pertemuan selesai (${pct}%)`;
+  // Progres digambar sebagai satu petak per pertemuan, bukan bar persentase —
+  // seluruh bentuk kurikulum langsung terbaca sekali lihat.
+  const ticks = document.getElementById("ticks");
+  const pctEl = document.getElementById("progress-pct");
+  if (ticks) {
+    ticks.innerHTML = "";
+    K.pertemuan.forEach(p => {
+      const t = document.createElement("span");
+      const isDone = Progress.isDone(p.id);
+      t.className = "tick" + (isDone ? " done" : p.status === "ready" ? " ready" : "");
+      t.title = `Pertemuan ${p.id}: ${p.judul}`;
+      ticks.appendChild(t);
+    });
+    ticks.setAttribute("aria-valuenow", String(pct));
+    ticks.setAttribute("aria-valuetext", `${done} dari ${total} pertemuan selesai`);
+  }
+  if (pctEl) pctEl.textContent = `${done}/${total} · ${pct}%`;
 
   const totalEl = document.getElementById("stat-total");
   if (totalEl) totalEl.textContent = total;
@@ -62,31 +77,44 @@ function renderIndex() {
     section.className = "module";
     section.innerHTML = `
       <div class="module-head">
-        <span class="num">Modul ${mod.no}</span>
+        <span class="num">${pad2(mod.no)}</span>
         <h2>${mod.nama}</h2>
         <span class="range">Pertemuan ${first}–${last}</span>
+        <p class="module-desc">${mod.deskripsi}</p>
       </div>
-      <p style="color:var(--text-soft); margin:-6px 0 16px;">${mod.deskripsi}</p>
-      <div class="grid"></div>`;
-    const grid = section.querySelector(".grid");
+      <div class="lessons"></div>`;
+    const list = section.querySelector(".lessons");
 
     items.forEach(p => {
       const isDone = Progress.isDone(p.id);
-      const card = document.createElement("div");
-      card.className = "card" + (isDone ? " done" : "");
-      const badge = p.status === "ready"
-        ? `<span class="badge badge-ready">Materi siap</span>`
-        : `<span class="badge badge-todo">Segera hadir</span>`;
-      card.innerHTML = `
-        <span class="pert-no">Pertemuan ${p.id}</span>
-        <h3>${p.judul}</h3>
-        <p>${p.ringkas}</p>
-        <div class="card-foot">
+      // Seluruh baris adalah satu tautan: satu perhentian Tab per pertemuan,
+      // bukan kartu + tombol terpisah.
+      const row = document.createElement("a");
+      row.className = "lesson" + (isDone ? " done" : "");
+      row.href = `materi.html?id=${p.id}`;
+      const badge = isDone
+        ? `<span class="badge badge-done">Selesai</span>`
+        : p.status === "ready"
+          ? `<span class="badge badge-ready">Materi siap</span>`
+          : `<span class="badge badge-todo">Segera hadir</span>`;
+      row.innerHTML = `
+        <span class="no" aria-hidden="true">${pad2(p.id)}</span>
+        <span class="body">
+          <h3>${p.judul}</h3>
+          <p>${p.ringkas}</p>
+        </span>
+        <span class="meta">
           ${badge}
-          <span class="spacer" style="flex:1"></span>
-          <a class="btn btn-primary btn-sm" href="materi.html?id=${p.id}">Buka →</a>
-        </div>`;
-      grid.appendChild(card);
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </span>`;
+      // Nomor pertemuan disembunyikan dari pembaca layar di atas (dekoratif
+      // sebagai gutter) lalu dinyatakan penuh di sini bersama statusnya.
+      row.setAttribute("aria-label",
+        `Pertemuan ${p.id}: ${p.judul}. ${isDone ? "Sudah selesai." : ""}`.trim());
+      list.appendChild(row);
     });
     mount.appendChild(section);
   });

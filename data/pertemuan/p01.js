@@ -38,7 +38,7 @@ window.MATERI[1] = {
     <li><strong>Terorganisir</strong> — kode dikelompokkan berdasarkan objek dunia nyata.</li>
     <li><strong>Dapat digunakan ulang</strong> — satu class bisa dipakai berkali-kali.</li>
     <li><strong>Mudah dirawat</strong> — perubahan pada satu objek tidak merusak yang lain.</li>
-    <li><strong>Skalabel</strong> — cocok untuk program besar (game, aplikasi, sistem).</li>
+    <li><strong>Gampang dikembangkan</strong> — cocok untuk program besar (game, aplikasi, sistem).</li>
   </ul>
 
   <h2>🏛️ 4 Pilar OOP (Gambaran Awal)</h2>
@@ -51,7 +51,7 @@ window.MATERI[1] = {
   <p>Keempatnya akan kita pelajari mendalam di modul-modul berikutnya. Untuk sekarang, cukup kenali namanya.</p>
 
   <h2>💻 Program C++ Pertama</h2>
-  <pre><code>#include &lt;iostream&gt;   // pustaka untuk input/output
+  <pre><code>#include &lt;iostream&gt;   // library untuk input/output
 using namespace std;
 
 int main() {              // titik awal program
@@ -60,7 +60,7 @@ int main() {              // titik awal program
 }</code></pre>
   <p>Penjelasan singkat:</p>
   <ul>
-    <li><code>#include &lt;iostream&gt;</code> — memasukkan fitur input/output (<code>cout</code>, <code>cin</code>).</li>
+    <li><code>#include &lt;iostream&gt;</code> — memanggil fitur input/output (<code>cout</code>, <code>cin</code>).</li>
     <li><code>int main()</code> — fungsi utama; program mulai dijalankan dari sini.</li>
     <li><code>cout &lt;&lt; ...</code> — mencetak teks ke layar. <code>endl</code> = pindah baris.</li>
     <li><code>return 0;</code> — menandakan program berakhir tanpa error.</li>

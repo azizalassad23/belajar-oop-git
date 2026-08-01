@@ -34,20 +34,25 @@
 
   document.getElementById("exam-link").href = `ujian.html?id=${id}`;
 
-  // Tombol "tandai selesai"
-  const markBtn = document.getElementById("mark-done");
-  function refreshMark() {
-    const done = Progress.isDone(id);
-    markBtn.textContent = done ? "✓ Sudah selesai" : "✓ Tandai selesai";
-    markBtn.classList.toggle("btn-success", done);
-    markBtn.classList.toggle("btn-ghost", !done);
+  /* Status materi — hanya ditampilkan, tidak bisa diubah siswa.
+     Satu-satunya cara menjadi "selesai" adalah lulus ujiannya, supaya
+     angka progres benar-benar mencerminkan kemampuan, bukan klik. */
+  const statusEl = document.getElementById("status-materi");
+  function tampilkanStatus(adaSoal) {
+    if (Progress.isDone(id)) {
+      statusEl.className = "status-materi badge badge-done";
+      statusEl.textContent = "Lulus ujian";
+      return;
+    }
+    if (adaSoal === false) {
+      statusEl.className = "status-materi badge badge-todo";
+      statusEl.textContent = "Ujian belum tersedia";
+      return;
+    }
+    statusEl.className = "status-materi badge badge-todo";
+    statusEl.textContent = "Belum lulus ujian";
   }
-  markBtn.addEventListener("click", () => {
-    Progress.setDone(id, !Progress.isDone(id));
-    refreshMark();
-    showToast(Progress.isDone(id) ? "Ditandai selesai ✓" : "Tanda selesai dihapus");
-  });
-  refreshMark();
+  tampilkanStatus();
 
   // Muat konten pertemuan secara dinamis (bekerja di file:// maupun GitHub Pages)
   const nn = String(id).padStart(2, "0");
@@ -56,31 +61,43 @@
   script.onload = renderKonten;
   script.onerror = () => {
     document.getElementById("konten").innerHTML =
-      `<div class="stub-note"><strong>Konten belum tersedia</strong>
-       File <code>data/pertemuan/p${nn}.js</code> belum dibuat. Silakan isi materi ini.</div>`;
+      `<div class="stub-note"><strong>Materi belum ada</strong>
+       File <code>data/pertemuan/p${nn}.js</code> belum dibuat.</div>`;
+    kunciUjian();
+    tampilkanStatus(false);
   };
   document.body.appendChild(script);
+
+  // Materi tanpa soal dikunci sepenuhnya: tidak ada ujian, dan karena
+  // tombol tandai-selesai sudah dihapus, tidak ada cara lain menandainya.
+  function kunciUjian() {
+    const ex = document.getElementById("exam-link");
+    ex.classList.add("disabled");
+    ex.style.opacity = ".5";
+    // pointer-events saja masih menyisakan link yang bisa ditekan Enter —
+    // menghapus href sekaligus mengeluarkannya dari urutan Tab.
+    ex.removeAttribute("href");
+    ex.setAttribute("aria-disabled", "true");
+    ex.textContent = "Ujian belum tersedia";
+  }
 
   function renderKonten() {
     const data = (window.MATERI || {})[id];
     const mount = document.getElementById("konten");
-    if (!data || !data.konten) {
-      mount.innerHTML =
-        `<div class="stub-note"><strong>Materi ini masih berupa kerangka (stub)</strong>
-         Konten teori belum diisi. Namun tombol <em>Mulai Ujian</em> tetap dapat dicoba
-         bila soalnya sudah disiapkan.</div>`;
-      return;
-    }
-    mount.innerHTML = data.konten;
+    const adaSoal = !!(data && data.soal && data.soal.length);
 
-    // Sembunyikan tombol ujian jika belum ada soal
-    const hasSoal = data.soal && data.soal.length;
-    if (!hasSoal) {
-      const ex = document.getElementById("exam-link");
-      ex.classList.add("disabled");
-      ex.style.opacity = ".5";
-      ex.style.pointerEvents = "none";
-      ex.textContent = "Ujian belum tersedia";
+    if (!data || !data.konten) {
+      mount.innerHTML = adaSoal
+        ? `<div class="stub-note"><strong>Materi ini belum diisi</strong>
+           Penjelasannya belum ditulis, tapi soal ujiannya sudah siap —
+           tombol <em>Mulai Ujian</em> tetap bisa kamu coba.</div>`
+        : `<div class="stub-note"><strong>Materi ini belum diisi</strong>
+           Penjelasan dan soalnya belum disiapkan gurumu.</div>`;
+    } else {
+      mount.innerHTML = data.konten;
     }
+
+    if (!adaSoal) kunciUjian();
+    tampilkanStatus(adaSoal);
   }
 })();
