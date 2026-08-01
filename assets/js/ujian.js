@@ -34,6 +34,9 @@
     prevSoal: document.getElementById("prev-soal"),
     nextSoal: document.getElementById("next-soal"),
     quitBtn: document.getElementById("quit-btn"),
+    inputPane: document.getElementById("input-pane"),
+    stdinEditor: document.getElementById("stdin-editor"),
+    resetStdin: document.getElementById("reset-stdin"),
   };
 
   if (!info) {
@@ -131,6 +134,14 @@
     }
     el.problem.innerHTML = html;
 
+    // Kotak input hanya muncul kalau soalnya memang membaca input.
+    if (el.inputPane) {
+      const perluInput = !!s.stdin;
+      el.inputPane.hidden = !perluInput;
+      el.inputPane.classList.remove("diubah");
+      if (perluInput) el.stdinEditor.value = s.stdin;
+    }
+
     el.editor.value = codeStore[i];
     el.verdict.className = "verdict";
     el.verdict.textContent = "";
@@ -155,16 +166,23 @@
   });
 
   // ---------- Jalankan kode ----------
-  async function jalankan() {
+  /* pakaiInputResmi=true dipakai saat menilai. Input yang diketik siswa di
+     kotak coba-coba TIDAK boleh ikut menentukan kelulusan — kalau ikut,
+     siswa bisa mengarang input yang kebetulan mencocokkan kunci jawaban. */
+  async function jalankan(pakaiInputResmi) {
     if (locked) return null;
     const s = SOAL[current];
+    const stdin = pakaiInputResmi
+      ? (s.stdin || "")
+      : (el.stdinEditor ? el.stdinEditor.value : (s.stdin || ""));
+
     el.output.innerHTML = '<span class="muted">Menjalankan…</span>';
     el.runStatus.textContent = "menjalankan…";
     // Disable while in flight so a double-click can't queue two compiles.
     el.runBtn.disabled = el.submitBtn.disabled = true;
     let res;
     try {
-      res = await runCpp(el.editor.value, s.stdin || "");
+      res = await runCpp(el.editor.value, stdin);
     } finally {
       if (!locked) el.runBtn.disabled = el.submitBtn.disabled = false;
     }
@@ -186,7 +204,7 @@
   async function nilai() {
     if (locked) return;
     const s = SOAL[current];
-    const res = await jalankan();
+    const res = await jalankan(true);   // selalu dengan input resmi soal
     if (!res) return;
 
     /* Server compiler bermasalah: jangan dinilai sama sekali. Kalau ini
@@ -355,8 +373,25 @@
   }
 
   // ---------- Events ----------
-  el.runBtn.addEventListener("click", jalankan);
+  el.runBtn.addEventListener("click", () => jalankan(false));
   el.submitBtn.addEventListener("click", nilai);
+
+  if (el.stdinEditor) {
+    el.stdinEditor.addEventListener("input", () => {
+      const s = SOAL[current];
+      el.inputPane.classList.toggle("diubah",
+        !!s && el.stdinEditor.value !== (s.stdin || ""));
+    });
+  }
+  if (el.resetStdin) {
+    el.resetStdin.addEventListener("click", () => {
+      const s = SOAL[current];
+      if (!s) return;
+      el.stdinEditor.value = s.stdin || "";
+      el.inputPane.classList.remove("diubah");
+      el.stdinEditor.focus();
+    });
+  }
   el.resetBtn.addEventListener("click", () => {
     if (locked) return;
     if (confirm("Balikkan kode ke bentuk awal? Semua yang sudah kamu tulis akan hilang.")) {
