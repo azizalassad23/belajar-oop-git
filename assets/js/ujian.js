@@ -189,6 +189,15 @@
     const res = await jalankan();
     if (!res) return;
 
+    /* Server compiler bermasalah: jangan dinilai sama sekali. Kalau ini
+       lolos ke bawah, siswa dicatat "tidak lulus" untuk kegagalan yang
+       bukan salahnya, dan status itu ikut terkirim ke Sheets guru. */
+    if (res.gangguanServer) {
+      el.verdict.className = "verdict fail";
+      el.verdict.textContent = "BELUM DINILAI — server compiler sedang bermasalah. Coba lagi sebentar.";
+      return;
+    }
+
     let lulus = false, pesan = "";
     if (typeof s.cek === "function") {
       const r = s.cek(res.output, res);

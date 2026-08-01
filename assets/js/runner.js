@@ -88,6 +88,18 @@ async function runCpp(code, stdin) {
       error: "Program berhenti tak wajar (signal: " + signal + ").\n" + stderr };
   }
 
+  /* Kegagalan infrastruktur Wandbox, BUKAN kesalahan siswa.
+     Saat server kehabisan resource, kode berhasil dikompilasi tetapi
+     tidak pernah dijalankan: exit code 126/127 dengan stdout kosong.
+     Tanpa pengecekan ini, output kosong itu dibandingkan dengan kunci
+     jawaban dan siswa divonis "BELUM PAS" padahal kodenya benar. */
+  const gagalJalan = /OCI runtime|Resource temporarily unavailable|cannot execute|exec format error/i;
+  if (gagalJalan.test(stderr) || ((exitCode === 126 || exitCode === 127) && !stdout)) {
+    return { ok: false, output: "", exitCode: exitCode, gangguanServer: true,
+      error: "Server compiler sedang bermasalah, jadi programmu tidak sempat dijalankan. " +
+             "Ini BUKAN kesalahan kodemu. Tunggu sebentar lalu tekan Jalankan lagi." };
+  }
+
   // Peringatan kompilasi (bukan error) tetap dianggap sukses
   const warn = (!isCompileError && compilerErr) ? compilerErr : "";
   return { ok: true, output: stdout, exitCode: exitCode,
