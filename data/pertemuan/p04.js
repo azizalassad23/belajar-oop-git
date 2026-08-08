@@ -104,6 +104,31 @@ tambahDua(n);    // n menjadi 7</code></pre>
       stdin: "3 7\n",
       expected: "Setelah tukar: 7 3",
       petunjuk: "Di dalam fungsi: gunakan variabel sementara -> <code>int t = a; a = b; b = t;</code>."
+    },
+    {
+      judul: "Nilai Terbesar dalam Array",
+      deskripsi: `<p>Baca banyaknya data, lalu baca data itu ke dalam array. Cetak nilai terbesarnya.</p><p>Untuk input <code>5</code> lalu <code>3 9 2 8 5</code>:</p><pre>Terbesar: 9</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int a[100];\n    // Baca n data, lalu cari yang terbesar\n    \n    return 0;\n}\n",
+      stdin: "5\n3 9 2 8 5\n",
+      expected: "Terbesar: 9",
+      petunjuk: `Anggap dulu <code>a[0]</code> yang terbesar, lalu bandingkan sisanya dalam perulangan.`
+    },
+    {
+      judul: "Ubah Nilai lewat Pointer",
+      deskripsi: `<p>Baca sebuah bilangan dan cetak nilainya. Lalu <strong>gandakan lewat pointer</strong>, dan cetak lagi.</p><p>Untuk input <code>10</code>:</p><pre>Sebelum: 10
+Sesudah: 20</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x;\n    cin >> x;\n    // Cetak sebelum, gandakan lewat pointer, cetak sesudah\n    \n    return 0;\n}\n",
+      stdin: "10\n",
+      expected: "Sebelum: 10\nSesudah: 20",
+      petunjuk: `<code>int* p = &amp;x;</code> lalu ubah isinya dengan <code>*p = x * 2;</code>`
+    },
+    {
+      judul: "Rata-rata Isi Array",
+      deskripsi: `<p>Baca banyaknya data lalu data itu sendiri, dan cetak rata-ratanya (pembagian bilangan bulat).</p><p>Untuk input <code>4</code> lalu <code>10 20 30 40</code>:</p><pre>Rata-rata: 25</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int a[100], total = 0;\n    // Baca sambil menjumlahkan, lalu bagi n\n    \n    return 0;\n}\n",
+      stdin: "4\n10 20 30 40\n",
+      expected: "Rata-rata: 25",
+      petunjuk: `Jumlahkan langsung saat membaca, baru bagi dengan <code>n</code>.`
     }
   ]
 };

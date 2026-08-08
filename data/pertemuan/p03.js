@@ -108,6 +108,34 @@ int main() {
       stdin: "2 5\n",
       expected: "32",
       petunjuk: "Mulai hasil = 1, lalu kalikan dengan basis sebanyak eksponen kali."
+    },
+    {
+      judul: "Bilangan Terbesar dari Tiga",
+      deskripsi: `<p>Baca tiga bilangan, lalu cetak yang paling besar.</p><p>Untuk input <code>7 12 9</code>:</p><pre>Terbesar: 12</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b, c;\n    cin >> a >> b >> c;\n    // Cari yang terbesar lalu cetak\n    \n    return 0;\n}\n",
+      stdin: "7 12 9\n",
+      expected: "Terbesar: 12",
+      petunjuk: `Mulai dari <code>int m = a;</code> lalu bandingkan dengan b dan c pakai <code>if</code>.`
+    },
+    {
+      judul: "Tabel Perkalian",
+      deskripsi: `<p>Baca sebuah bilangan, lalu cetak tabel perkaliannya <strong>dari 1 sampai 5</strong>.</p><p>Untuk input <code>3</code>:</p><pre>3 x 1 = 3
+3 x 2 = 6
+3 x 3 = 9
+3 x 4 = 12
+3 x 5 = 15</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    // Perulangan dari 1 sampai 5\n    \n    return 0;\n}\n",
+      stdin: "3\n",
+      expected: "3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15",
+      petunjuk: `<code>for (int i = 1; i &lt;= 5; i++)</code>, lalu cetak <code>n</code>, <code>i</code>, dan <code>n*i</code>.`
+    },
+    {
+      judul: "Fungsi Cek Prima",
+      deskripsi: `<p>Buat <strong>fungsi</strong> bernama <code>prima()</code> yang menentukan apakah sebuah bilangan prima. Lalu cetak bilangannya diikuti keterangan.</p><p>Untuk input <code>17</code>:</p><pre>17 Prima</pre><p>Kalau bukan prima, tulis <code>Bukan prima</code>.</p>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nbool prima(int n) {\n    // Kembalikan true kalau n prima\n    \n}\n\nint main() {\n    int n;\n    cin >> n;\n    // Cetak: <n> Prima  atau  <n> Bukan prima\n    \n    return 0;\n}\n",
+      stdin: "17\n",
+      expected: "17 Prima",
+      petunjuk: `Bilangan &lt; 2 bukan prima. Selain itu, coba bagi dengan 2 sampai akar n.`
     }
   ]
 };

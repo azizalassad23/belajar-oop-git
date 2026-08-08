@@ -5,6 +5,48 @@
    Konten & soal tiap pertemuan ada di: data/pertemuan/pNN.js
    ========================================================= */
 
+/* ---------------------------------------------------------
+   Aturan pembukaan pertemuan.
+
+   Pertemuan 1 sampai (MULAI_BERURUTAN - 1) bebas dibuka kapan saja:
+   itu materi fondasi yang boleh dibaca lompat-lompat. Mulai dari
+   MULAI_BERURUTAN, tiap pertemuan baru terbuka kalau pertemuan
+   sebelumnya sudah LULUS UJIAN.
+
+   Ditaruh di sini, bukan di app.js, karena ujian.html tidak memuat
+   app.js — kalau tidak, penguncian bisa ditembus dengan membuka
+   ujian.html?id=N langsung.
+   --------------------------------------------------------- */
+const MULAI_BERURUTAN = 6;
+
+function _pertemuanSelesai(id) {
+  try {
+    const p = JSON.parse(localStorage.getItem("oopcpp_progress_v1")) || {};
+    return !!p[id];
+  } catch (e) { return false; }
+}
+
+window.AksesPertemuan = {
+  mulaiBerurutan: MULAI_BERURUTAN,
+
+  terkunci(id) {
+    if (id < MULAI_BERURUTAN) return false;
+    return !_pertemuanSelesai(id - 1);
+  },
+
+  /* Pertemuan yang harus diselesaikan lebih dulu (null kalau bebas). */
+  syarat(id) {
+    return id < MULAI_BERURUTAN ? null : id - 1;
+  },
+
+  alasan(id) {
+    const s = this.syarat(id);
+    if (s === null) return "";
+    const info = (window.KURIKULUM.pertemuan || []).find(p => p.id === s);
+    return `Selesaikan dulu Pertemuan ${s}${info ? ": " + info.judul : ""}.`;
+  },
+};
+
 window.KURIKULUM = {
   meta: {
     judul: "Belajar OOP dengan C++",
@@ -60,11 +102,11 @@ window.KURIKULUM = {
     { id: 6,  modul: 2, judul: "Class & Object Pertama", ringkas: "Bikin class pertama kamu, lalu ubah jadi objek yang bisa dipakai.", status: "ready" },
     { id: 7,  modul: 2, judul: "Atribut & Method", ringkas: "Menyimpan data (atribut) dan perilaku (method) di dalam satu class.", status: "ready" },
     { id: 8,  modul: 2, judul: "Access Modifier: public, private, protected", ringkas: "Mengatur bagian mana yang boleh diakses dari luar class.", status: "ready" },
-    { id: 9,  modul: 2, judul: "Constructor", ringkas: "Mengisi nilai awal objek secara otomatis begitu objek dibuat.", status: "todo" },
-    { id: 10, modul: 2, judul: "Destructor", ringkas: "Membereskan sisa pemakaian objek saat objeknya sudah tidak dipakai.", status: "todo" },
-    { id: 11, modul: 2, judul: "Encapsulation & Getter/Setter", ringkas: "Menyembunyikan data, lalu menyediakan jalan yang aman untuk mengaksesnya.", status: "todo" },
+    { id: 9,  modul: 2, judul: "Constructor", ringkas: "Mengisi nilai awal objek secara otomatis begitu objek dibuat.", status: "ready" },
+    { id: 10, modul: 2, judul: "Destructor", ringkas: "Membereskan sisa pemakaian objek saat objeknya sudah tidak dipakai.", status: "ready" },
+    { id: 11, modul: 2, judul: "Encapsulation & Getter/Setter", ringkas: "Menyembunyikan data, lalu menyediakan jalan yang aman untuk mengaksesnya.", status: "ready" },
 
-    { id: 12, modul: 3, judul: "Keyword this", ringkas: "Cara sebuah objek menunjuk dirinya sendiri, dan kapan itu berguna.", status: "todo" },
+    { id: 12, modul: 3, judul: "Keyword this", ringkas: "Cara sebuah objek menunjuk dirinya sendiri, dan kapan itu berguna.", status: "ready" },
     { id: 13, modul: 3, judul: "Member Static", ringkas: "Data dan method yang dimiliki class-nya, bukan tiap objek.", status: "todo" },
     { id: 14, modul: 3, judul: "Constructor Overloading & Default Argument", ringkas: "Menyediakan beberapa cara berbeda untuk membuat objek.", status: "todo" },
     { id: 15, modul: 3, judul: "Composition (Objek di dalam Objek)", ringkas: "Objek yang punya objek lain di dalamnya — hubungan 'punya'.", status: "todo" },

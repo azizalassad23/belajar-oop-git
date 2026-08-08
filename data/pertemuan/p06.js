@@ -104,6 +104,31 @@ public:                    // agar bisa diakses dari luar (dibahas di pert. 8)
       stdin: "Andi 210101\n",
       expected: "Nama: Andi, NIM: 210101",
       petunjuk: "Method: <code>void perkenalan() { cout &lt;&lt; \"Nama: \" &lt;&lt; nama &lt;&lt; \", NIM: \" &lt;&lt; nim; }</code>"
+    },
+    {
+      judul: "Class Segitiga",
+      deskripsi: `<p>Buat class <code>Segitiga</code> dengan atribut <code>alas</code> dan <code>tinggi</code>, serta method <code>luas()</code> yang mengembalikan <code>alas &times; tinggi / 2</code>.</p><p>Untuk input <code>8 5</code>:</p><pre>Luas segitiga: 20</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nclass Segitiga {\npublic:\n    int alas, tinggi;\n    // Buat method luas() di sini\n    \n};\n\nint main() {\n    Segitiga s;\n    cin >> s.alas >> s.tinggi;\n    // Cetak luasnya\n    \n    return 0;\n}\n",
+      stdin: "8 5\n",
+      expected: "Luas segitiga: 20",
+      petunjuk: `<code>int luas() { return alas * tinggi / 2; }</code>`
+    },
+    {
+      judul: "Dua Objek Mandiri",
+      deskripsi: `<p>Buat class <code>Motor</code> dengan atribut <code>kecepatan</code> dan method <code>gas(int n)</code> yang menambah kecepatan sebanyak <code>n</code>.</p><p>Buat <strong>dua objek</strong>, isi kecepatan awalnya dari input, lalu panggil <code>gas(5)</code> <strong>hanya pada motor A</strong>.</p><p>Untuk input <code>10 20</code>:</p><pre>Motor A: 15
+Motor B: 20</pre><p>Motor B tidak berubah — itulah bukti tiap objek berdiri sendiri.</p>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nclass Motor {\npublic:\n    int kecepatan;\n    // Buat method gas(int n) di sini\n    \n};\n\nint main() {\n    Motor a, b;\n    cin >> a.kecepatan >> b.kecepatan;\n    // Panggil a.gas(5), lalu cetak keduanya\n    \n    return 0;\n}\n",
+      stdin: "10 20\n",
+      expected: "Motor A: 15\nMotor B: 20",
+      petunjuk: `<code>void gas(int n) { kecepatan += n; }</code>`
+    },
+    {
+      judul: "Class Buku",
+      deskripsi: `<p>Buat class <code>Buku</code> dengan atribut <code>judul</code> dan <code>halaman</code>, serta method <code>info()</code> yang mencetak keduanya.</p><p>Untuk input <code>Fisika 250</code>:</p><pre>Fisika, 250 halaman</pre>`,
+      starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Buku {\npublic:\n    string judul;\n    int halaman;\n    // Buat method info() di sini\n    \n};\n\nint main() {\n    Buku b;\n    cin >> b.judul >> b.halaman;\n    // Panggil b.info()\n    \n    return 0;\n}\n",
+      stdin: "Fisika 250\n",
+      expected: "Fisika, 250 halaman",
+      petunjuk: `Method langsung mencetak: <code>cout &lt;&lt; judul &lt;&lt; ", " &lt;&lt; halaman &lt;&lt; " halaman";</code>`
     }
   ]
 };

@@ -15,6 +15,25 @@
     return;
   }
 
+  /* Penguncian bertahap. Halaman utama sudah tidak menampilkan tautannya,
+     tetapi siswa masih bisa mengetik materi.html?id=N langsung — jadi
+     dijaga lagi di sini. */
+  if (AksesPertemuan.terkunci(id)) {
+    const syarat = AksesPertemuan.syarat(id);
+    document.title = `Pertemuan ${id} terkunci — Kelas OOP C++`;
+    document.getElementById("crumb").textContent = "Belum terbuka";
+    document.getElementById("judul").textContent = "Pertemuan ini belum terbuka";
+    document.getElementById("ringkas").textContent = AksesPertemuan.alasan(id);
+    document.getElementById("konten").innerHTML =
+      `<div class="stub-note"><strong>Kerjakan berurutan</strong>
+        Mulai Pertemuan ${AksesPertemuan.mulaiBerurutan}, tiap materi baru terbuka
+        setelah kamu <strong>lulus ujian</strong> materi sebelumnya. Ini supaya
+        kamu tidak melewati konsep yang jadi dasar materi berikutnya.</div>
+       <p><a class="btn btn-primary" href="materi.html?id=${syarat}">Buka Pertemuan ${syarat}</a></p>`;
+    document.querySelector(".materi-foot").hidden = true;
+    return;
+  }
+
   const modul = K.modul.find(m => m.no === info.modul);
   document.title = `Pertemuan ${id}: ${info.judul} — Kelas OOP C++`;
   document.getElementById("crumb").textContent =

@@ -92,6 +92,32 @@ Hasil kali: 24</pre>`,
       stdin: "100\n",
       expected: "Fahrenheit: 212",
       petunjuk: "Gunakan <code>c * 9 / 5 + 32</code>. Karena semua int, urutan operasi tetap benar untuk uji ini."
+    },
+    {
+      judul: "Rata-rata Tiga Nilai",
+      deskripsi: `<p>Baca tiga nilai ulangan (bilangan bulat), lalu cetak rata-ratanya. Gunakan pembagian bilangan bulat biasa.</p><p>Untuk input <code>80 90 85</code>:</p><pre>Rata-rata: 85</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b, c;\n    // Baca tiga nilai lalu cetak rata-ratanya\n    \n    return 0;\n}\n",
+      stdin: "80 90 85\n",
+      expected: "Rata-rata: 85",
+      petunjuk: `Jumlahkan dulu, baru bagi 3: <code>(a + b + c) / 3</code>.`
+    },
+    {
+      judul: "Tukar Isi Dua Variabel",
+      deskripsi: `<p>Baca dua bilangan, tampilkan nilainya, lalu <strong>tukar isinya</strong> dan tampilkan lagi.</p><p>Untuk input <code>5 9</code>:</p><pre>Sebelum: 5 9
+Sesudah: 9 5</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    // Cetak sebelum, tukar, cetak sesudah\n    \n    return 0;\n}\n",
+      stdin: "5 9\n",
+      expected: "Sebelum: 5 9\nSesudah: 9 5",
+      petunjuk: `Butuh satu variabel bantu: <code>int t = a; a = b; b = t;</code>`
+    },
+    {
+      judul: "Biodata Singkat",
+      deskripsi: `<p>Baca nama (satu kata) dan umur, lalu cetak biodata. Perhatikan ada <strong>spasi sebelum tanda titik dua</strong>.</p><p>Untuk input <code>Sari 16</code>:</p><pre>Nama : Sari
+Umur : 16 tahun</pre>`,
+      starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string nama;\n    int umur;\n    // Baca lalu cetak dua baris biodata\n    \n    return 0;\n}\n",
+      stdin: "Sari 16\n",
+      expected: "Nama : Sari\nUmur : 16 tahun",
+      petunjuk: `Tulis persis <code>"Nama : "</code> dengan spasi sebelum titik dua.`
     }
   ]
 };

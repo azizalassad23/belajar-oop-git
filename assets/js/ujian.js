@@ -49,6 +49,23 @@
   el.sub.textContent = "Pertemuan " + id;
   el.quitBtn.href = "materi.html?id=" + id;
 
+  /* Penguncian bertahap dijaga juga di sini, bukan hanya di halaman
+     materi: tanpa ini siswa bisa melompati urutan dengan mengetik
+     ujian.html?id=N langsung. */
+  if (AksesPertemuan.terkunci(id)) {
+    const syarat = AksesPertemuan.syarat(id);
+    el.problem.innerHTML =
+      "<h2>Ujian ini belum terbuka</h2>" +
+      `<p>${AksesPertemuan.alasan(id)}</p>` +
+      `<p>Mulai Pertemuan ${AksesPertemuan.mulaiBerurutan}, tiap ujian baru terbuka ` +
+      "setelah kamu lulus ujian materi sebelumnya.</p>" +
+      `<p><a class="exam-link" href="materi.html?id=${syarat}">Buka Pertemuan ${syarat}</a></p>`;
+    el.runBtn.disabled = el.submitBtn.disabled = el.resetBtn.disabled = true;
+    el.editor.readOnly = true;
+    el.timer.textContent = "--:--";
+    return;
+  }
+
   // Tanpa identitas, hasil ujian tidak bisa dilacak milik siapa —
   // jadi lebih baik dihentikan di sini daripada dikerjakan lalu hilang.
   const cfg = window.KONFIGURASI || {};
@@ -105,10 +122,16 @@
   }
 
   // ---------- Render soal ----------
+  let sudahPernahRender = false;
+
   function renderSoal(i) {
     if (locked) return;
-    // simpan kode soal sebelumnya
-    if (SOAL[current]) codeStore[current] = el.editor.value;
+    /* Simpan kode soal sebelumnya — TAPI jangan pada render pertama.
+       Saat itu editor masih kosong, dan menyimpannya akan menimpa kode
+       awal (starter) dengan string kosong. Akibatnya siswa selalu memulai
+       dari editor kosong, bukan dari kerangka yang sudah disiapkan. */
+    if (sudahPernahRender && SOAL[current]) codeStore[current] = el.editor.value;
+    sudahPernahRender = true;
     current = i;
     const s = SOAL[i];
 

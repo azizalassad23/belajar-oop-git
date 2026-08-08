@@ -103,6 +103,32 @@ int main() {
       stdin: "Andi 85\n",
       expected: "Andi: Lulus",
       petunjuk: "Gunakan ternary: <code>(m.nilai &gt;= 70) ? \"Lulus\" : \"Tidak Lulus\"</code>."
+    },
+    {
+      judul: "Struct Buku",
+      deskripsi: `<p>Buat <code>struct Buku</code> dengan anggota <code>judul</code> (teks) dan <code>harga</code> (bilangan bulat). Baca keduanya lalu tampilkan.</p><p>Untuk input <code>Fisika 75000</code>:</p><pre>Buku: Fisika
+Harga: 75000</pre>`,
+      starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nstruct Buku {\n    // Tulis anggota struct di sini\n    \n};\n\nint main() {\n    Buku b;\n    // Baca lalu cetak\n    \n    return 0;\n}\n",
+      stdin: "Fisika 75000\n",
+      expected: "Buku: Fisika\nHarga: 75000",
+      petunjuk: `Akses anggota struct dengan titik: <code>b.judul</code>, <code>b.harga</code>.`
+    },
+    {
+      judul: "Struct dengan Fungsi Luas",
+      deskripsi: `<p>Buat <code>struct Persegi</code> beranggota <code>sisi</code>, lalu buat <strong>fungsi terpisah</strong> <code>luas(Persegi)</code> yang mengembalikan luasnya.</p><p>Untuk input <code>6</code>:</p><pre>Luas: 36</pre><p>Ini gambaran sebelum masuk ke class: di sini data dan fungsinya masih terpisah.</p>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nstruct Persegi {\n    int sisi;\n};\n\nint luas(Persegi p) {\n    // Kembalikan luasnya\n    \n}\n\nint main() {\n    Persegi p;\n    cin >> p.sisi;\n    // Cetak luasnya\n    \n    return 0;\n}\n",
+      stdin: "6\n",
+      expected: "Luas: 36",
+      petunjuk: `Fungsi menerima struct-nya sebagai parameter: <code>return p.sisi * p.sisi;</code>`
+    },
+    {
+      judul: "Dua Struct Mandiri",
+      deskripsi: `<p>Buat <code>struct Titik</code> beranggota <code>x</code> dan <code>y</code>. Baca dua titik, lalu tampilkan keduanya.</p><p>Untuk input <code>3 4 10 20</code>:</p><pre>A = (3, 4)
+B = (10, 20)</pre><p>Perhatikan: mengubah titik A tidak memengaruhi titik B.</p>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nstruct Titik {\n    int x, y;\n};\n\nint main() {\n    Titik a, b;\n    // Baca empat angka, lalu cetak dua baris\n    \n    return 0;\n}\n",
+      stdin: "3 4 10 20\n",
+      expected: "A = (3, 4)\nB = (10, 20)",
+      petunjuk: `Cetak persis dengan kurung dan koma: <code>"A = (" &lt;&lt; a.x &lt;&lt; ", " &lt;&lt; a.y &lt;&lt; ")"</code>`
     }
   ]
 };

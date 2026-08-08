@@ -101,6 +101,33 @@ Saya siap belajar C++.</pre>
       stdin: "Budi 17\n",
       expected: "Halo Budi, umur 17 tahun.",
       petunjuk: "Baca input dengan <code>cin >> nama >> umur;</code> lalu cetak dengan <code>cout</code>."
+    },
+    {
+      judul: "Empat Pilar OOP",
+      deskripsi: `<p>Cetak <strong>empat pilar OOP</strong>, satu per baris, dengan urutan dan ejaan persis seperti ini:</p><pre>Encapsulation
+Inheritance
+Polymorphism
+Abstraction</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Cetak empat pilar OOP, satu per baris\n    \n    return 0;\n}\n",
+      expected: "Encapsulation\nInheritance\nPolymorphism\nAbstraction",
+      petunjuk: `Pakai empat <code>cout</code>, atau satu <code>cout</code> dengan beberapa <code>endl</code>.`
+    },
+    {
+      judul: "Luas Persegi Panjang",
+      deskripsi: `<p>Baca <strong>panjang</strong> dan <strong>lebar</strong> dari input, lalu cetak luasnya.</p><p>Untuk input <code>6 4</code>:</p><pre>Luas: 24</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int panjang, lebar;\n    // Baca panjang & lebar, lalu cetak luasnya\n    \n    return 0;\n}\n",
+      stdin: "6 4\n",
+      expected: "Luas: 24",
+      petunjuk: `Baca dengan <code>cin >> panjang >> lebar;</code> lalu cetak <code>panjang * lebar</code>.`
+    },
+    {
+      judul: "Data dan Perilaku",
+      deskripsi: `<p>Sebuah objek punya <strong>data</strong> (kata benda) dan <strong>perilaku</strong> (kata kerja). Baca satu nama objek dan satu perilakunya, lalu tampilkan.</p><p>Untuk input <code>Mobil melaju</code>:</p><pre>Objek: Mobil
+Perilaku: melaju</pre>`,
+      starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string objek, perilaku;\n    // Baca keduanya, lalu cetak dua baris\n    \n    return 0;\n}\n",
+      stdin: "Mobil melaju\n",
+      expected: "Objek: Mobil\nPerilaku: melaju",
+      petunjuk: `Dua kata dibaca sekaligus: <code>cin >> objek >> perilaku;</code>`
     }
   ]
 };

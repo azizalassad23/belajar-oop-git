@@ -108,6 +108,30 @@ int main() {
       stdin: "1000 500 2000\n",
       expected: "Saldo: 1500",
       petunjuk: "Di dalam tarik: <code>if (jumlah &lt;= saldo) saldo -= jumlah;</code> — inilah validasi yang menjaga saldo tidak minus."
+    },
+    {
+      judul: "Umur Ter-validasi",
+      deskripsi: `<p>Buat class <code>Orang</code> dengan atribut <strong>private</strong> <code>umur</code>. Sediakan <code>setUmur(int)</code> yang menolak nilai negatif (jadikan 0), dan <code>getUmur()</code>.</p><p>Untuk input <code>-5</code>:</p><pre>Umur: 0</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nclass Orang {\nprivate:\n    int umur;\npublic:\n    // Buat setUmur(int) dengan validasi, dan getUmur()\n    \n};\n\nint main() {\n    Orang o;\n    int x;\n    cin >> x;\n    o.setUmur(x);\n    cout << \"Umur: \" << o.getUmur();\n    return 0;\n}\n",
+      stdin: "-5\n",
+      expected: "Umur: 0",
+      petunjuk: `Di dalam setUmur: <code>umur = (u &lt; 0) ? 0 : u;</code>`
+    },
+    {
+      judul: "Class Stok Barang",
+      deskripsi: `<p>Buat class <code>Barang</code> dengan atribut <strong>private</strong> <code>stok</code>. Sediakan <code>setStok(int)</code>, <code>kurangi(int)</code>, dan <code>getStok()</code>.</p><p><strong>Aturan:</strong> <code>kurangi()</code> hanya boleh mengurangi kalau jumlahnya tidak melebihi stok. Kalau melebihi, abaikan.</p><p>Untuk input <code>10 15</code> — stok 10, minta ambil 15, ditolak:</p><pre>Stok: 10</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nclass Barang {\nprivate:\n    int stok;\npublic:\n    void setStok(int s) { stok = s; }\n    // Buat kurangi(int) dengan validasi, dan getStok()\n    \n};\n\nint main() {\n    Barang b;\n    int awal, ambil;\n    cin >> awal >> ambil;\n    b.setStok(awal);\n    b.kurangi(ambil);\n    cout << \"Stok: \" << b.getStok();\n    return 0;\n}\n",
+      stdin: "10 15\n",
+      expected: "Stok: 10",
+      petunjuk: `<code>if (j &lt;= stok) stok -= j;</code> — inilah yang menjaga stok tidak minus.`
+    },
+    {
+      judul: "Password Aman",
+      deskripsi: `<p>Buat class <code>Akun</code> dengan atribut <strong>private</strong> <code>sandi</code> (teks). Sediakan <code>setSandi(string)</code> yang hanya menerima sandi <strong>minimal 6 karakter</strong>; kalau kurang, simpan kata <code>lemah</code>. Sediakan juga <code>getSandi()</code>.</p><p>Untuk input <code>abc</code>:</p><pre>Password: lemah</pre>`,
+      starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Akun {\nprivate:\n    string sandi;\npublic:\n    // Buat setSandi(string) dengan validasi, dan getSandi()\n    \n};\n\nint main() {\n    Akun a;\n    string s;\n    cin >> s;\n    a.setSandi(s);\n    cout << \"Password: \" << a.getSandi();\n    return 0;\n}\n",
+      stdin: "abc\n",
+      expected: "Password: lemah",
+      petunjuk: `Panjang teks didapat dengan <code>s.length()</code>.`
     }
   ]
 };

@@ -362,6 +362,19 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .badge-ready { background: var(--pass-wash); color: var(--pass); border-color: color-mix(in srgb, var(--pass) 35%, transparent); }
 .badge-todo  { background: var(--paper-2); color: var(--ink-mute); border-color: var(--rule-firm); }
 .badge-done  { background: var(--pass); color: var(--on-accent); border-color: var(--pass); }
+.badge-locked{ background: var(--paper-2); color: var(--ink-mute); border-color: var(--rule-firm); }
+
+/* ---------- Pertemuan terkunci ---------- */
+/* Dibuat pudar tapi TETAP terbaca (rasio kontras dijaga di atas 4.5:1),
+   supaya siswa tahu apa yang menantinya dan apa syaratnya. */
+.lesson.terkunci { cursor: not-allowed; }
+.lesson.terkunci:hover { background: transparent; }
+.lesson.terkunci:hover::before { transform: scaleY(0); }
+.lesson.terkunci h3 { color: var(--ink-mute); }
+.lesson.terkunci .no { color: var(--rule-firm); }
+.lesson.terkunci .arrow { color: var(--rule-firm); }
+.lesson.terkunci:hover .arrow { transform: none; color: var(--rule-firm); }
+.lesson.terkunci p { color: var(--ink-mute); font-style: italic; }
 
 /* ---------- Tombol ---------- */
 .btn {

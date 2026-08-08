@@ -114,6 +114,31 @@ Keliling: 16</pre>`,
       stdin: "1000 500 300\n",
       expected: "Saldo akhir: 1200",
       petunjuk: "<code>void setor(int j){ saldo += j; }</code>, <code>void tarik(int j){ saldo -= j; }</code>."
+    },
+    {
+      judul: "Class Kalkulator",
+      deskripsi: `<p>Buat class <code>Kalkulator</code> dengan atribut <code>a</code> dan <code>b</code>, serta dua method: <code>tambah()</code> dan <code>kurang()</code>.</p><p>Untuk input <code>12 5</code>:</p><pre>Tambah: 17
+Kurang: 7</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nclass Kalkulator {\npublic:\n    int a, b;\n    // Buat method tambah() dan kurang()\n    \n};\n\nint main() {\n    Kalkulator k;\n    cin >> k.a >> k.b;\n    // Cetak dua baris hasilnya\n    \n    return 0;\n}\n",
+      stdin: "12 5\n",
+      expected: "Tambah: 17\nKurang: 7",
+      petunjuk: `Kedua method mengembalikan <code>int</code> dan membaca atribut langsung tanpa titik.`
+    },
+    {
+      judul: "Class Suhu",
+      deskripsi: `<p>Buat class <code>Suhu</code> dengan atribut <code>celsius</code> dan method <code>keFahrenheit()</code> memakai rumus <code>C &times; 9 / 5 + 32</code>.</p><p>Untuk input <code>25</code>:</p><pre>Fahrenheit: 77</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nclass Suhu {\npublic:\n    int celsius;\n    // Buat method keFahrenheit() di sini\n    \n};\n\nint main() {\n    Suhu s;\n    cin >> s.celsius;\n    // Cetak hasil konversinya\n    \n    return 0;\n}\n",
+      stdin: "25\n",
+      expected: "Fahrenheit: 77",
+      petunjuk: `Urutan operasi penting: <code>celsius * 9 / 5 + 32</code>, bukan <code>celsius * (9/5)</code>.`
+    },
+    {
+      judul: "Class Penghitung",
+      deskripsi: `<p>Buat class <code>Penghitung</code> dengan atribut <code>nilai</code> dan method <code>naik()</code> yang menambah nilai sebanyak 1.</p><p>Baca sebuah angka <code>n</code>, mulai dari nilai 0, lalu panggil <code>naik()</code> sebanyak <code>n</code> kali.</p><p>Untuk input <code>5</code>:</p><pre>Hitungan: 5</pre>`,
+      starter: "#include <iostream>\nusing namespace std;\n\nclass Penghitung {\npublic:\n    int nilai;\n    // Buat method naik() di sini\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    Penghitung c;\n    c.nilai = 0;\n    // Panggil naik() sebanyak n kali, lalu cetak\n    \n    return 0;\n}\n",
+      stdin: "5\n",
+      expected: "Hitungan: 5",
+      petunjuk: `<code>void naik() { nilai++; }</code> lalu panggil di dalam perulangan.`
     }
   ]
 };

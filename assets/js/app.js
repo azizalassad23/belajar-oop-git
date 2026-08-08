@@ -87,33 +87,46 @@ function renderIndex() {
 
     items.forEach(p => {
       const isDone = Progress.isDone(p.id);
-      // Seluruh baris adalah satu tautan: satu perhentian Tab per pertemuan,
-      // bukan kartu + tombol terpisah.
-      const row = document.createElement("a");
-      row.className = "lesson" + (isDone ? " done" : "");
-      row.href = `materi.html?id=${p.id}`;
+      const terkunci = !isDone && AksesPertemuan.terkunci(p.id);
+
+      // Baris terkunci dibuat sebagai <span>, bukan <a>: tanpa href ia
+      // hilang dari urutan Tab sekaligus tidak bisa dibuka lewat Enter.
+      const row = document.createElement(terkunci ? "span" : "a");
+      row.className = "lesson" + (isDone ? " done" : "") + (terkunci ? " terkunci" : "");
+      if (!terkunci) row.href = `materi.html?id=${p.id}`;
+
       const badge = isDone
         ? `<span class="badge badge-done">Selesai</span>`
-        : p.status === "ready"
-          ? `<span class="badge badge-ready">Materi siap</span>`
-          : `<span class="badge badge-todo">Segera hadir</span>`;
+        : terkunci
+          ? `<span class="badge badge-locked">Terkunci</span>`
+          : p.status === "ready"
+            ? `<span class="badge badge-ready">Materi siap</span>`
+            : `<span class="badge badge-todo">Segera hadir</span>`;
+
+      const ikon = terkunci
+        ? `<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+             <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+           </svg>`
+        : `<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+             <path d="M5 12h14M13 6l6 6-6 6"/>
+           </svg>`;
+
       row.innerHTML = `
         <span class="no" aria-hidden="true">${pad2(p.id)}</span>
         <span class="body">
           <h3>${p.judul}</h3>
-          <p>${p.ringkas}</p>
+          <p>${terkunci ? AksesPertemuan.alasan(p.id) : p.ringkas}</p>
         </span>
-        <span class="meta">
-          ${badge}
-          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 12h14M13 6l6 6-6 6"/>
-          </svg>
-        </span>`;
+        <span class="meta">${badge}${ikon}</span>`;
+
       // Nomor pertemuan disembunyikan dari pembaca layar di atas (dekoratif
       // sebagai gutter) lalu dinyatakan penuh di sini bersama statusnya.
-      row.setAttribute("aria-label",
-        `Pertemuan ${p.id}: ${p.judul}. ${isDone ? "Sudah selesai." : ""}`.trim());
+      const status = isDone ? "Sudah selesai."
+                   : terkunci ? "Terkunci. " + AksesPertemuan.alasan(p.id)
+                   : "";
+      row.setAttribute("aria-label", `Pertemuan ${p.id}: ${p.judul}. ${status}`.trim());
       list.appendChild(row);
     });
     mount.appendChild(section);
