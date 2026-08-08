@@ -5,7 +5,7 @@
    ========================================================= */
 window.MATERI = window.MATERI || {};
 window.MATERI[2] = {
-  waktuMenit: 20,
+  waktuMenit: 45,
 
   konten: `
   <h2>🎯 Tujuan Pembelajaran</h2>

@@ -13,11 +13,15 @@
    MULAI_BERURUTAN, tiap pertemuan baru terbuka kalau pertemuan
    sebelumnya sudah LULUS UJIAN.
 
+   Nilai 7 berarti: Pertemuan 1-6 SELALU terbuka, lalu Pertemuan 7 baru
+   terbuka setelah Pertemuan 6 lulus, Pertemuan 8 setelah 7, dan
+   seterusnya. Jadi pertemuan pertama yang bisa terkunci adalah 7.
+
    Ditaruh di sini, bukan di app.js, karena ujian.html tidak memuat
    app.js — kalau tidak, penguncian bisa ditembus dengan membuka
    ujian.html?id=N langsung.
    --------------------------------------------------------- */
-const MULAI_BERURUTAN = 6;
+const MULAI_BERURUTAN = 7;
 
 function _pertemuanSelesai(id) {
   try {

@@ -15,7 +15,7 @@
    ========================================================= */
 window.MATERI = window.MATERI || {};
 window.MATERI[15] = {
-  waktuMenit: 20,
+  waktuMenit: 45,
   konten: "<div class=\"stub-note\">\n  <strong>Materi ini belum diisi</strong>\n  Penjelasan dan soal ujiannya belum disiapkan gurumu.\n</div>\n\n<h2>🎯 Yang akan kamu pelajari</h2>\n<ul>\n  <li><strong>Composition (Objek di dalam Objek)</strong> — Objek yang punya objek lain di dalamnya — hubungan 'punya'.</li>\n</ul>",
   // Belum ada soal, jadi materi ini TERKUNCI di situs: ujiannya tidak bisa
   // dibuka, dan tidak ada cara lain bagi siswa untuk menandainya selesai.
