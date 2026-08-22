@@ -111,10 +111,10 @@ window.KURIKULUM = {
     { id: 11, modul: 2, judul: "Encapsulation & Getter/Setter", ringkas: "Menyembunyikan data, lalu menyediakan jalan yang aman untuk mengaksesnya.", status: "ready" },
 
     { id: 12, modul: 3, judul: "Keyword this", ringkas: "Cara sebuah objek menunjuk dirinya sendiri, dan kapan itu berguna.", status: "ready" },
-    { id: 13, modul: 3, judul: "Member Static", ringkas: "Data dan method yang dimiliki class-nya, bukan tiap objek.", status: "todo" },
-    { id: 14, modul: 3, judul: "Constructor Overloading & Default Argument", ringkas: "Menyediakan beberapa cara berbeda untuk membuat objek.", status: "todo" },
-    { id: 15, modul: 3, judul: "Composition (Objek di dalam Objek)", ringkas: "Objek yang punya objek lain di dalamnya — hubungan 'punya'.", status: "todo" },
-    { id: 16, modul: 3, judul: "Friend Function & Friend Class", ringkas: "Memberi izin khusus untuk mengakses bagian yang private.", status: "todo" },
+    { id: 13, modul: 3, judul: "Member Static", ringkas: "Data dan method yang dimiliki class-nya, bukan tiap objek.", status: "ready" },
+    { id: 14, modul: 3, judul: "Constructor Overloading & Default Argument", ringkas: "Menyediakan beberapa cara berbeda untuk membuat objek.", status: "ready" },
+    { id: 15, modul: 3, judul: "Composition (Objek di dalam Objek)", ringkas: "Objek yang punya objek lain di dalamnya — hubungan 'punya'.", status: "ready" },
+    { id: 16, modul: 3, judul: "Friend Function & Friend Class", ringkas: "Memberi izin khusus untuk mengakses bagian yang private.", status: "ready" },
     { id: 17, modul: 3, judul: "Operator Overloading", ringkas: "Membuat +, ==, dan << bisa dipakai untuk objek buatan sendiri.", status: "todo" },
 
     { id: 18, modul: 4, judul: "Konsep Inheritance", ringkas: "Class anak mewarisi atribut dan method dari class induknya.", status: "todo" },
