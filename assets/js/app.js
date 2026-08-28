@@ -131,6 +131,80 @@ function renderIndex() {
     });
     mount.appendChild(section);
   });
+
+  renderKuis(mount);
+}
+
+/* ---------- Bagian Kuis ----------
+   Ditempatkan paling bawah, setelah seluruh modul, karena kuis
+   menguji materi lintas pertemuan — bukan bagian dari satu modul. */
+function renderKuis(mount) {
+  const daftar = (window.KURIKULUM.kuis || []);
+  if (!daftar.length) return;
+
+  const section = document.createElement("section");
+  section.className = "module modul-kuis";
+  section.innerHTML = `
+    <div class="module-head">
+      <span class="num">KUIS</span>
+      <h2>Penilaian Gabungan</h2>
+      <span class="range">${daftar.length} kuis</span>
+      <p class="module-desc">Menguji beberapa pertemuan sekaligus. Terbuka sesuai
+        jadwal yang ditentukan gurumu.</p>
+    </div>
+    <div class="lessons"></div>`;
+  const list = section.querySelector(".lessons");
+
+  daftar.forEach(k => {
+    const isDone = Progress.isDone(k.id);
+    const terkunci = !isDone && AksesPertemuan.terkunci(k.id);
+    const menungguJadwal = AksesPertemuan.belumWaktunya(k.id);
+
+    const row = document.createElement(terkunci ? "span" : "a");
+    row.className = "lesson lesson-kuis" + (isDone ? " done" : "") +
+                    (terkunci ? " terkunci" : "");
+    if (!terkunci) row.href = `materi.html?id=${k.id}`;
+
+    const badge = isDone
+      ? `<span class="badge badge-done">Selesai</span>`
+      : menungguJadwal
+        ? `<span class="badge badge-jadwal">Terjadwal</span>`
+        : terkunci
+          ? `<span class="badge badge-locked">Terkunci</span>`
+          : `<span class="badge badge-ready">Siap dikerjakan</span>`;
+
+    // Ikon jam untuk yang menunggu jadwal, gembok untuk yang belum memenuhi syarat.
+    const ikon = menungguJadwal
+      ? `<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+           <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+         </svg>`
+      : terkunci
+        ? `<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+             <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+           </svg>`
+        : `<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+             <path d="M5 12h14M13 6l6 6-6 6"/>
+           </svg>`;
+
+    row.innerHTML = `
+      <span class="no" aria-hidden="true">K${pad2(k.nomor)}</span>
+      <span class="body">
+        <h3>${k.judul} <span class="kuis-cakupan">${k.cakupan}</span></h3>
+        <p>${terkunci ? AksesPertemuan.alasan(k.id) : k.ringkas}</p>
+      </span>
+      <span class="meta">${badge}${ikon}</span>`;
+
+    const status = isDone ? "Sudah selesai."
+                 : terkunci ? AksesPertemuan.alasan(k.id)
+                 : "Siap dikerjakan.";
+    row.setAttribute("aria-label", `${k.judul}, ${k.cakupan}. ${status}`);
+    list.appendChild(row);
+  });
+
+  mount.appendChild(section);
 }
 
 document.addEventListener("DOMContentLoaded", renderIndex);

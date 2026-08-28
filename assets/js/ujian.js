@@ -10,7 +10,9 @@
   const params = new URLSearchParams(location.search);
   const id = parseInt(params.get("id"), 10);
   const K = window.KURIKULUM;
-  const info = K ? K.pertemuan.find(p => p.id === id) : null;
+  // Bisa berupa pertemuan biasa maupun kuis (id 100 ke atas).
+  const info = K ? cariPenilaian(id) : null;
+  const adalahKuis = !!(info && info.jenis === "kuis");
 
   const el = {
     title: document.getElementById("exam-title"),
@@ -45,21 +47,25 @@
     return;
   }
 
-  el.title.textContent = "Ujian: " + info.judul;
-  el.sub.textContent = "Pertemuan " + id;
+  el.title.textContent = (adalahKuis ? "" : "Ujian: ") + info.judul;
+  el.sub.textContent = adalahKuis ? info.cakupan : "Pertemuan " + id;
   el.quitBtn.href = "materi.html?id=" + id;
 
-  /* Penguncian bertahap dijaga juga di sini, bukan hanya di halaman
-     materi: tanpa ini siswa bisa melompati urutan dengan mengetik
-     ujian.html?id=N langsung. */
+  /* Penguncian dijaga juga di sini, bukan hanya di halaman materi:
+     tanpa ini siswa bisa melompati urutan — atau membuka kuis sebelum
+     jadwalnya — dengan mengetik ujian.html?id=N langsung. */
   if (AksesPertemuan.terkunci(id)) {
     const syarat = AksesPertemuan.syarat(id);
-    el.problem.innerHTML =
-      "<h2>Ujian ini belum terbuka</h2>" +
-      `<p>${AksesPertemuan.alasan(id)}</p>` +
-      `<p>Mulai Pertemuan ${AksesPertemuan.mulaiBerurutan}, tiap ujian baru terbuka ` +
-      "setelah kamu lulus ujian materi sebelumnya.</p>" +
-      `<p><a class="exam-link" href="materi.html?id=${syarat}">Buka Pertemuan ${syarat}</a></p>`;
+    const sebutan = adalahKuis ? info.judul : "Ujian ini";
+    let isi = `<h2>${sebutan} belum terbuka</h2>` +
+              `<p>${AksesPertemuan.alasan(id)}</p>`;
+    if (AksesPertemuan.belumWaktunya(id)) {
+      isi += "<p>Halaman ini akan terbuka sendiri setelah waktunya tiba. " +
+             "Tidak perlu meminta dibukakan.</p>";
+    } else if (syarat) {
+      isi += `<p><a class="exam-link" href="materi.html?id=${syarat}">Buka Pertemuan ${syarat}</a></p>`;
+    }
+    el.problem.innerHTML = isi;
     el.runBtn.disabled = el.submitBtn.disabled = el.resetBtn.disabled = true;
     el.editor.readOnly = true;
     el.timer.textContent = "--:--";
@@ -89,13 +95,14 @@
   let locked = false;
 
   // ---------- Muat data soal ----------
-  const nn = String(id).padStart(2, "0");
+  // Jalur berkasnya ditentukan kurikulum.js: pertemuan atau kuis.
   const script = document.createElement("script");
-  script.src = "data/pertemuan/p" + nn + ".js";
+  script.src = berkasData(id);
   script.onload = initSoal;
   script.onerror = () => {
     el.problem.innerHTML =
-      "<div style='color:#f87171'>Soal untuk pertemuan ini belum ada.</div>";
+      "<div style='color:#f87171'>Soal untuk " +
+      (adalahKuis ? "kuis" : "pertemuan") + " ini belum ada.</div>";
   };
   document.body.appendChild(script);
 

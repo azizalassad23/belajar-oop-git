@@ -30,25 +30,84 @@ function _pertemuanSelesai(id) {
   } catch (e) { return false; }
 }
 
+/* Kuis memakai id 100 ke atas supaya tidak pernah bentrok dengan
+   nomor pertemuan, dan supaya progresnya tercatat terpisah. */
+function _cariKuis(id) {
+  return ((window.KURIKULUM || {}).kuis || []).find(k => k.id === id) || null;
+}
+
 window.AksesPertemuan = {
   mulaiBerurutan: MULAI_BERURUTAN,
 
+  /* Waktu sekarang menurut jam komputer siswa. Dipisah jadi fungsi
+     sendiri supaya mudah diganti kalau nanti mau dicek ke server. */
+  sekarang() { return new Date(); },
+
+  /* Kuis boleh punya jadwal buka. Sebelum waktunya, terkunci untuk semua. */
+  belumWaktunya(id) {
+    const k = _cariKuis(id);
+    if (!k || !k.bukaPada) return false;
+    return this.sekarang() < new Date(k.bukaPada);
+  },
+
+  jadwalBuka(id) {
+    const k = _cariKuis(id);
+    return k && k.bukaPada ? new Date(k.bukaPada) : null;
+  },
+
   terkunci(id) {
+    const k = _cariKuis(id);
+    if (k) {
+      // Dua syarat: jadwalnya sudah tiba DAN prasyarat materinya lulus.
+      if (this.belumWaktunya(id)) return true;
+      return k.syarat ? !_pertemuanSelesai(k.syarat) : false;
+    }
     if (id < MULAI_BERURUTAN) return false;
     return !_pertemuanSelesai(id - 1);
   },
 
   /* Pertemuan yang harus diselesaikan lebih dulu (null kalau bebas). */
   syarat(id) {
+    const k = _cariKuis(id);
+    if (k) return k.syarat || null;
     return id < MULAI_BERURUTAN ? null : id - 1;
   },
 
   alasan(id) {
+    if (this.belumWaktunya(id)) {
+      return "Belum dibuka. Terbuka otomatis pada " + this.jadwalTeks(id) + ".";
+    }
     const s = this.syarat(id);
     if (s === null) return "";
     const info = (window.KURIKULUM.pertemuan || []).find(p => p.id === s);
     return `Selesaikan dulu Pertemuan ${s}${info ? ": " + info.judul : ""}.`;
   },
+
+  jadwalTeks(id) {
+    const t = this.jadwalBuka(id);
+    if (!t) return "";
+    const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli",
+                   "Agustus", "September", "Oktober", "November", "Desember"];
+    const jj = String(t.getHours()).padStart(2, "0");
+    const mm = String(t.getMinutes()).padStart(2, "0");
+    return `${hari[t.getDay()]}, ${t.getDate()} ${bulan[t.getMonth()]} ${t.getFullYear()} pukul ${jj}.${mm}`;
+  },
+};
+
+/* Mencari data satu penilaian, baik pertemuan maupun kuis. */
+window.cariPenilaian = function (id) {
+  const k = _cariKuis(id);
+  if (k) return Object.assign({ jenis: "kuis" }, k);
+  const p = ((window.KURIKULUM || {}).pertemuan || []).find(x => x.id === id);
+  return p ? Object.assign({ jenis: "pertemuan" }, p) : null;
+};
+
+/* Berkas data mana yang harus dimuat untuk sebuah id. */
+window.berkasData = function (id) {
+  const k = _cariKuis(id);
+  if (k) return "data/kuis/k" + String(k.nomor).padStart(2, "0") + ".js";
+  return "data/pertemuan/p" + String(id).padStart(2, "0") + ".js";
 };
 
 window.KURIKULUM = {
@@ -92,6 +151,30 @@ window.KURIKULUM = {
       no: 7,
       nama: "Proyek Akhir",
       deskripsi: "Gabungkan semua yang sudah dipelajari jadi satu program utuh.",
+    },
+  ],
+
+  /* ---------------------------------------------------------
+     KUIS — penilaian gabungan lintas pertemuan.
+
+     id  : mulai 101 agar tidak pernah bentrok dengan nomor pertemuan.
+     nomor: dipakai untuk nama berkas -> data/kuis/kNN.js
+     syarat: pertemuan yang harus lulus dulu (null kalau bebas).
+     bukaPada: waktu buka otomatis, format ISO waktu lokal.
+               Kosongkan (hapus barisnya) kalau mau langsung terbuka.
+     --------------------------------------------------------- */
+  kuis: [
+    {
+      id: 101,
+      nomor: 1,
+      judul: "Kuis 1",
+      ringkas: "Penilaian gabungan materi Pertemuan 1 sampai 9.",
+      cakupan: "Pertemuan 1–9",
+      dari: 1,
+      sampai: 9,
+      syarat: 9,
+      bukaPada: "2026-08-29T08:55:00",
+      status: "ready",
     },
   ],
 

@@ -7,7 +7,9 @@
   const id = parseInt(params.get("id"), 10);
   const K = window.KURIKULUM;
 
-  const info = K.pertemuan.find(p => p.id === id);
+  // Bisa berupa pertemuan biasa maupun kuis (id 100 ke atas).
+  const info = cariPenilaian(id);
+  const adalahKuis = !!(info && info.jenis === "kuis");
   if (!info) {
     document.getElementById("judul").textContent = "Materi tidak ditemukan";
     document.getElementById("konten").innerHTML =
@@ -20,68 +22,95 @@
      dijaga lagi di sini. */
   if (AksesPertemuan.terkunci(id)) {
     const syarat = AksesPertemuan.syarat(id);
-    document.title = `Pertemuan ${id} terkunci — Kelas OOP C++`;
+    const belumWaktunya = AksesPertemuan.belumWaktunya(id);
+    const sebutan = adalahKuis ? info.judul : "Pertemuan " + id;
+
+    document.title = `${sebutan} terkunci — Kelas OOP C++`;
     document.getElementById("crumb").textContent = "Belum terbuka";
-    document.getElementById("judul").textContent = "Pertemuan ini belum terbuka";
+    document.getElementById("judul").textContent = sebutan + " belum terbuka";
     document.getElementById("ringkas").textContent = AksesPertemuan.alasan(id);
-    document.getElementById("konten").innerHTML =
-      `<div class="stub-note"><strong>Kerjakan berurutan</strong>
-        Mulai Pertemuan ${AksesPertemuan.mulaiBerurutan}, tiap materi baru terbuka
-        setelah kamu <strong>lulus ujian</strong> materi sebelumnya. Ini supaya
-        kamu tidak melewati konsep yang jadi dasar materi berikutnya.</div>
-       <p><a class="btn btn-primary" href="materi.html?id=${syarat}">Buka Pertemuan ${syarat}</a></p>`;
+
+    let isi;
+    if (belumWaktunya) {
+      isi = `<div class="stub-note"><strong>Menunggu jadwal</strong>
+        ${info.judul} akan terbuka sendiri pada
+        <strong>${AksesPertemuan.jadwalTeks(id)}</strong>. Tidak perlu meminta
+        dibukakan — cukup buka halaman ini lagi setelah waktunya tiba.</div>`;
+    } else {
+      isi = `<div class="stub-note"><strong>Kerjakan berurutan</strong>
+        ${adalahKuis
+          ? `${info.judul} baru terbuka setelah kamu lulus ujian Pertemuan ${syarat}.`
+          : `Mulai Pertemuan ${AksesPertemuan.mulaiBerurutan}, tiap materi baru terbuka
+             setelah kamu <strong>lulus ujian</strong> materi sebelumnya.`}</div>`;
+      if (syarat) {
+        isi += `<p><a class="btn btn-primary" href="materi.html?id=${syarat}">Buka Pertemuan ${syarat}</a></p>`;
+      }
+    }
+    document.getElementById("konten").innerHTML = isi;
     document.querySelector(".materi-foot").hidden = true;
     return;
   }
 
-  const modul = K.modul.find(m => m.no === info.modul);
-  document.title = `Pertemuan ${id}: ${info.judul} — Kelas OOP C++`;
-  document.getElementById("crumb").textContent =
-    `Modul ${modul.no} · ${modul.nama} › Pertemuan ${id}`;
+  document.title = `${adalahKuis ? info.judul : "Pertemuan " + id + ": " + info.judul} — Kelas OOP C++`;
+  document.getElementById("crumb").textContent = adalahKuis
+    ? `Kuis › ${info.cakupan}`
+    : (() => {
+        const modul = K.modul.find(m => m.no === info.modul);
+        return `Modul ${modul.no} · ${modul.nama} › Pertemuan ${id}`;
+      })();
   document.getElementById("judul").textContent = info.judul;
   document.getElementById("ringkas").textContent = info.ringkas;
 
-  // Navigasi sebelumnya / berikutnya
-  const prev = K.pertemuan.find(p => p.id === id - 1);
-  const next = K.pertemuan.find(p => p.id === id + 1);
+  // Navigasi sebelumnya / berikutnya (tidak berlaku untuk kuis)
   const prevLink = document.getElementById("prev-link");
   const nextLink = document.getElementById("next-link");
+  const prev = adalahKuis ? null : K.pertemuan.find(p => p.id === id - 1);
+  const next = adalahKuis ? null : K.pertemuan.find(p => p.id === id + 1);
   if (prev) prevLink.href = `materi.html?id=${prev.id}`;
   else { prevLink.classList.add("disabled"); prevLink.style.visibility = "hidden"; }
   if (next) nextLink.href = `materi.html?id=${next.id}`;
   else { nextLink.style.visibility = "hidden"; }
 
-  document.getElementById("exam-link").href = `ujian.html?id=${id}`;
+  const examLink = document.getElementById("exam-link");
+  examLink.href = `ujian.html?id=${id}`;
+  if (adalahKuis) {
+    // Ganti hanya teksnya, ikonnya biarkan tetap ada.
+    const teks = [...examLink.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
+    if (teks) teks.textContent = " Mulai Kuis ";
+  }
 
   /* Status materi — hanya ditampilkan, tidak bisa diubah siswa.
      Satu-satunya cara menjadi "selesai" adalah lulus ujiannya, supaya
      angka progres benar-benar mencerminkan kemampuan, bukan klik. */
   const statusEl = document.getElementById("status-materi");
+  const sebutanUji = adalahKuis ? "kuis" : "ujian";
   function tampilkanStatus(adaSoal) {
     if (Progress.isDone(id)) {
       statusEl.className = "status-materi badge badge-done";
-      statusEl.textContent = "Lulus ujian";
+      statusEl.textContent = "Lulus " + sebutanUji;
       return;
     }
     if (adaSoal === false) {
       statusEl.className = "status-materi badge badge-todo";
-      statusEl.textContent = "Ujian belum tersedia";
+      statusEl.textContent = sebutanUji.charAt(0).toUpperCase() +
+                             sebutanUji.slice(1) + " belum tersedia";
       return;
     }
     statusEl.className = "status-materi badge badge-todo";
-    statusEl.textContent = "Belum lulus ujian";
+    statusEl.textContent = "Belum lulus " + sebutanUji;
   }
   tampilkanStatus();
 
-  // Muat konten pertemuan secara dinamis (bekerja di file:// maupun GitHub Pages)
-  const nn = String(id).padStart(2, "0");
+  // Muat konten secara dinamis (bekerja di file:// maupun GitHub Pages).
+  // Jalur berkasnya ditentukan kurikulum.js: pertemuan atau kuis.
+  const jalur = berkasData(id);
   const script = document.createElement("script");
-  script.src = `data/pertemuan/p${nn}.js`;
+  script.src = jalur;
   script.onload = renderKonten;
   script.onerror = () => {
     document.getElementById("konten").innerHTML =
       `<div class="stub-note"><strong>Materi belum ada</strong>
-       File <code>data/pertemuan/p${nn}.js</code> belum dibuat.</div>`;
+       File <code>${jalur}</code> belum dibuat.</div>`;
     kunciUjian();
     tampilkanStatus(false);
   };

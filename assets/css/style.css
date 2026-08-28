@@ -364,6 +364,33 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .badge-done  { background: var(--pass); color: var(--on-accent); border-color: var(--pass); }
 .badge-locked{ background: var(--paper-2); color: var(--ink-mute); border-color: var(--rule-firm); }
 
+.badge-jadwal{ background: var(--warn-wash); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+
+/* ---------- Bagian Kuis ----------
+   Dibedakan dari daftar pertemuan biasa: nomornya memakai awalan K,
+   dan seluruh bloknya diberi latar tipis agar terbaca sebagai
+   kelompok tersendiri di paling bawah halaman. */
+.modul-kuis { padding-top: 72px; }
+.modul-kuis .module-head .num {
+  font-size: .78rem; letter-spacing: .14em;
+  background: var(--signal); color: var(--on-accent);
+  padding: 5px 9px; border-radius: 2px; align-self: center;
+}
+.modul-kuis .lessons {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-top: none;
+}
+.lesson-kuis { padding-left: 12px; padding-right: 18px; }
+.lesson-kuis .no { color: var(--signal); font-weight: 600; }
+.lesson-kuis:hover { background: var(--surface); }
+.kuis-cakupan {
+  font-family: var(--mono); font-size: .68rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-mute); margin-left: 8px; white-space: nowrap;
+}
+.lesson-kuis.terkunci .no { color: var(--rule-firm); }
+
 /* ---------- Pertemuan terkunci ---------- */
 /* Dibuat pudar tapi TETAP terbaca (rasio kontras dijaga di atas 4.5:1),
    supaya siswa tahu apa yang menantinya dan apa syaratnya. */
