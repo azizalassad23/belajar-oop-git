@@ -6,7 +6,7 @@
    ========================================================= */
 
 // HARUS sama persis dengan kodeKelas di assets/js/konfigurasi.js
-const KODE_KELAS = "OOP2026";
+const KODE_KELAS = "OOPCPP2026";
 
 const NAMA_SHEET = "Progress";
 const JUDUL_KOLOM = [

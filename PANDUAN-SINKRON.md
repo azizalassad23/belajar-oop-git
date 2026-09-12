@@ -67,7 +67,7 @@ bawah panduan ini.
    proyek ini, tempel ke sana.
 4. Ubah baris paling atas kalau ingin kode kelas sendiri:
    ```js
-   const KODE_KELAS = "OOP2026";
+   const KODE_KELAS = "OOPCPP2026";
    ```
 5. Simpan (ikon disket / `Ctrl+S`).
 
@@ -111,7 +111,7 @@ Buka [`assets/js/konfigurasi.js`](assets/js/konfigurasi.js), isi dua baris:
 
 ```js
 urlSheet: "https://script.google.com/macros/s/AKfycb...../exec",
-kodeKelas: "OOP2026",   // harus sama persis dengan KODE_KELAS di Code.gs
+kodeKelas: "OOPCPP2026",   // harus sama persis dengan KODE_KELAS di Code.gs
 ```
 
 Simpan, lalu unggah ulang ke GitHub Pages.

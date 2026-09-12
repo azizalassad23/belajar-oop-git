@@ -90,8 +90,12 @@ const Sinkron = {
       return;
     }
 
-    const info = (window.KURIKULUM ? window.KURIKULUM.pertemuan : [])
-      .find(p => p.id === pertemuan);
+    // cariPenilaian() mencakup pertemuan DAN kuis. Kalau di sini hanya
+    // KURIKULUM.pertemuan yang dicari, hasil kuis (id 101 ke atas) sampai
+    // di sheet tanpa judul.
+    const info = (typeof cariPenilaian === "function")
+      ? cariPenilaian(pertemuan)
+      : null;
     const s = this.siswa();
 
     const antrean = this._antrean();

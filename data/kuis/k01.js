@@ -1,12 +1,12 @@
 /* =========================================================
    KUIS 1 — Gabungan Pertemuan 1 s.d. 9
-   10 soal, 90 menit.
+   10 soal, 105 menit.
 
    Dibuka otomatis sesuai 'bukaPada' di assets/js/kurikulum.js.
    ========================================================= */
 window.MATERI = window.MATERI || {};
 window.MATERI[101] = {
-  waktuMenit: 90,
+  waktuMenit: 105,
 
   konten: `
   <div class="callout">
@@ -18,7 +18,7 @@ window.MATERI[101] = {
 
   <h2>📋 Ketentuan</h2>
   <ul>
-    <li><strong>10 soal</strong>, dikerjakan dalam <strong>90 menit</strong>.</li>
+    <li><strong>10 soal</strong>, dikerjakan dalam <strong>105 menit</strong>.</li>
     <li>Semua soal dinilai otomatis dengan membandingkan keluaran programmu.</li>
     <li>Kuis dinyatakan lulus kalau <strong>seluruh soal</strong> benar.</li>
     <li>Berpindah tab lebih dari 2 kali akan <strong>mengunci</strong> kuis.</li>
