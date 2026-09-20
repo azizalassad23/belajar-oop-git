@@ -8,7 +8,10 @@
 
 (function () {
   const params = new URLSearchParams(location.search);
-  const id = parseInt(params.get("id"), 10);
+  /* PAKSA_ID dipasang oleh halaman yang hanya melayani satu penilaian
+     (pra-quiz.html), supaya halaman itu tetap benar walau dibuka tanpa ?id=. */
+  const dariUrl = parseInt(params.get("id"), 10);
+  const id = Number.isNaN(dariUrl) ? window.PAKSA_ID : dariUrl;
   const K = window.KURIKULUM;
   // Bisa berupa pertemuan biasa maupun kuis (id 100 ke atas).
   const info = K ? cariPenilaian(id) : null;
@@ -44,6 +47,14 @@
   if (!info) {
     el.problem.innerHTML =
       "ID ujian tidak valid. <a class='exam-link' href='index.html'>Kembali</a>.";
+    return;
+  }
+
+  /* Penilaian berpengawasan ketat hanya sah di halamannya sendiri, yang
+     memuat antisontek.js. Membuka ujian.html?id=102 langsung akan sampai
+     di sini tanpa pengawasan apa pun — jadi dialihkan, bukan dilanjutkan. */
+  if (info.pengawasanKetat && !window.AntiSontek) {
+    location.replace((info.halaman || "index.html") + "?id=" + id);
     return;
   }
 
@@ -88,6 +99,12 @@
     return;
   }
 
+  /* Halaman berpengawasan ketat (pra-quiz.html) memuat antisontek.js.
+     Kalau siswanya sedang kena blokir, soal tidak boleh ikut dimuat —
+     menyembunyikannya di balik overlay percuma, isinya sudah telanjur
+     ada di halaman dan bisa dibaca lewat DevTools. */
+  if (window.AntiSontek && window.AntiSontek.mulaiTerblokir()) return;
+
   let SOAL = [];
   let current = 0;
   let codeStore = {};   // menyimpan kode tiap soal saat berpindah
@@ -120,9 +137,42 @@
     if (data.waktuMenit) TIMER_MENIT = data.waktuMenit;
     SOAL.forEach((s, i) => { codeStore[i] = s.starter || defaultStarter(); });
     renderSoal(0);
-    startTimer(TIMER_MENIT * 60);
-    armAntiCheat();
+
+    /* Di halaman berpengawasan ketat, antisontek.js yang memegang kendali:
+       ia menampilkan gerbang "Mulai" dulu (layar penuh dan suara hanya boleh
+       diminta dari gerakan pengguna), baru memanggil balik penyalaan timer.
+       Ujian harian biasa tidak memuat berkas itu dan langsung berjalan. */
+    if (window.AntiSontek) {
+      window.AntiSontek.pasang(kendali, () => startTimer(TIMER_MENIT * 60));
+    } else {
+      startTimer(TIMER_MENIT * 60);
+      armAntiCheat();
+    }
   }
+
+  /* Yang boleh disentuh antisontek.js dari luar. Sengaja sempit:
+     ia mengatur pengawasan, bukan penilaian. */
+  const kendali = {
+    id: id,
+    resetPengerjaan() {
+      SOAL.forEach((s, i) => { codeStore[i] = s.starter || defaultStarter(); });
+      passed = {};
+      current = 0;
+      sudahPernahRender = false;
+      if (timerId) clearInterval(timerId);
+      try {
+        const P = JSON.parse(localStorage.getItem("oopcpp_progress_v1") || "{}");
+        delete P[id];
+        localStorage.setItem("oopcpp_progress_v1", JSON.stringify(P));
+      } catch (e) {}
+    },
+    tampilkanPelanggaran(n) {
+      violations = n;
+      el.vioCount.textContent = n;
+    },
+    fokuskanEditor() { if (!locked) el.editor.focus(); },
+    pesan(teks, bahaya) { showExamToast(teks, bahaya); },
+  };
 
   function defaultStarter() {
     return "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Tulis kodemu di sini\n    \n    return 0;\n}\n";
@@ -281,6 +331,7 @@
           sisaWaktu: `${Math.floor(remaining / 60)}m ${remaining % 60}d`,
         });
       }
+      if (window.AntiSontek) window.AntiSontek.selesai();
       showExamToast("Semua soal benar! Materi ini ditandai selesai.");
     }
   }
@@ -357,6 +408,9 @@
   function lockExam(title, msg) {
     locked = true;
     if (timerId) clearInterval(timerId);
+    // Pengawasan ketat dihentikan: alarm dimatikan dan layar penuh dilepas,
+    // supaya siswa tidak terjebak di layar penuh yang berbunyi terus.
+    if (window.AntiSontek) window.AntiSontek.selesai();
     // Guru perlu tahu ujian siapa yang terkunci dan karena apa.
     if (typeof Sinkron !== "undefined") {
       Sinkron.catat(id, "terkunci", { detail: title + " — " + msg });
@@ -433,6 +487,9 @@
 
   // Peringatan sebelum meninggalkan halaman
   window.addEventListener("beforeunload", (e) => {
-    if (!locked && SOAL.length) { e.preventDefault(); e.returnValue = ""; }
+    // Siswa yang sedang kena blokir memang tidak punya apa-apa lagi untuk
+    // hilang — menahannya dengan dialog "yakin mau keluar?" hanya menyiksa.
+    const diblokir = window.AntiSontek && window.AntiSontek.sedangDiblokir();
+    if (!locked && !diblokir && SOAL.length) { e.preventDefault(); e.returnValue = ""; }
   });
 })();

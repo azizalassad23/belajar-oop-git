@@ -103,11 +103,20 @@ window.cariPenilaian = function (id) {
   return p ? Object.assign({ jenis: "pertemuan" }, p) : null;
 };
 
-/* Berkas data mana yang harus dimuat untuk sebuah id. */
+/* Berkas data mana yang harus dimuat untuk sebuah id.
+   Kuis boleh menyebut berkasnya sendiri lewat properti 'berkas' — dipakai
+   untuk penilaian yang namanya bukan "Kuis N", seperti Pra Term-Quiz. */
 window.berkasData = function (id) {
   const k = _cariKuis(id);
-  if (k) return "data/kuis/k" + String(k.nomor).padStart(2, "0") + ".js";
+  if (k) return k.berkas || ("data/kuis/k" + String(k.nomor).padStart(2, "0") + ".js");
   return "data/pertemuan/p" + String(id).padStart(2, "0") + ".js";
+};
+
+/* Halaman mana yang dibuka dari daftar di beranda. Kuis dengan pengawasan
+   khusus punya halamannya sendiri; sisanya lewat halaman materi biasa. */
+window.halamanPenilaian = function (id) {
+  const k = _cariKuis(id);
+  return (k && k.halaman ? k.halaman : "materi.html") + "?id=" + id;
 };
 
 window.KURIKULUM = {
@@ -162,6 +171,8 @@ window.KURIKULUM = {
      syarat: pertemuan yang harus lulus dulu (null kalau bebas).
      bukaPada: waktu buka otomatis, format ISO waktu lokal.
                Kosongkan (hapus barisnya) kalau mau langsung terbuka.
+     berkas  : jalur berkas soal, kalau namanya bukan data/kuis/kNN.js.
+     halaman : halaman pembuka, kalau bukan halaman materi biasa.
      --------------------------------------------------------- */
   kuis: [
     {
@@ -174,6 +185,23 @@ window.KURIKULUM = {
       sampai: 9,
       syarat: 9,
       bukaPada: "2026-08-29T08:55:00",
+      status: "ready",
+    },
+    {
+      id: 102,
+      nomor: 2,
+      judul: "Pra Term-Quiz",
+      ringkas: "Pemanasan sebelum Term-Quiz. Satu soal ringan dari tiap Pertemuan 1 sampai 11.",
+      cakupan: "Pertemuan 1–11",
+      dari: 1,
+      sampai: 11,
+      syarat: 11,
+      bukaPada: "2026-09-21T10:00:00",
+      berkas: "data/kuis/pra-term-quiz.js",
+      halaman: "pra-quiz.html",
+      /* Halaman ini memuat antisontek.js: layar penuh wajib, alarm kalau
+         keluar, dan blokir 30 menit setelah pelanggaran ketiga. */
+      pengawasanKetat: true,
       status: "ready",
     },
   ],

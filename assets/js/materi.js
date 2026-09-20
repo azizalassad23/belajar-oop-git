@@ -72,7 +72,12 @@
   else { nextLink.style.visibility = "hidden"; }
 
   const examLink = document.getElementById("exam-link");
-  examLink.href = `ujian.html?id=${id}`;
+  /* Kuis berpengawasan ketat HARUS lewat halamannya sendiri. Kalau tautan
+     ini tetap menunjuk ujian.html, seluruh pengawasannya bisa dilewati
+     cuma dengan membuka materinya dulu lalu menekan tombol ini. */
+  examLink.href = info.halaman
+    ? `${info.halaman}?id=${id}`
+    : `ujian.html?id=${id}`;
   if (adalahKuis) {
     // Ganti hanya teksnya, ikonnya biarkan tetap ada.
     const teks = [...examLink.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());

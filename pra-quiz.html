@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pra Term-Quiz — Kelas OOP C++</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="exam-page exam-ketat">
+  <div class="exam-shell">
+    <!-- Top bar -->
+    <div class="exam-topbar">
+      <div class="title">
+        <span id="exam-title">Pra Term-Quiz</span>
+        <small id="exam-sub">Pertemuan 1–11</small>
+      </div>
+      <span class="spacer"></span>
+      <span class="tanda-awas" title="Halaman ini diawasi ketat">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2l8 4v6c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6l8-4z"/>
+        </svg>
+        <span class="tanda-teks">Diawasi</span>
+      </span>
+      <div class="violation-counter" id="violation-counter">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span class="vio-label">Pelanggaran:</span><span class="vio-angka"><b id="vio-count" aria-live="assertive">0</b>/2</span>
+      </div>
+      <div class="timer" id="timer" role="timer" aria-live="off"
+           aria-label="Sisa waktu kuis">--:--</div>
+      <a class="btn btn-ghost btn-sm exam-ghost" href="#" id="quit-btn">Keluar</a>
+    </div>
+
+    <!-- Split -->
+    <div class="exam-split">
+      <!-- Kiri: soal -->
+      <section class="pane pane-problem" aria-labelledby="pane-soal-label">
+        <div class="pane-head">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 2h6a1 1 0 011 1v2H8V3a1 1 0 011-1z"/>
+            <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/>
+            <path d="M9 12h6M9 16h4"/>
+          </svg>
+          <span id="pane-soal-label">Soal</span>
+          <span class="spacer"></span>
+          <span id="soal-nav" class="pane-note"></span>
+        </div>
+        <div class="problem-content" id="problem-content" tabindex="-1">
+          Memuat soal…
+        </div>
+      </section>
+
+      <!-- Kanan: editor + output -->
+      <section class="pane pane-code" aria-labelledby="pane-editor-label">
+        <div class="pane-head">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/>
+          </svg>
+          <span id="pane-editor-label">Editor Kode C++</span>
+          <span class="spacer"></span>
+          <span class="pane-note">Salin-tempel dimatikan — ketik sendiri</span>
+        </div>
+        <div class="editor-wrap">
+          <label class="sr-only" for="code-editor">Tempat menulis kode C++</label>
+          <textarea class="code-editor" id="code-editor" spellcheck="false" autocomplete="off"
+                    autocorrect="off" autocapitalize="off"
+                    aria-describedby="editor-hint"></textarea>
+          <p class="sr-only" id="editor-hint">Tombol Tab di sini dipakai untuk menambah spasi, bukan pindah ke tombol lain. Kalau mau pindah, tekan Escape dulu baru Tab.</p>
+        </div>
+
+        <div class="input-pane" id="input-pane" hidden>
+          <div class="input-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+            <label for="stdin-editor">Input untuk coba-coba</label>
+            <span class="spacer"></span>
+            <span class="pane-note" id="input-catatan">Saat dinilai, input resmi soal yang dipakai</span>
+            <button class="btn btn-ghost btn-sm exam-ghost" type="button" id="reset-stdin">
+              Kembalikan
+            </button>
+          </div>
+          <textarea class="stdin-editor" id="stdin-editor" spellcheck="false"
+                    autocomplete="off" autocorrect="off" autocapitalize="off"
+                    aria-describedby="input-catatan"></textarea>
+        </div>
+
+        <div class="exam-actions">
+          <button class="btn btn-primary" id="run-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8V4z"/></svg>
+            Jalankan
+          </button>
+          <button class="btn btn-success" id="submit-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            <span id="submit-label">Kumpulkan &amp; Nilai</span>
+          </button>
+          <button class="btn btn-ghost btn-sm exam-ghost" id="reset-btn" title="Reset kode">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/>
+            </svg>
+            <span class="btn-text">Reset kode</span>
+          </button>
+          <span class="spacer"></span>
+          <button class="btn btn-ghost btn-sm exam-ghost" id="prev-soal" title="Soal sebelumnya">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            <span class="btn-text">Soal sebelumnya</span>
+          </button>
+          <button class="btn btn-ghost btn-sm exam-ghost" id="next-soal" title="Soal berikutnya">
+            <span class="btn-text">Soal berikutnya</span>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+
+        <p class="verdict" id="verdict" role="status" aria-live="assertive"></p>
+
+        <div class="output-pane">
+          <div class="output-head">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+            <span id="output-label">Output</span>
+            <span class="spacer"></span>
+            <span id="run-status" class="pane-note" role="status" aria-live="polite"></span>
+          </div>
+          <pre class="output-body" id="output-body" tabindex="0" role="region"
+               aria-labelledby="output-label"><span class="muted">Hasil programmu akan muncul di sini setelah kamu menekan "Jalankan".</span></pre>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ Gerbang mulai ============
+       Layar penuh dan suara hanya boleh diminta dari gerakan pengguna,
+       jadi kuis tidak bisa berjalan sebelum tombol ini ditekan. -->
+  <div class="gerbang" id="gerbang" role="dialog" aria-modal="true"
+       aria-labelledby="gerbang-judul" hidden>
+    <div class="gerbang-kartu">
+      <span class="gerbang-tanda">Pra Term-Quiz</span>
+      <h1 id="gerbang-judul">Baca dulu sebelum mulai</h1>
+      <p class="gerbang-ringkas">
+        11 soal ringan, satu dari tiap Pertemuan 1 sampai 11, dikerjakan dalam
+        <strong>60 menit</strong>. Ini pemanasan — Term-Quiz yang sesungguhnya
+        menyusul setelah ini.
+      </p>
+
+      <ul class="gerbang-aturan" id="gerbang-isi">
+        <li>
+          <strong>Layar penuh wajib.</strong>
+          Begitu tombol di bawah ditekan, layarmu masuk mode penuh dan harus
+          tetap begitu sampai selesai.
+        </li>
+        <li>
+          <strong>Keluar dari halaman ini = alarm berbunyi.</strong>
+          Pindah tab, pindah jendela, atau keluar dari layar penuh akan
+          membunyikan alarm sampai kamu kembali.
+        </li>
+        <li>
+          <strong>Tiga kali melanggar = diblokir 30 menit.</strong>
+          Dua kali pertama masih diperingatkan. Pada pelanggaran ketiga,
+          layarmu diblokir <strong>30 menit</strong> dan
+          <strong>semua jawabanmu dihapus</strong> — kamu mulai lagi dari nol.
+        </li>
+        <li>
+          <strong>Klik kanan dan salin-tempel dimatikan.</strong>
+          Kodenya harus kamu ketik sendiri.
+        </li>
+        <li>
+          <strong>Semuanya tercatat.</strong>
+          Tiap peringatan dan blokir langsung masuk ke catatan gurumu,
+          lengkap dengan jam kejadiannya.
+        </li>
+      </ul>
+
+      <p class="gerbang-galat" id="gerbang-galat" role="alert" hidden></p>
+
+      <div class="gerbang-aksi">
+        <button class="btn btn-primary btn-besar" id="gerbang-mulai" type="button">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3"/>
+          </svg>
+          Saya paham — mulai kuis
+        </button>
+        <a class="btn btn-ghost exam-ghost" href="index.html">Belum siap, kembali</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Alarm ============ -->
+  <div class="alarm-overlay" id="alarm-overlay" role="alertdialog" aria-modal="true"
+       aria-labelledby="alarm-judul" hidden>
+    <div class="alarm-kartu">
+      <svg class="alarm-ikon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2a7 7 0 00-7 7v4l-2 3h18l-2-3V9a7 7 0 00-7-7z"/>
+        <path d="M10 21h4"/>
+      </svg>
+      <h2 id="alarm-judul">Kembali ke Kuis!</h2>
+      <p class="alarm-pesan" id="alarm-pesan">Kamu keluar dari halaman kuis.</p>
+      <p class="alarm-sisa" id="alarm-sisa"></p>
+      <button class="btn btn-primary btn-besar" id="alarm-kembali" type="button">
+        Kembali ke layar penuh
+      </button>
+      <p class="alarm-catatan">Alarm berhenti setelah kamu kembali ke halaman ini
+        dalam mode layar penuh.</p>
+    </div>
+  </div>
+
+  <!-- ============ Blokir 30 menit ============ -->
+  <div class="lock-overlay blokir-overlay" id="blokir-overlay" role="alertdialog"
+       aria-modal="true" aria-labelledby="blokir-judul" hidden>
+    <div class="lock-card">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+      <h2 id="blokir-judul">Kuis Diblokir</h2>
+      <p id="blokir-sebab">Kamu melanggar aturan pengawasan lebih dari dua kali.</p>
+      <div class="blokir-hitung" id="blokir-hitung" role="timer"
+           aria-label="Sisa waktu blokir">30:00</div>
+      <p class="lock-hint">
+        Semua jawabanmu sudah dihapus. Setelah hitungan ini habis, muat ulang
+        halaman untuk mulai lagi dari soal pertama. Kejadian ini sudah tercatat
+        di daftar gurumu.
+      </p>
+      <div class="lock-actions">
+        <a class="btn btn-ghost exam-ghost" id="blokir-keluar" href="index.html">Kembali ke daftar materi</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay penguncian bawaan mesin ujian (waktu habis / selesai) -->
+  <div class="lock-overlay" id="lock-overlay" role="alertdialog" aria-modal="true"
+       aria-labelledby="lock-title" aria-describedby="lock-msg" hidden>
+    <div class="lock-card">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+      <h2 id="lock-title">Kuis Dikunci</h2>
+      <p id="lock-msg"></p>
+      <p class="lock-hint">Lapor ke gurumu kalau kamu merasa ini keliru.</p>
+      <div class="lock-actions">
+        <a class="btn btn-ghost exam-ghost" id="lock-back" href="index.html">Kembali ke daftar materi</a>
+      </div>
+    </div>
+  </div>
+
+  <script>window.PAKSA_ID = 102;</script>
+  <script src="assets/js/konfigurasi.js"></script>
+  <script src="assets/js/kurikulum.js"></script>
+  <script src="assets/js/runner.js"></script>
+  <script src="assets/js/sinkron.js"></script>
+  <script src="assets/js/antisontek.js"></script>
+  <script src="assets/js/ujian.js"></script>
+</body>
+</html>

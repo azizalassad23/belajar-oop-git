@@ -163,7 +163,8 @@ function renderKuis(mount) {
     const row = document.createElement(terkunci ? "span" : "a");
     row.className = "lesson lesson-kuis" + (isDone ? " done" : "") +
                     (terkunci ? " terkunci" : "");
-    if (!terkunci) row.href = `materi.html?id=${k.id}`;
+    // Kuis berpengawasan ketat punya halamannya sendiri, bukan halaman materi.
+    if (!terkunci) row.href = halamanPenilaian(k.id);
 
     const badge = isDone
       ? `<span class="badge badge-done">Selesai</span>`
@@ -189,10 +190,16 @@ function renderKuis(mount) {
              <path d="M5 12h14M13 6l6 6-6 6"/>
            </svg>`;
 
+    // Siswa perlu tahu aturannya SEBELUM membuka, bukan setelah layarnya
+    // terlanjur masuk mode penuh dan alarmnya sudah aktif.
+    const awas = k.pengawasanKetat
+      ? ` <span class="kuis-cakupan">Diawasi ketat</span>`
+      : "";
+
     row.innerHTML = `
       <span class="no" aria-hidden="true">K${pad2(k.nomor)}</span>
       <span class="body">
-        <h3>${k.judul} <span class="kuis-cakupan">${k.cakupan}</span></h3>
+        <h3>${k.judul} <span class="kuis-cakupan">${k.cakupan}</span>${awas}</h3>
         <p>${terkunci ? AksesPertemuan.alasan(k.id) : k.ringkas}</p>
       </span>
       <span class="meta">${badge}${ikon}</span>`;
@@ -200,7 +207,8 @@ function renderKuis(mount) {
     const status = isDone ? "Sudah selesai."
                  : terkunci ? AksesPertemuan.alasan(k.id)
                  : "Siap dikerjakan.";
-    row.setAttribute("aria-label", `${k.judul}, ${k.cakupan}. ${status}`);
+    row.setAttribute("aria-label",
+      `${k.judul}, ${k.cakupan}.${k.pengawasanKetat ? " Diawasi ketat." : ""} ${status}`);
     list.appendChild(row);
   });
 

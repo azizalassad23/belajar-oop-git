@@ -539,6 +539,8 @@ body.exam-page {
   font-family: var(--mono); font-weight: 600; font-size: 1.15rem;
   background: var(--deep-3); color: var(--chalk);
   padding: 7px 15px; border-radius: var(--radius);
+  /* Tanpa ini "45:00" dipenggal jadi tiga baris begitu bilah atas sempit. */
+  white-space: nowrap;
   letter-spacing: .06em; font-variant-numeric: tabular-nums;
   border: 1px solid var(--deep-rule);
 }
@@ -858,6 +860,146 @@ body.exam-page {
   .tick { height: 20px; }
   .lesson .meta { gap: 10px; }
   .identity-btn .who { display: none; }   /* sisakan ikon + titik status */
+}
+
+/* =========================================================
+   Pengawasan ketat — khusus pra-quiz.html
+   Halaman ujian harian tidak memakai kelas-kelas di bawah ini.
+   ========================================================= */
+
+.tanda-awas {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: .68rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--signal-lt);
+  border: 1px solid color-mix(in srgb, var(--signal-lt) 45%, transparent);
+  border-radius: 2px; padding: 4px 9px;
+}
+.tanda-awas .icon { width: 13px; height: 13px; }
+
+.btn-besar { padding: 14px 26px; font-size: .85rem; min-height: 50px; }
+
+/* ---------- Gerbang mulai ---------- */
+.gerbang {
+  position: fixed; inset: 0; z-index: 1200;
+  background: var(--deep); overflow-y: auto;
+  display: grid; place-items: center; padding: 32px 24px;
+}
+.gerbang[hidden] { display: none; }
+.gerbang-kartu {
+  max-width: 660px; width: 100%;
+  background: var(--deep-2); border: 1px solid var(--deep-rule);
+  border-top: 3px solid var(--signal-lt);
+  border-radius: var(--radius); padding: 44px 44px 38px;
+}
+.gerbang-tanda {
+  display: inline-block; font-family: var(--mono); font-size: .68rem;
+  font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--signal-lt); margin-bottom: 14px;
+}
+.gerbang-kartu h1 {
+  font-family: var(--display); font-size: 1.85rem; line-height: 1.2;
+  color: var(--chalk); margin: 0 0 14px;
+}
+.gerbang-ringkas { color: #d8d0c4; margin: 0 0 26px; line-height: 1.65; }
+.gerbang-ringkas strong { color: var(--chalk); }
+
+.gerbang-aturan { list-style: none; margin: 0; padding: 0; }
+.gerbang-aturan li {
+  border-left: 2px solid var(--deep-rule);
+  padding: 0 0 0 18px; margin: 0 0 18px;
+  color: var(--chalk-mute); font-size: .9rem; line-height: 1.6;
+}
+/* Hanya kalimat pertama yang jadi judul aturan. Tanpa :first-child,
+   setiap penekanan di dalam kalimat ikut jadi baris sendiri. */
+.gerbang-aturan li > strong:first-child {
+  display: block; font-size: .95rem; margin-bottom: 3px;
+}
+.gerbang-aturan li strong { color: var(--chalk); font-weight: 600; }
+/* Dua aturan dengan akibat terberat diberi garis merah, bukan huruf
+   kapital atau tanda seru — nadanya tegas tanpa berteriak. */
+.gerbang-aturan li:nth-child(2),
+.gerbang-aturan li:nth-child(3) { border-left-color: var(--signal-lt); }
+
+.gerbang-galat {
+  background: rgba(163, 32, 32, .18);
+  border: 1px solid var(--signal-lt); border-radius: var(--radius);
+  color: #ffd9cc; font-size: .86rem; line-height: 1.6;
+  padding: 14px 16px; margin: 0 0 22px;
+}
+.gerbang-aksi { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+/* ---------- Alarm ---------- */
+.alarm-overlay {
+  position: fixed; inset: 0; z-index: 1300;
+  display: none; place-items: center; text-align: center; padding: 24px;
+  background: rgba(120, 18, 18, .96);
+}
+.alarm-overlay.active { display: grid; }
+.alarm-overlay[hidden] { display: none; }
+.alarm-kartu {
+  max-width: 520px;
+  background: var(--deep); border: 2px solid var(--signal-lt);
+  border-radius: var(--radius); padding: 40px 36px;
+}
+.alarm-ikon {
+  width: 62px; height: 62px; display: block; margin: 0 auto 20px;
+  color: var(--signal-lt);
+  animation: alarm-goyang .5s ease-in-out infinite;
+}
+.alarm-kartu h2 {
+  font-family: var(--display); font-size: 1.9rem;
+  color: var(--chalk); margin: 0 0 14px;
+}
+.alarm-pesan { color: var(--chalk); font-size: 1rem; margin: 0 0 8px; }
+.alarm-sisa {
+  font-family: var(--mono); font-size: .85rem; line-height: 1.6;
+  color: #ffd9cc; margin: 0 0 26px;
+}
+.alarm-catatan {
+  font-size: .8rem; color: var(--chalk-mute); margin: 20px 0 0; line-height: 1.6;
+}
+
+@keyframes alarm-goyang {
+  0%, 100% { transform: rotate(-9deg); }
+  50%      { transform: rotate(9deg); }
+}
+/* Denyut merah di seluruh tepi layar, supaya terlihat walau siswa
+   sedang menatap jendela lain di sebelahnya. */
+body.alarm-aktif::after {
+  content: ""; position: fixed; inset: 0; z-index: 1400; pointer-events: none;
+  box-shadow: inset 0 0 0 10px var(--stop);
+  animation: alarm-denyut .55s steps(1) infinite;
+}
+@keyframes alarm-denyut { 50% { box-shadow: inset 0 0 0 10px transparent; } }
+
+/* ---------- Blokir 30 menit ---------- */
+.blokir-overlay { z-index: 1500; background: rgba(20, 16, 13, .99); }
+.blokir-overlay[hidden] { display: none; }
+.blokir-hitung {
+  font-family: var(--mono); font-weight: 600; font-size: 2.6rem;
+  font-variant-numeric: tabular-nums; letter-spacing: .06em;
+  color: var(--signal-lt); margin: 22px 0 6px;
+}
+
+/* Alarm tetap berbunyi dan tetap merah, hanya kedipannya yang berhenti —
+   siswa yang sensitif gerak tidak perlu kehilangan peringatannya. */
+@media (prefers-reduced-motion: reduce) {
+  body.alarm-aktif::after { box-shadow: inset 0 0 0 10px var(--stop); }
+  .alarm-ikon { transform: none; }
+}
+
+@media (max-width: 620px) {
+  .gerbang-kartu { padding: 32px 24px 28px; }
+  .gerbang-kartu h1 { font-size: 1.5rem; }
+  .gerbang-aksi .btn { flex: 1 1 auto; }
+  /* Bilah atas sudah padat di ponsel; ikon perisainya sudah cukup bicara.
+     Teksnya diklip, bukan display:none, agar tetap terbaca pembaca layar. */
+  .tanda-awas .tanda-teks {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .tanda-awas { padding: 4px 7px; }
 }
 
 /* ---------- Gerak minimal ---------- */
