@@ -863,7 +863,7 @@ body.exam-page {
 }
 
 /* =========================================================
-   Pengawasan ketat — khusus pra-quiz.html
+   Pengawasan ketat — khusus term-quiz.html
    Halaman ujian harian tidak memakai kelas-kelas di bawah ini.
    ========================================================= */
 
@@ -972,6 +972,10 @@ body.alarm-aktif::after {
   animation: alarm-denyut .55s steps(1) infinite;
 }
 @keyframes alarm-denyut { 50% { box-shadow: inset 0 0 0 10px transparent; } }
+
+/* ---------- Dialog konfirmasi di dalam halaman ---------- */
+.tanya-overlay { z-index: 1250; }
+.tanya-pesan { white-space: pre-line; color: var(--chalk) !important; line-height: 1.6; }
 
 /* ---------- Blokir 30 menit ---------- */
 .blokir-overlay { z-index: 1500; background: rgba(20, 16, 13, .99); }

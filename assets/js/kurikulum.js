@@ -105,7 +105,7 @@ window.cariPenilaian = function (id) {
 
 /* Berkas data mana yang harus dimuat untuk sebuah id.
    Kuis boleh menyebut berkasnya sendiri lewat properti 'berkas' — dipakai
-   untuk penilaian yang namanya bukan "Kuis N", seperti Pra Term-Quiz. */
+   untuk penilaian yang namanya bukan "Kuis N", seperti Term-Quiz. */
 window.berkasData = function (id) {
   const k = _cariKuis(id);
   if (k) return k.berkas || ("data/kuis/k" + String(k.nomor).padStart(2, "0") + ".js");
@@ -173,6 +173,9 @@ window.KURIKULUM = {
                Kosongkan (hapus barisnya) kalau mau langsung terbuka.
      berkas  : jalur berkas soal, kalau namanya bukan data/kuis/kNN.js.
      halaman : halaman pembuka, kalau bukan halaman materi biasa.
+     lembar  : nama sheet tujuan di Google Sheets, kalau hasilnya harus
+               dipisah dari sheet 'Progress'. Nama ini juga harus terdaftar
+               di LEMBAR_KHUSUS pada apps-script/Code.gs.
      --------------------------------------------------------- */
   kuis: [
     {
@@ -187,18 +190,23 @@ window.KURIKULUM = {
       bukaPada: "2026-08-29T08:55:00",
       status: "ready",
     },
+    /* id 102 dulu dipakai Pra Term-Quiz yang sudah dihapus. Sengaja TIDAK
+       dipakai ulang: siswa yang lulus Pra masih menyimpan tanda selesai
+       untuk id 102, dan Term-Quiz akan langsung tampil "Selesai" bagi
+       mereka kalau id-nya sama. */
     {
-      id: 102,
-      nomor: 2,
-      judul: "Pra Term-Quiz",
-      ringkas: "Pemanasan sebelum Term-Quiz. Satu soal ringan dari tiap Pertemuan 1 sampai 11.",
+      id: 103,
+      nomor: 2,   // hanya untuk label "K02"; berkasnya ditentukan "berkas"
+      judul: "Term-Quiz",
+      ringkas: "Penilaian tengah semester. Satu soal dari tiap Pertemuan 1 sampai 11.",
       cakupan: "Pertemuan 1–11",
       dari: 1,
       sampai: 11,
-      syarat: 11,
-      bukaPada: "2026-09-21T10:00:00",
-      berkas: "data/kuis/pra-term-quiz.js",
-      halaman: "pra-quiz.html",
+      syarat: null,
+      bukaPada: "2026-09-26T07:25:00",
+      berkas: "data/kuis/term-quiz.js",
+      halaman: "term-quiz.html",
+      lembar: "term-quiz",
       /* Halaman ini memuat antisontek.js: layar penuh wajib, alarm kalau
          keluar, dan blokir 30 menit setelah pelanggaran ketiga. */
       pengawasanKetat: true,

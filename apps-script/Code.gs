@@ -9,6 +9,16 @@
 const KODE_KELAS = "OOPCPP2026";
 
 const NAMA_SHEET = "Progress";
+
+/* Sheet tambahan untuk penilaian yang hasilnya harus dipisah.
+   Situs mengirim nama sheet lewat field 'lembar'; hanya nama yang
+   terdaftar di sini yang dilayani. Tanpa daftar ini, siapa pun yang
+   tahu URL Web App bisa membuat sheet baru sesuka hati di spreadsheet
+   guru. Nama yang tidak dikenal jatuh ke sheet 'Progress'. */
+const LEMBAR_KHUSUS = {
+  "term-quiz": true
+};
+
 const JUDUL_KOLOM = [
   "Waktu", "NIS", "Nama", "Kelas", "Pertemuan", "Judul",
   "Status", "Skor", "Sisa Waktu", "Keterangan"
@@ -68,10 +78,11 @@ function simpan(minta) {
   }
 
   try {
-    const sheet = sheetProgress();
     const sudahAda = kumpulanIdTersimpan();
 
-    const baris = [];
+    // Baris dikelompokkan per sheet tujuan, lalu ditulis sekaligus per
+    // kelompok — satu kiriman bisa berisi progres biasa dan hasil kuis.
+    const perSheet = {};
     const diterima = [];
 
     daftar.forEach(function (d) {
@@ -79,7 +90,10 @@ function simpan(minta) {
       // sama akan dikirim ulang. Cek ID supaya tidak dobel di sheet.
       if (d.id && sudahAda[d.id]) { diterima.push(d.id); return; }
 
-      baris.push([
+      const tujuan = LEMBAR_KHUSUS[d.lembar] ? d.lembar : NAMA_SHEET;
+      if (!perSheet[tujuan]) perSheet[tujuan] = [];
+
+      perSheet[tujuan].push([
         d.waktu ? new Date(d.waktu) : new Date(),
         String(d.nis || ""),
         d.nama || "",
@@ -95,9 +109,14 @@ function simpan(minta) {
       if (d.id) sudahAda[d.id] = true;
     });
 
-    if (baris.length) {
+    const namaTujuan = Object.keys(perSheet);
+    namaTujuan.forEach(function (nama) {
+      const baris = perSheet[nama];
+      const sheet = sheetBernama(nama);
       sheet.getRange(sheet.getLastRow() + 1, 1, baris.length, JUDUL_KOLOM.length)
            .setValues(baris);
+    });
+    if (namaTujuan.length) {
       simpanIdBaru(daftar.map(function (d) { return d.id; })
                         .filter(function (x) { return !!x; }));
     }
@@ -116,11 +135,17 @@ function ambil(minta) {
   const nis = String(minta.nis || "").trim();
   if (!nis) return balas({ ok: false, error: "NIS kosong." });
 
-  const sheet = sheetProgress();
-  if (sheet.getLastRow() < 2) return balas({ ok: true, selesai: [] });
-
-  const nilai = sheet.getRange(2, 1, sheet.getLastRow() - 1, JUDUL_KOLOM.length)
-                     .getValues();
+  // Progres dipulihkan dari SEMUA sheet — kalau sheet kuis dilewati,
+  // siswa yang pindah perangkat akan melihat kuisnya belum dikerjakan.
+  let nilai = [];
+  [NAMA_SHEET].concat(Object.keys(LEMBAR_KHUSUS)).forEach(function (nama) {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(nama);
+    if (!sheet || sheet.getLastRow() < 2) return;
+    nilai = nilai.concat(
+      sheet.getRange(2, 1, sheet.getLastRow() - 1, JUDUL_KOLOM.length).getValues());
+  });
+  // Urutan waktu penting: "batal" hanya membatalkan yang terjadi sebelumnya.
+  nilai.sort(function (a, b) { return new Date(a[0]) - new Date(b[0]); });
 
   const selesai = {};
   nilai.forEach(function (r) {
@@ -143,11 +168,13 @@ function ambil(minta) {
 /* ---------------------------------------------------------
    Pembantu
    --------------------------------------------------------- */
-function sheetProgress() {
+/* Mengambil sheet berdasarkan nama, membuatnya lengkap dengan baris
+   judul kalau belum ada. Sheet 'term-quiz' tidak perlu dibuat manual. */
+function sheetBernama(nama) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(NAMA_SHEET);
+  let sheet = ss.getSheetByName(nama);
   if (!sheet) {
-    sheet = ss.insertSheet(NAMA_SHEET);
+    sheet = ss.insertSheet(nama);
   }
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(JUDUL_KOLOM);

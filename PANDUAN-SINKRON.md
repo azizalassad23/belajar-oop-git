@@ -36,7 +36,26 @@ Sheet `Progress` punya 10 kolom (A–J):
 | `selesai` | Siswa menandai materi selesai sendiri | Tombol **Tandai selesai** di halaman materi |
 | `batal` | Siswa mencabut tanda selesai | Tombol yang sama ditekan lagi |
 | `lulus-ujian` | Semua soal ujian benar | Otomatis saat soal terakhir lulus |
-| `terkunci` | Ujian dihentikan | Waktu habis, atau keluar tab lebih dari 2× |
+| `terkunci` | Ujian dihentikan | Keluar tab lebih dari 2× (ujian harian) |
+| `waktu-habis` | Waktu pengerjaan habis | Otomatis; kolom **Skor** berisi jumlah soal yang benar |
+| `dikumpulkan` | Siswa mengakhiri kuis sendiri | Tombol **Keluar** di Term-Quiz; kolom **Skor** berisi nilainya |
+| `pelanggaran` | Keluar layar penuh / pindah tab | Term-Quiz; skor saat itu ikut dicatat |
+| `diblokir` | Pelanggaran ke-3, diblokir 30 menit | Term-Quiz; skor dicatat **sebelum** pengerjaan dihapus |
+
+**Kolom Skor** kini terisi di setiap akhir pengerjaan, bukan hanya saat semua
+soal benar. Untuk Term-Quiz, nilai siswa diambil dari baris
+`dikumpulkan`, `waktu-habis`, atau `lulus-ujian` yang **terakhir**.
+
+### Sheet `term-quiz`
+
+Hasil Term-Quiz ditulis ke sheet tersendiri bernama **`term-quiz`**, terpisah
+dari `Progress`. Kolomnya sama persis. Sheet ini **dibuat otomatis** saat
+hasil pertama masuk — tidak perlu dibuat manual.
+
+Syaratnya: `Code.gs` di Apps Script harus versi yang sudah mengenal sheet ini
+(lihat bagian **Memperbarui Skrip** di bawah). Kalau skrip lama masih
+terpasang, hasil Term-Quiz **tetap tersimpan**, hanya saja masuk ke sheet
+`Progress` bersama data lain.
 
 ### Contoh isi sheet
 
@@ -133,6 +152,28 @@ Titik kecil di tombol identitas menunjukkan keadaan:
 | Abu-abu | Belum mengisi identitas |
 
 ---
+
+## Memperbarui Skrip
+
+Lakukan ini setiap kali `apps-script/Code.gs` di repo berubah — terakhir
+untuk memisahkan hasil Term-Quiz ke sheet `term-quiz`.
+
+1. Buka spreadsheet → **Extensions → Apps Script**.
+2. Hapus seluruh isi `Code.gs` di editor, lalu tempel isi terbaru dari
+   `apps-script/Code.gs`.
+3. Pastikan baris `const KODE_KELAS = "OOPCPP2026";` masih sama dengan yang
+   dipakai situs.
+4. Klik **Save** (ikon disket).
+5. **Deploy → Manage deployments** → klik ikon **pensil** pada deployment
+   yang sudah ada → di **Version**, pilih **New version** → **Deploy**.
+
+> Jangan pilih **New deployment**. Itu membuat URL baru, dan situs masih
+> memanggil URL lama — seluruh pengiriman siswa akan gagal sampai
+> `konfigurasi.js` ikut diubah.
+
+**Cara memastikan berhasil:** buka URL Web App di browser. Kalau muncul
+`"Penyimpan progres Kelas OOP C++ aktif."`, skripnya hidup. Sheet
+`term-quiz` akan muncul sendiri begitu siswa pertama mengumpulkan.
 
 ## Menguji di Komputer Sendiri
 

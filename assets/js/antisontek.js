@@ -1,7 +1,7 @@
 /* =========================================================
-   antisontek.js — Pengawasan ketat khusus halaman Pra Term-Quiz
+   antisontek.js — Pengawasan ketat khusus halaman Term-Quiz
 
-   Hanya dimuat oleh pra-quiz.html. Halaman ujian biasa
+   Hanya dimuat oleh term-quiz.html. Halaman ujian biasa
    (ujian.html) TIDAK memuat berkas ini, jadi 35 ujian harian
    tetap memakai aturan lamanya yang lebih longgar.
 
@@ -22,7 +22,9 @@
    ========================================================= */
 
 (function () {
-  const KUNCI_BLOKIR = "oopcpp_blokir_praquiz_v1";
+  /* Kunci blokir dibedakan per penilaian. Kalau satu kunci dipakai
+     bersama, blokir dari kuis lama ikut menahan siswa di kuis baru. */
+  const KUNCI_BLOKIR = "oopcpp_blokir_" + (window.PAKSA_ID || "kuis") + "_v1";
   const MAX_PELANGGARAN = 2;      // pelanggaran ke-3 memicu blokir
   const MENIT_BLOKIR = 30;
 
@@ -177,15 +179,22 @@
       sampai: Date.now() + MENIT_BLOKIR * 60000,
       sebab: sebab,
     }));
+    const skorSebelum = kendali ? kendali.skor() : "";
     if (kendali) kendali.resetPengerjaan();
     catat("diblokir", sebab + " — pengerjaan direset, layar diblokir " +
-                      MENIT_BLOKIR + " menit.");
+                      MENIT_BLOKIR + " menit.", skorSebelum);
     tampilkanBlokir();
   }
 
-  function catat(status, detail) {
+  /* Skor ikut dicatat di setiap pelanggaran. Siswa yang menutup tab begitu
+     saja tidak sempat mengumpulkan — catatan terakhir inilah satu-satunya
+     jejak nilainya. Pada blokir, skor dicatat SEBELUM pengerjaan direset. */
+  function catat(status, detail, skor) {
     if (typeof Sinkron === "undefined" || !kendali) return;
-    Sinkron.catat(kendali.id, status, { detail: detail });
+    Sinkron.catat(kendali.id, status, {
+      detail: detail,
+      skor: skor !== undefined ? skor : kendali.skor(),
+    });
   }
 
   /* ---------- Pelanggaran ---------- */

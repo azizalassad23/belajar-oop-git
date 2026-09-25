@@ -9,7 +9,7 @@
 (function () {
   const params = new URLSearchParams(location.search);
   /* PAKSA_ID dipasang oleh halaman yang hanya melayani satu penilaian
-     (pra-quiz.html), supaya halaman itu tetap benar walau dibuka tanpa ?id=. */
+     (term-quiz.html), supaya halaman itu tetap benar walau dibuka tanpa ?id=. */
   const dariUrl = parseInt(params.get("id"), 10);
   const id = Number.isNaN(dariUrl) ? window.PAKSA_ID : dariUrl;
   const K = window.KURIKULUM;
@@ -51,7 +51,7 @@
   }
 
   /* Penilaian berpengawasan ketat hanya sah di halamannya sendiri, yang
-     memuat antisontek.js. Membuka ujian.html?id=102 langsung akan sampai
+     memuat antisontek.js. Membuka ujian.html?id=103 langsung akan sampai
      di sini tanpa pengawasan apa pun — jadi dialihkan, bukan dilanjutkan. */
   if (info.pengawasanKetat && !window.AntiSontek) {
     location.replace((info.halaman || "index.html") + "?id=" + id);
@@ -60,7 +60,7 @@
 
   el.title.textContent = (adalahKuis ? "" : "Ujian: ") + info.judul;
   el.sub.textContent = adalahKuis ? info.cakupan : "Pertemuan " + id;
-  el.quitBtn.href = "materi.html?id=" + id;
+  el.quitBtn.href = info.pengawasanKetat ? "index.html" : "materi.html?id=" + id;
 
   /* Penguncian dijaga juga di sini, bukan hanya di halaman materi:
      tanpa ini siswa bisa melompati urutan — atau membuka kuis sebelum
@@ -99,7 +99,7 @@
     return;
   }
 
-  /* Halaman berpengawasan ketat (pra-quiz.html) memuat antisontek.js.
+  /* Halaman berpengawasan ketat (term-quiz.html) memuat antisontek.js.
      Kalau siswanya sedang kena blokir, soal tidak boleh ikut dimuat —
      menyembunyikannya di balik overlay percuma, isinya sudah telanjur
      ada di halaman dan bisa dibaca lewat DevTools. */
@@ -172,7 +172,48 @@
     },
     fokuskanEditor() { if (!locked) el.editor.focus(); },
     pesan(teks, bahaya) { showExamToast(teks, bahaya); },
+    skor() { return skorSekarang(); },
   };
+
+  /* ---------- Skor ----------
+     Dulu hasil hanya terkirim kalau SEMUA soal benar. Untuk penilaian
+     yang sengaja sulit seperti Term-Quiz, itu berarti sebagian besar
+     siswa tidak pernah punya nilai di sheet guru. Sekarang skor ikut
+     dikirim di setiap akhir pengerjaan: waktu habis, dikumpulkan,
+     dikunci, maupun diblokir. */
+  function jumlahBenar() { return SOAL.filter((_, i) => passed[i]).length; }
+  function skorSekarang() { return SOAL.length ? `${jumlahBenar()}/${SOAL.length}` : ""; }
+  function sisaWaktuTeks() { return `${Math.floor(remaining / 60)}m ${remaining % 60}d`; }
+
+  /* Dialog konfirmasi. Di halaman berpengawasan ketat, confirm() bawaan
+     browser TIDAK boleh dipakai: Chrome otomatis keluar dari layar penuh
+     saat dialog itu muncul, sehingga siswa yang cuma mau mereset kode
+     langsung kena pelanggaran dan alarm. */
+  function tanya(pesan, labelYa) {
+    if (!window.AntiSontek) return Promise.resolve(confirm(pesan));
+    return new Promise(selesai => {
+      const lapis = document.createElement("div");
+      lapis.className = "lock-overlay active tanya-overlay";
+      lapis.setAttribute("role", "alertdialog");
+      lapis.setAttribute("aria-modal", "true");
+      lapis.innerHTML =
+        '<div class="lock-card"><p class="tanya-pesan"></p>' +
+        '<div class="lock-actions">' +
+        '<button type="button" class="btn btn-primary" data-jawab="ya"></button>' +
+        '<button type="button" class="btn btn-ghost exam-ghost" data-jawab="tidak">Batal</button>' +
+        '</div></div>';
+      lapis.querySelector(".tanya-pesan").textContent = pesan;
+      lapis.querySelector('[data-jawab="ya"]').textContent = labelYa;
+      lapis.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-jawab]");
+        if (!b) return;
+        lapis.remove();
+        selesai(b.dataset.jawab === "ya");
+      });
+      document.body.appendChild(lapis);
+      lapis.querySelector('[data-jawab="tidak"]').focus();
+    });
+  }
 
   function defaultStarter() {
     return "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Tulis kodemu di sini\n    \n    return 0;\n}\n";
@@ -327,8 +368,8 @@
       } catch (e) {}
       if (typeof Sinkron !== "undefined") {
         Sinkron.catat(id, "lulus-ujian", {
-          skor: `${SOAL.length}/${SOAL.length}`,
-          sisaWaktu: `${Math.floor(remaining / 60)}m ${remaining % 60}d`,
+          skor: skorSekarang(),
+          sisaWaktu: sisaWaktuTeks(),
         });
       }
       if (window.AntiSontek) window.AntiSontek.selesai();
@@ -369,7 +410,9 @@
     if (ANNOUNCE_AT.includes(remaining)) announceTime(remaining);
     if (remaining <= 0) {
       clearInterval(timerId);
-      lockExam("Waktu Habis", "Waktu ujian sudah selesai. Kodemu tidak bisa diubah lagi.");
+      lockExam("Waktu Habis",
+        `Waktu sudah selesai dengan ${skorSekarang()} soal benar. Kodemu tidak bisa diubah lagi.`,
+        "waktu-habis");
       return;
     }
     remaining--;
@@ -405,15 +448,19 @@
     }
   }
 
-  function lockExam(title, msg) {
+  function lockExam(title, msg, status) {
     locked = true;
     if (timerId) clearInterval(timerId);
     // Pengawasan ketat dihentikan: alarm dimatikan dan layar penuh dilepas,
     // supaya siswa tidak terjebak di layar penuh yang berbunyi terus.
     if (window.AntiSontek) window.AntiSontek.selesai();
-    // Guru perlu tahu ujian siapa yang terkunci dan karena apa.
+    // Guru perlu tahu ujian siapa yang berakhir, karena apa, dan nilainya.
     if (typeof Sinkron !== "undefined") {
-      Sinkron.catat(id, "terkunci", { detail: title + " — " + msg });
+      Sinkron.catat(id, status || "terkunci", {
+        detail: title + " — " + msg,
+        skor: skorSekarang(),
+        sisaWaktu: sisaWaktuTeks(),
+      });
     }
     el.lockTitle.textContent = title;
     el.lockMsg.textContent = msg;
@@ -476,11 +523,27 @@
       el.stdinEditor.focus();
     });
   }
-  el.resetBtn.addEventListener("click", () => {
+  el.resetBtn.addEventListener("click", async () => {
     if (locked) return;
-    if (confirm("Balikkan kode ke bentuk awal? Semua yang sudah kamu tulis akan hilang.")) {
-      el.editor.value = SOAL[current].starter || defaultStarter();
-    }
+    const ya = await tanya("Balikkan kode ke bentuk awal? Semua yang sudah kamu tulis " +
+                           "di soal ini akan hilang.", "Ya, reset");
+    if (ya && !locked) el.editor.value = SOAL[current].starter || defaultStarter();
+  });
+
+  /* Di halaman berpengawasan, "Keluar" berarti MENGUMPULKAN: nilai saat
+     itu dikirim ke guru. Tanpa ini, siswa yang tidak sanggup menyelesaikan
+     semua soal lalu keluar tidak meninggalkan nilai apa pun. */
+  el.quitBtn.addEventListener("click", async (e) => {
+    if (!window.AntiSontek || locked || !window.AntiSontek.sedangBerjalan()) return;
+    e.preventDefault();
+    const skor = skorSekarang();
+    const ya = await tanya(
+      `Kumpulkan dan akhiri kuis sekarang?\n\nSoal yang benar: ${skor}. ` +
+      "Nilai inilah yang dikirim ke gurumu.", "Kumpulkan");
+    if (!ya || locked) return;
+    lockExam("Kuis Dikumpulkan",
+      `Jawabanmu sudah dikumpulkan dengan ${skor} soal benar. Nilainya sedang dikirim ke gurumu.`,
+      "dikumpulkan");
   });
   el.prevSoal.addEventListener("click", () => { if (current > 0) renderSoal(current - 1); });
   el.nextSoal.addEventListener("click", () => { if (current < SOAL.length - 1) renderSoal(current + 1); });

@@ -108,6 +108,8 @@ const Sinkron = {
       pertemuan: pertemuan,
       judul: info ? info.judul : "",
       status: status,
+      // Sheet tujuan. Kosong = sheet 'Progress' seperti biasa.
+      lembar: (info && info.lembar) || "",
     }, tambahan || {}));
 
     // Batasi agar localStorage tidak membengkak kalau lama offline.
