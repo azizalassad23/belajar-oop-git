@@ -46,16 +46,17 @@ Sheet `Progress` punya 10 kolom (A–J):
 soal benar. Untuk Term-Quiz, nilai siswa diambil dari baris
 `dikumpulkan`, `waktu-habis`, atau `lulus-ujian` yang **terakhir**.
 
-### Sheet `term-quiz`
+### Sheet `term-quiz` dan `remedial`
 
-Hasil Term-Quiz ditulis ke sheet tersendiri bernama **`term-quiz`**, terpisah
-dari `Progress`. Kolomnya sama persis. Sheet ini **dibuat otomatis** saat
-hasil pertama masuk — tidak perlu dibuat manual.
+Hasil Term-Quiz ditulis ke sheet **`term-quiz`**, dan hasil Remedial
+Term-Quiz ke sheet **`remedial`** — keduanya terpisah dari `Progress`.
+Kolomnya sama persis. Kedua sheet ini **dibuat otomatis** saat hasil
+pertama masuk — tidak perlu dibuat manual.
 
 Syaratnya: `Code.gs` di Apps Script harus versi yang sudah mengenal sheet ini
 (lihat bagian **Memperbarui Skrip** di bawah). Kalau skrip lama masih
-terpasang, hasil Term-Quiz **tetap tersimpan**, hanya saja masuk ke sheet
-`Progress` bersama data lain.
+terpasang, hasilnya **tetap tersimpan**, hanya saja masuk ke sheet `Progress`
+bersama data lain.
 
 ### Contoh isi sheet
 
@@ -156,7 +157,7 @@ Titik kecil di tombol identitas menunjukkan keadaan:
 ## Memperbarui Skrip
 
 Lakukan ini setiap kali `apps-script/Code.gs` di repo berubah — terakhir
-untuk memisahkan hasil Term-Quiz ke sheet `term-quiz`.
+untuk menambah sheet `remedial`.
 
 1. Buka spreadsheet → **Extensions → Apps Script**.
 2. Hapus seluruh isi `Code.gs` di editor, lalu tempel isi terbaru dari
@@ -173,7 +174,8 @@ untuk memisahkan hasil Term-Quiz ke sheet `term-quiz`.
 
 **Cara memastikan berhasil:** buka URL Web App di browser. Kalau muncul
 `"Penyimpan progres Kelas OOP C++ aktif."`, skripnya hidup. Sheet
-`term-quiz` akan muncul sendiri begitu siswa pertama mengumpulkan.
+`term-quiz` dan `remedial` akan muncul sendiri begitu siswa pertama
+mengumpulkan.
 
 ## Menguji di Komputer Sendiri
 

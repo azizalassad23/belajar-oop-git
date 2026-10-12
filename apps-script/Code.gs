@@ -16,7 +16,8 @@ const NAMA_SHEET = "Progress";
    tahu URL Web App bisa membuat sheet baru sesuka hati di spreadsheet
    guru. Nama yang tidak dikenal jatuh ke sheet 'Progress'. */
 const LEMBAR_KHUSUS = {
-  "term-quiz": true
+  "term-quiz": true,
+  "remedial": true
 };
 
 const JUDUL_KOLOM = [

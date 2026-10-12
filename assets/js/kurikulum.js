@@ -212,6 +212,25 @@ window.KURIKULUM = {
       pengawasanKetat: true,
       status: "ready",
     },
+    /* Remedial Term-Quiz: protokol sama persis, soal berbeda semua.
+       Belum diberi jadwal — terbuka begitu situs diperbarui. Untuk
+       menguncinya sampai waktu tertentu, tambahkan baris seperti:
+         bukaPada: "2026-10-15T07:25:00",                          */
+    {
+      id: 104,
+      nomor: 3,   // hanya untuk label "K03"; berkasnya ditentukan "berkas"
+      judul: "Remedial Term-Quiz",
+      ringkas: "Kesempatan kedua Term-Quiz. Soal baru dari Pertemuan 1 sampai 11, tingkat kesulitan sama.",
+      cakupan: "Pertemuan 1–11",
+      dari: 1,
+      sampai: 11,
+      syarat: null,
+      berkas: "data/kuis/remedial.js",
+      halaman: "remedial.html",
+      lembar: "remedial",
+      pengawasanKetat: true,
+      status: "ready",
+    },
   ],
 
   // status: "ready" (konten sudah diisi) | "todo" (masih stub)
