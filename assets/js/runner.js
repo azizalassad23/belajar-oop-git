@@ -211,5 +211,78 @@ function normalizeOutput(s) {
     .trim();
 }
 
+/* ---------- Sidik untuk input rahasia ----------
+   Berkas soal bisa dibuka siapa saja, jadi kunci keluaran untuk input
+   rahasia TIDAK disimpan sebagai teks — yang disimpan hanya sidik
+   SHA-256-nya. Keluaran siswa disidik dengan cara yang sama lalu
+   dibandingkan; sidik tidak bisa dibalik menjadi teks kuncinya.
+
+   Garam (id, nomor soal, urutan uji) membuat dua soal dengan keluaran
+   yang kebetulan sama tetap punya sidik berbeda. Garam ini tidak
+   rahasia — tugasnya mencegah sidik dipakai ulang, bukan menyembunyikan.
+
+   Harus identik dengan sidik() pada skrip pembuat kunci. */
+function garamUji(id, nomor, ke) {
+  return "oopcpp|" + id + "|" + nomor + "|" + ke + "|";
+}
+
+function sidikUji(id, nomor, ke, keluaran) {
+  return sha256Hex(garamUji(id, nomor, ke) + normalizeOutput(keluaran));
+}
+
+/* SHA-256 murni JavaScript. crypto.subtle sengaja tidak dipakai: ia
+   hanya ada di "secure context", sehingga mati kalau situs dibuka
+   langsung dari berkas (file://), dan sifatnya async. */
+const _SHA = (function () {
+  const prima = [];
+  for (let n = 2; prima.length < 64; n++) {
+    if (prima.every((p) => n % p)) prima.push(n);
+  }
+  const pecahan = (x) => ((x - Math.floor(x)) * 4294967296) >>> 0;
+  return {
+    K: prima.map((p) => pecahan(Math.cbrt(p))),
+    H: prima.slice(0, 8).map((p) => pecahan(Math.sqrt(p))),
+  };
+})();
+
+function sha256Hex(teks) {
+  const data = new TextEncoder().encode(teks);
+  const panjang = ((data.length + 9 + 63) >> 6) << 6;
+  const buf = new Uint8Array(panjang);
+  buf.set(data);
+  buf[data.length] = 0x80;
+  const dv = new DataView(buf.buffer);
+  const bit = data.length * 8;
+  dv.setUint32(panjang - 8, Math.floor(bit / 4294967296));
+  dv.setUint32(panjang - 4, bit >>> 0);
+
+  const rot = (x, n) => (x >>> n) | (x << (32 - n));
+  const H = _SHA.H.slice(), K = _SHA.K, W = new Uint32Array(64);
+
+  for (let o = 0; o < panjang; o += 64) {
+    for (let i = 0; i < 16; i++) W[i] = dv.getUint32(o + i * 4);
+    for (let i = 16; i < 64; i++) {
+      const s0 = rot(W[i - 15], 7) ^ rot(W[i - 15], 18) ^ (W[i - 15] >>> 3);
+      const s1 = rot(W[i - 2], 17) ^ rot(W[i - 2], 19) ^ (W[i - 2] >>> 10);
+      W[i] = (W[i - 16] + s0 + W[i - 7] + s1) >>> 0;
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let i = 0; i < 64; i++) {
+      const t1 = (h + (rot(e, 6) ^ rot(e, 11) ^ rot(e, 25)) +
+                  ((e & f) ^ (~e & g)) + K[i] + W[i]) >>> 0;
+      const t2 = ((rot(a, 2) ^ rot(a, 13) ^ rot(a, 22)) +
+                  ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
+      h = g; g = f; f = e; e = (d + t1) >>> 0;
+      d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+    H[0] = (H[0] + a) >>> 0; H[1] = (H[1] + b) >>> 0;
+    H[2] = (H[2] + c) >>> 0; H[3] = (H[3] + d) >>> 0;
+    H[4] = (H[4] + e) >>> 0; H[5] = (H[5] + f) >>> 0;
+    H[6] = (H[6] + g) >>> 0; H[7] = (H[7] + h) >>> 0;
+  }
+  return H.map((x) => x.toString(16).padStart(8, "0")).join("");
+}
+
 window.runCpp = runCpp;
 window.normalizeOutput = normalizeOutput;
+window.sidikUji = sidikUji;

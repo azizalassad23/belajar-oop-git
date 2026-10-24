@@ -598,6 +598,14 @@ body.exam-page {
   font-family: var(--mono); font-size: .88em;
 }
 .io-block { margin: 18px 0; }
+/* Pemberitahuan input rahasia: garis tipis di kiri, bukan kotak peringatan —
+   ini aturan main, bukan ancaman. */
+.catatan-uji {
+  margin: 4px 0 18px; padding: 2px 0 2px 12px;
+  border-left: 2px solid var(--signal-lt);
+  color: var(--chalk-mute); font-size: .84rem; line-height: 1.6;
+}
+.catatan-uji strong { color: var(--chalk); font-weight: 600; }
 .io-block .io-label {
   font-family: var(--mono); font-size: .7rem; font-weight: 500;
   letter-spacing: .14em; text-transform: uppercase;

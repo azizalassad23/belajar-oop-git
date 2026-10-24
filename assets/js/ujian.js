@@ -249,6 +249,12 @@
       html += `<div class="io-block"><div class="io-label">Output yang diharapkan</div>
                <pre>${escapeHtml(s.expected)}</pre></div>`;
     }
+    // Diberitahukan terus terang supaya tidak terasa menjebak.
+    if (Array.isArray(s.uji) && s.uji.length) {
+      html += `<p class="catatan-uji">Selain contoh di atas, jawabanmu juga diuji dengan
+               <strong>${s.uji.length} input lain yang dirahasiakan</strong>. Pastikan
+               programmu menghitung dari input, bukan mencetak hasil contoh.</p>`;
+    }
     if (s.petunjuk) {
       html += `<div class="io-block"><div class="io-label">Petunjuk</div>
                <div style="color:#cbd5e1;font-size:.88rem">${s.petunjuk}</div></div>`;
@@ -324,7 +330,12 @@
   // ---------- Kumpulkan & nilai ----------
   async function nilai() {
     if (locked) return;
-    const s = SOAL[current];
+    /* Dicatat di awal: penilaian berjalan beberapa detik (contoh + input
+       rahasia), dan siswa bisa berpindah soal selama itu. Tanpa ini, hasil
+       soal 3 bisa tertulis sebagai hasil soal 4. */
+    const idx = current;
+    const kode = el.editor.value;
+    const s = SOAL[idx];
     const res = await jalankan(true);   // selalu dengan input resmi soal
     if (!res) return;
 
@@ -344,20 +355,44 @@
       pesan = (r && r.message) || "";
     } else if (typeof s.expected === "string") {
       lulus = res.ok && normalizeOutput(res.output) === normalizeOutput(s.expected);
+
+      /* Contoh soal saja tidak cukup: kuncinya ikut tampil di layar, jadi
+         program yang cuma mencetak teks itu akan lolos. Kalau contohnya
+         benar, program diuji lagi dengan input rahasia. */
+      if (lulus && Array.isArray(s.uji) && s.uji.length) {
+        const r = await ujiRahasia(s, idx, kode);
+        if (r.gangguan) {
+          el.verdict.className = "verdict fail";
+          el.verdict.textContent = "BELUM DINILAI — server compiler sedang bermasalah. Coba lagi sebentar.";
+          return;
+        }
+        if (!r.lulus) {
+          lulus = false;
+          pesan = "Keluaranmu benar untuk contoh soal, tapi salah untuk input lain " +
+                  "yang dirahasiakan. Programmu harus menghitung sendiri dari input, " +
+                  "bukan sekadar mencetak hasil contoh.";
+        }
+      }
     } else {
       lulus = res.ok;
     }
 
-    passed[current] = lulus;
-    el.verdict.className = "verdict " + (lulus ? "pass" : "fail");
-    if (lulus) {
-      el.verdict.textContent = "BENAR — " + (pesan || "Hasilnya sudah pas. Kerja bagus!");
-    } else if (!res.ok) {
-      el.verdict.textContent = "Kodenya masih error — perbaiki dulu, lalu coba lagi.";
+    if (locked) return;   // waktu habis / diblokir selama penilaian berjalan
+    passed[idx] = lulus;
+    // Hasil hanya ditampilkan kalau siswa masih di soal yang sama.
+    if (idx === current) {
+      el.verdict.className = "verdict " + (lulus ? "pass" : "fail");
+      if (lulus) {
+        el.verdict.textContent = "BENAR — " + (pesan || "Hasilnya sudah pas. Kerja bagus!");
+      } else if (!res.ok) {
+        el.verdict.textContent = "Kodenya masih error — perbaiki dulu, lalu coba lagi.";
+      } else {
+        el.verdict.textContent = "BELUM PAS — " + (pesan || "Hasilnya belum sama dengan yang diminta soal.");
+      }
+      updateSubmitLabel();
     } else {
-      el.verdict.textContent = "BELUM PAS — " + (pesan || "Hasilnya belum sama dengan yang diminta soal.");
+      showExamToast(`Soal ${idx + 1}: ${lulus ? "BENAR" : "belum pas"}.`, !lulus);
     }
-    updateSubmitLabel();
 
     // Jika semua soal lulus, tandai materi selesai
     if (SOAL.every((_, i) => passed[i])) {
@@ -374,6 +409,28 @@
       }
       if (window.AntiSontek) window.AntiSontek.selesai();
       showExamToast("Semua soal benar! Materi ini ditandai selesai.");
+    }
+  }
+
+  /* Menjalankan kode siswa dengan tiap input rahasia lalu mencocokkan sidik
+     keluarannya. Dijalankan berurutan, bukan sekaligus: satu kelas biasanya
+     keluar lewat satu IP sekolah, dan lonjakan permintaan serentak membuat
+     Compiler Explorer menolak (HTTP 429). */
+  async function ujiRahasia(s, idx, kode) {
+    el.runBtn.disabled = el.submitBtn.disabled = true;
+    try {
+      for (let k = 0; k < s.uji.length; k++) {
+        if (locked) return { lulus: false };
+        el.runStatus.textContent = `memeriksa input rahasia ${k + 1}/${s.uji.length}…`;
+        const r = await runCpp(kode, s.uji[k].stdin);
+        if (r.gangguanServer) return { gangguan: true };
+        if (!r.ok) return { lulus: false };
+        if (sidikUji(id, idx + 1, k + 1, r.output) !== s.uji[k].h) return { lulus: false };
+      }
+      return { lulus: true };
+    } finally {
+      if (!locked) el.runBtn.disabled = el.submitBtn.disabled = false;
+      el.runStatus.textContent = "";
     }
   }
 

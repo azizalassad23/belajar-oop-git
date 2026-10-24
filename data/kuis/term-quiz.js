@@ -53,6 +53,7 @@ Total objek: 3</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string namaClass;\n    int n;\n    cin >> namaClass >> n;\n\n    // Baca n nama objek satu per satu, cetak barisnya,\n    // lalu cetak total objek di akhir.\n    \n    return 0;\n}\n",
       stdin: "Kucing 3 tom garfield oyen\n",
       expected: "tom adalah objek dari class Kucing\ngarfield adalah objek dari class Kucing\noyen adalah objek dari class Kucing\nTotal objek: 3",
+      uji: [{stdin: "Mobil 2 avanza brio\n", h: "bb7c8c4d4a03262b23a395430abb2d8d17709d7fb10fbe1ba7010ed8c296117e"}, {stdin: "Burung 4 kakatua beo merpati elang\n", h: "6dbbab7e4b3c9cf9360a046b062eea946d82d7fdd2a7ec910e5704191886d509"}],
       petunjuk: `Nama objek dibaca di dalam perulangan, bukan sekaligus di awal.`
     },
     {
@@ -64,6 +65,7 @@ Sisa: 7000</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int uang;\n    cin >> uang;\n\n    // Hitung banyaknya lembaran 50000, lalu 20000, lalu 10000.\n    // Sisa uang setelah tiap langkah dipakai untuk langkah berikutnya.\n    \n    return 0;\n}\n",
       stdin: "187000\n",
       expected: "50000: 3\n20000: 1\n10000: 1\nSisa: 7000",
+      uji: [{stdin: "95000\n", h: "b9c20e059e0c514037aeeac4df77aa9771270d83ea65d702f2805e291dbd5f9c"}, {stdin: "260000\n", h: "4042e3938572d4eeb6c849a6bc79ec4ff15de8db05439279afb9c2c0b2c37754"}],
       petunjuk: `<code>/</code> memberi banyaknya lembaran, <code>%</code> memberi sisa uangnya.`
     },
     {
@@ -73,6 +75,7 @@ Jumlah prima: 8</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nbool prima(int x) {\n    // Kembalikan true kalau x bilangan prima\n    \n}\n\nint main() {\n    int n;\n    cin >> n;\n\n    // Cetak semua prima dari 2 sampai n, pisahkan dengan spasi,\n    // lalu di baris berikutnya cetak jumlahnya.\n    \n    return 0;\n}\n",
       stdin: "20\n",
       expected: "2 3 5 7 11 13 17 19\nJumlah prima: 8",
+      uji: [{stdin: "10\n", h: "dff720214eb8abd0c87f74d368c750520536fc002a5493d0d959c7903a293678"}, {stdin: "30\n", h: "09674be3f04723a4bd437ed6bb029fd9ab8b3fb7de38e134e46db9316562c65d"}],
       petunjuk: `Bilangan prima hanya habis dibagi 1 dan dirinya sendiri. Cukup periksa pembagi dari 2 sampai <code>x - 1</code>.`
     },
     {
@@ -81,6 +84,7 @@ Jumlah prima: 8</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nvoid tukar(int &a, int &b) {\n    // Tukar isi a dan b\n    \n}\n\nint main() {\n    int n;\n    cin >> n;\n    int a[100];\n    for (int i = 0; i < n; i++) cin >> a[i];\n\n    // Balik isi array memakai tukar(), lalu cetak isinya\n    \n    return 0;\n}\n",
       stdin: "5\n1 2 3 4 5\n",
       expected: "5 4 3 2 1",
+      uji: [{stdin: "6\n10 20 30 40 50 60\n", h: "6f6953969c29d8d0000154470a6843bff29a10d0c6f68522991f320836e40118"}, {stdin: "3\n7 8 9\n", h: "f091a030d7bbae83260686059555dc2ad058bc94a0511ed37d00e918bd1bcc28"}],
       petunjuk: `Tukar elemen pertama dengan terakhir, kedua dengan kedua dari akhir, dan seterusnya — cukup sampai tengah array.`
     },
     {
@@ -93,6 +97,7 @@ Rata-rata: 85</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nstruct Siswa {\n    string nama;\n    int nilai;\n};\n\nint main() {\n    int n;\n    cin >> n;\n    Siswa s[50];\n\n    // Baca n data siswa ke array s.\n    // Cari siswa bernilai tertinggi dan hitung rata-ratanya.\n    \n    return 0;\n}\n",
       stdin: "3\nRina 88\nBudi 75\nSari 92\n",
       expected: "Tertinggi: Sari (92)\nRata-rata: 85",
+      uji: [{stdin: "4\nAgus 70\nDina 95\nEko 80\nFira 88\n", h: "bda07db8183699e17712fdc1523b2884fee38cec1d83a34dbcb38d6fa0302b5b"}, {stdin: "2\nGita 60\nHadi 61\n", h: "42e8971325bcdcce0a9bc741a10109a5aec2cedd32c39694d7480dc9c96bf526"}],
       petunjuk: `Simpan <strong>posisi</strong> siswa tertinggi, bukan hanya nilainya — namanya juga harus dicetak.`
     },
     {
@@ -102,6 +107,7 @@ Lampu B: mati</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Lampu {\npublic:\n    bool nyala = false;\n\n    // Buat method tekan() dan status()\n    \n};\n\nint main() {\n    int tekanA, tekanB;\n    cin >> tekanA >> tekanB;\n    Lampu a, b;\n\n    // Tekan lampu a sebanyak tekanA kali, lampu b sebanyak tekanB kali\n    \n    cout << \"Lampu A: \" << a.status() << endl;\n    cout << \"Lampu B: \" << b.status() << endl;\n    return 0;\n}\n",
       stdin: "3 2\n",
       expected: "Lampu A: nyala\nLampu B: mati",
+      uji: [{stdin: "4 5\n", h: "6e123fcd811ecb7e718edd031c849c67ccbd9585ec06b75bed3d0a9a60ad7892"}, {stdin: "1 1\n", h: "b6d92778ff6860fcb7385bd3ecf50ac238a1e8a94e0b068684f5e6aadd24c57b"}],
       petunjuk: `Tanda <code>!</code> membalik nilai <code>bool</code>. Menekan lampu A tidak boleh mengubah lampu B.`
     },
     {
@@ -112,6 +118,7 @@ A lebih besar dari B</pre><p>Kalau luas A tidak lebih besar, baris terakhirnya <
       starter: "#include <iostream>\nusing namespace std;\n\nclass PersegiPanjang {\npublic:\n    int panjang, lebar;\n\n    // Buat method luas() dan lebihBesar(PersegiPanjang lain)\n    \n};\n\nint main() {\n    PersegiPanjang a, b;\n    cin >> a.panjang >> a.lebar >> b.panjang >> b.lebar;\n\n    cout << \"Luas A: \" << a.luas() << endl;\n    cout << \"Luas B: \" << b.luas() << endl;\n    // Cetak baris terakhir memakai a.lebihBesar(b)\n    \n    return 0;\n}\n",
       stdin: "4 5 3 6\n",
       expected: "Luas A: 20\nLuas B: 18\nA lebih besar dari B",
+      uji: [{stdin: "2 3 6 1\n", h: "6f7e47493ff9c104352f9f4b54520ae379c9de87218f7e9f72f9c5075638763a"}, {stdin: "3 3 10 2\n", h: "f4082e0fa7cbec6d5ee9516de56d8c3284e0c7aa923eeba52b5e4ae26b8a92d6"}],
       petunjuk: `Di dalam <code>lebihBesar()</code>, luas objek ini adalah <code>luas()</code>, dan luas objek lain adalah <code>lain.luas()</code>.`
     },
     {
@@ -130,6 +137,7 @@ Saldo akhir: 20000</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Rekening {\nprivate:\n    int saldo = 0;\npublic:\n    // Buat setor(int) dan tarik(int) yang mengembalikan bool,\n    // serta getSaldo()\n    \n};\n\nint main() {\n    Rekening r;\n    int n;\n    cin >> n;\n    for (int i = 0; i < n; i++) {\n        string perintah;\n        int jumlah;\n        cin >> perintah >> jumlah;\n\n        // Panggil setor() atau tarik() sesuai perintahnya,\n        // lalu cetak OK atau DITOLAK\n        \n    }\n    cout << \"Saldo akhir: \" << r.getSaldo() << endl;\n    return 0;\n}\n",
       stdin: "5\nsetor 50000\ntarik 20000\ntarik 40000\nsetor -100\ntarik 10000\n",
       expected: "setor 50000: OK\ntarik 20000: OK\ntarik 40000: DITOLAK\nsetor -100: DITOLAK\ntarik 10000: OK\nSaldo akhir: 20000",
+      uji: [{stdin: "4\nsetor 10000\ntarik 10000\ntarik 1\nsetor 0\n", h: "7a56cc32a5d2cc4db4f6f5f80b311f88b200bb2d8626cb652ab890e96bb28975"}, {stdin: "3\ntarik 500\nsetor 25000\ntarik 5000\n", h: "2e86457031de872b7e0fe6a6c472a3bf8aa0a94ba21680a9bf6af969a909ba8d"}],
       petunjuk: `<code>main()</code> tidak bisa menyentuh <code>saldo</code> langsung — semua perubahan harus lewat method.`
     },
     {
@@ -138,6 +146,7 @@ Saldo akhir: 20000</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\n// Mencetak angka selalu dua digit: 5 jadi 05\nvoid dua(int x) {\n    if (x < 10) cout << \"0\";\n    cout << x;\n}\n\nclass Waktu {\n    int jam, menit, detik;\npublic:\n    // Buat constructor Waktu(int total) dan method tampil()\n    \n};\n\nint main() {\n    int total;\n    cin >> total;\n    Waktu w(total);\n    w.tampil();\n    return 0;\n}\n",
       stdin: "3725\n",
       expected: "01:02:05",
+      uji: [{stdin: "45\n", h: "a634eb5bf26edd0ae59c6374c18fe9b70217cc64f8b96ff01ca687d2e3695083"}, {stdin: "86399\n", h: "e9c332e6a457bef75be953341c976649fe6a9eb9239c7e9fdebda6d32e838b6f"}],
       petunjuk: `Satu jam = 3600 detik, satu menit = 60 detik. Pakai <code>/</code> dan <code>%</code> seperti di soal 2.`
     },
     {
@@ -161,6 +170,7 @@ Andi: 85 (B)</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\nprivate:\n    string nama;\n    int nilai = 0;\npublic:\n    Siswa(string n) { nama = n; }\n    string getNama() { return nama; }\n\n    // Buat setNilai(int), getNilai(), dan predikat()\n    \n};\n\nint main() {\n    string nama;\n    int x, y;\n    cin >> nama >> x >> y;\n    Siswa s(nama);\n\n    int coba[2] = {x, y};\n    for (int i = 0; i < 2; i++) {\n        if (s.setNilai(coba[i])) cout << \"Nilai \" << coba[i] << \" diterima\" << endl;\n        else                     cout << \"Nilai \" << coba[i] << \" ditolak\" << endl;\n    }\n    cout << s.getNama() << \": \" << s.getNilai() << \" (\" << s.predikat() << \")\" << endl;\n    return 0;\n}\n",
       stdin: "Andi 150 85\n",
       expected: "Nilai 150 ditolak\nNilai 85 diterima\nAndi: 85 (B)",
+      uji: [{stdin: "Budi 92 -5\n", h: "6cefc3ef4ca0cc6272810a50676df9222add6df044155f85455760fcd14d0868"}, {stdin: "Cici 70 101\n", h: "c62fdaa8bad2496e3348ef64e6c6a7033f11392c8347667ad359ae5cf619fa6a"}],
       petunjuk: `Kalau nilainya ditolak, jangan ubah atribut <code>nilai</code> sama sekali — langsung kembalikan <code>false</code>.`
     }
   ]
