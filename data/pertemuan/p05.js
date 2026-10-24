@@ -89,6 +89,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\n// Definisikan struct Titik di sini\n\n\nint main() {\n    Titik t;\n    cin >> t.x >> t.y;\n    // Cetak dengan format (x, y)\n    \n    return 0;\n}\n",
       stdin: "3 4\n",
       expected: "(3, 4)",
+      uji: [{stdin: "10 -2\n", h: "43bc1eb30986e4f140fcfc5c0713998971b27a0138b538f04e41980478a4e6bf"}, {stdin: "0 7\n", h: "395467947eacb3bae0b626150571e8240d0a8f4811f31097c858c2faa9ec5334"}],
       petunjuk: "Perhatikan ada spasi setelah koma: <code>cout &lt;&lt; \"(\" &lt;&lt; t.x &lt;&lt; \", \" &lt;&lt; t.y &lt;&lt; \")\";</code>"
     },
     {
@@ -102,6 +103,7 @@ int main() {
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\n// Definisikan struct Mahasiswa di sini\n\n\nint main() {\n    Mahasiswa m;\n    cin >> m.nama >> m.nilai;\n    // Tentukan dan cetak status kelulusan\n    \n    return 0;\n}\n",
       stdin: "Andi 85\n",
       expected: "Andi: Lulus",
+      uji: [{stdin: "Budi 70\n", h: "d583ed8ce3b19de225530f91f138855de160b15171c22d6fd8987022ccb4c3d4"}, {stdin: "Sari 69\n", h: "3311c2c5685c8b025eaaf52e3bc27b36f8da7e29094d3f5fbfb55ec3ea55bd0f"}],
       petunjuk: "Gunakan ternary: <code>(m.nilai &gt;= 70) ? \"Lulus\" : \"Tidak Lulus\"</code>."
     },
     {
@@ -111,6 +113,7 @@ Harga: 75000</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nstruct Buku {\n    // Tulis anggota struct di sini\n    \n};\n\nint main() {\n    Buku b;\n    // Baca lalu cetak\n    \n    return 0;\n}\n",
       stdin: "Fisika 75000\n",
       expected: "Buku: Fisika\nHarga: 75000",
+      uji: [{stdin: "Kimia 82000\n", h: "fee7b0f54de806f1bf59d9cc0e87f2fe2dc438e2083e47f3d4521e1ad05d39e9"}, {stdin: "Sejarah 45000\n", h: "d81fbf5625401a7a5b3f3160cb6687c73db4a87c7a45c5d79ebdb3ec81b9dbd9"}],
       petunjuk: `Akses anggota struct dengan titik: <code>b.judul</code>, <code>b.harga</code>.`
     },
     {
@@ -119,6 +122,7 @@ Harga: 75000</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nstruct Persegi {\n    int sisi;\n};\n\nint luas(Persegi p) {\n    // Kembalikan luasnya\n    \n}\n\nint main() {\n    Persegi p;\n    cin >> p.sisi;\n    // Cetak luasnya\n    \n    return 0;\n}\n",
       stdin: "6\n",
       expected: "Luas: 36",
+      uji: [{stdin: "9\n", h: "ce79ae2607b5d5f47eedd17bc5f766cc80dae37812c1c8cb6922370206aa9626"}, {stdin: "15\n", h: "8f27f4856594de2204eb4b157eb7ed88b746bdf93804706b0d24ba5e475deeb2"}],
       petunjuk: `Fungsi menerima struct-nya sebagai parameter: <code>return p.sisi * p.sisi;</code>`
     },
     {
@@ -128,6 +132,7 @@ B = (10, 20)</pre><p>Perhatikan: mengubah titik A tidak memengaruhi titik B.</p>
       starter: "#include <iostream>\nusing namespace std;\n\nstruct Titik {\n    int x, y;\n};\n\nint main() {\n    Titik a, b;\n    // Baca empat angka, lalu cetak dua baris\n    \n    return 0;\n}\n",
       stdin: "3 4 10 20\n",
       expected: "A = (3, 4)\nB = (10, 20)",
+      uji: [{stdin: "1 2 7 -3\n", h: "37f323435af3bba3d0580b10e64244630476613231e72fd2f108630973da3437"}, {stdin: "0 0 5 5\n", h: "70ee3fe2780bd6a1d765c2988416f897665f0e3c21619950d4c26ee216e9b90b"}],
       petunjuk: `Cetak persis dengan kurung dan koma: <code>"A = (" &lt;&lt; a.x &lt;&lt; ", " &lt;&lt; a.y &lt;&lt; ")"</code>`
     }
   ]

@@ -107,6 +107,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Titik {\npublic:\n    int x, y;\n    Titik(int a = 0, int b = 0) { x = a; y = b; }\n    // Buat operator+ di sini\n    \n};\n\nint main() {\n    int a, b, c, d;\n    cin >> a >> b >> c >> d;\n    Titik p(a, b), q(c, d);\n    Titik h = p + q;\n    cout << \"Hasil: (\" << h.x << \", \" << h.y << \")\";\n    return 0;\n}\n",
       stdin: "3 4 10 20\n",
       expected: "Hasil: (13, 24)",
+      uji: [{stdin: "1 2 3 4\n", h: "b806e9e6c17eaeb7cde58c6229e446488ff13c960e27881b06ac6d5488e704f1"}, {stdin: "-5 10 5 -10\n", h: "00b6f6c47ffd1904e95a3f56ec0a4f0b24c5d1eacd42794b64e493537c80af91"}],
       petunjuk: `<code>Titik operator+(Titik lain) { return Titik(x + lain.x, y + lain.y); }</code>`
     },
     {
@@ -115,6 +116,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Persegi {\npublic:\n    int sisi;\n    Persegi(int s) { sisi = s; }\n    // Buat operator== di sini\n    \n};\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    Persegi p(a), q(b);\n    cout << \"Sama: \" << ((p == q) ? \"ya\" : \"tidak\");\n    return 0;\n}\n",
       stdin: "5 5\n",
       expected: "Sama: ya",
+      uji: [{stdin: "5 7\n", h: "f754c55e512880b4a4e5122ba597dd222571920eb9853b4559588035fb16ff80"}, {stdin: "12 12\n", h: "e881e401888ca88a8322f2f4e6b6faf83f18ccad90dbf56987a75a286b3a149f"}],
       petunjuk: `Tipe kembaliannya <code>bool</code>: <code>return sisi == lain.sisi;</code>`
     },
     {
@@ -123,6 +125,7 @@ int main() {
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\nprivate:\n    string nama;\n    int nilai;\npublic:\n    Siswa(string n, int v) { nama = n; nilai = v; }\n    // Beri izin friend pada operator<< di sini\n    \n};\n\n// Tulis operator<< di sini (di LUAR class), jangan lupa return out;\n\nint main() {\n    string n;\n    int v;\n    cin >> n >> v;\n    Siswa s(n, v);\n    cout << s;\n    return 0;\n}\n",
       stdin: "Andi 90\n",
       expected: "Andi (90)",
+      uji: [{stdin: "Sari 85\n", h: "601b314ebc35a79c4f8b3874b9bed604d1c9a305792dc87c652824343b31d80c"}, {stdin: "Budi 100\n", h: "617bf60d1aefbb11abd236bbbdce44c136083afd1661653f046a8b29a5894780"}],
       petunjuk: `Bentuknya: <code>ostream&amp; operator&lt;&lt;(ostream&amp; out, Siswa s)</code> dan diakhiri <code>return out;</code>`
     },
     {
@@ -132,6 +135,7 @@ Selisih: 2500</pre><p>Selisih dihitung dari uang kedua dikurangi uang pertama.</
       starter: "#include <iostream>\nusing namespace std;\n\nclass Uang {\npublic:\n    int jumlah;\n    Uang(int j = 0) { jumlah = j; }\n    // Buat operator+ dan operator- di sini\n    \n};\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    Uang x(a), y(b);\n    Uang tambah = x + y;\n    Uang kurang = y - x;\n    cout << \"Jumlah: \" << tambah.jumlah << endl;\n    cout << \"Selisih: \" << kurang.jumlah;\n    return 0;\n}\n",
       stdin: "5000 7500\n",
       expected: "Jumlah: 12500\nSelisih: 2500",
+      uji: [{stdin: "10000 4000\n", h: "c7640c78cb63714c8cd8b159a39231783f7212d5586bc477154cc08601cc2b89"}, {stdin: "2500 2500\n", h: "b2a4841398ee7fca5bd2b5d6834791f60daa093d7efb9bf5124af2c512c006a0"}],
       petunjuk: `Keduanya mengembalikan objek <code>Uang</code> yang baru, bukan mengubah objek asalnya.`
     },
     {
@@ -140,6 +144,7 @@ Selisih: 2500</pre><p>Selisih dihitung dari uang kedua dikurangi uang pertama.</
       starter: "#include <iostream>\nusing namespace std;\n\nclass Penghitung {\npublic:\n    int nilai;\n    Penghitung(int n = 0) { nilai = n; }\n    // Buat operator++ di sini (kembalikan Penghitung&)\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    Penghitung c(n);\n    ++c;\n    ++c;\n    cout << \"Setelah dua kali naik: \" << c.nilai;\n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Setelah dua kali naik: 9",
+      uji: [{stdin: "0\n", h: "e0040e17d2c1efab3c17c43c1174af6d95133feb35a54d6b99b9ff8adda57705"}, {stdin: "98\n", h: "8c2151a75ce62daaff2481e34266e0a2a334b794c1cd997d06df1369731f051d"}],
       petunjuk: `Sama seperti method berantai: naikkan nilainya lalu <code>return *this;</code>`
     }
   ]

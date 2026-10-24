@@ -103,6 +103,7 @@ Bayar: 22500</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Diskon {\npublic:\n    // pure virtual hitung(int harga)\n    \n};\n\n// Buat TanpaDiskon dan DiskonSepuluh\n\n// Buat fungsi tampilkan(Diskon* d, int harga)\n\nint main() {\n    int h;\n    cin >> h;\n    TanpaDiskon a;\n    DiskonSepuluh b;\n    tampilkan(&a, h);\n    tampilkan(&b, h);\n    return 0;\n}\n",
       stdin: "25000\n",
       expected: "Bayar: 25000\nBayar: 22500",
+      uji: [{stdin: "50000\n", h: "a863251e87613e0f1ac8de8292c37f0bb3e5d9a392a34accbdc260d5d08d82d5"}, {stdin: "12000\n", h: "b006483ef81a570e64dbba9bdaf0817d05f85ab9fe48f141e1b86e4eaec2b440"}],
       petunjuk: `Potong 10%: <code>return h - h/10;</code>`
     },
     {

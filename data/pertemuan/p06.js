@@ -91,6 +91,7 @@ public:                    // agar bisa diakses dari luar (dibahas di pert. 8)
       starter: "#include <iostream>\nusing namespace std;\n\nclass Persegi {\npublic:\n    int sisi;\n    // Buat method luas() di sini\n    \n};\n\nint main() {\n    Persegi p;\n    cin >> p.sisi;\n    // Cetak: Luas persegi: <hasil>\n    \n    return 0;\n}\n",
       stdin: "5\n",
       expected: "Luas persegi: 25",
+      uji: [{stdin: "8\n", h: "8ca66e6184f94ee99f3424f8fdcd2b091f0f69c3c9861af1a81f51b818ae6258"}, {stdin: "13\n", h: "70b8ee15390054a6c9079ea7a729a944a1f3254526c7c01341f9f015b5b24788"}],
       petunjuk: "Method: <code>int luas() { return sisi * sisi; }</code>. Cetak dengan <code>cout &lt;&lt; \"Luas persegi: \" &lt;&lt; p.luas();</code>"
     },
     {
@@ -103,6 +104,7 @@ public:                    // agar bisa diakses dari luar (dibahas di pert. 8)
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Mahasiswa {\npublic:\n    string nama, nim;\n    // Buat method perkenalan() di sini\n    \n};\n\nint main() {\n    Mahasiswa m;\n    cin >> m.nama >> m.nim;\n    // Panggil method perkenalan()\n    \n    return 0;\n}\n",
       stdin: "Andi 210101\n",
       expected: "Nama: Andi, NIM: 210101",
+      uji: [{stdin: "Sari 220305\n", h: "082e7998ba9b206b082d3beeef5f480d14524054a07363bfbca411763c57e165"}, {stdin: "Budi 190044\n", h: "974a9f504b993ef6804da9634bd2c13bc95705cc480fd46bfd5b918c6bd65e02"}],
       petunjuk: "Method: <code>void perkenalan() { cout &lt;&lt; \"Nama: \" &lt;&lt; nama &lt;&lt; \", NIM: \" &lt;&lt; nim; }</code>"
     },
     {
@@ -111,6 +113,7 @@ public:                    // agar bisa diakses dari luar (dibahas di pert. 8)
       starter: "#include <iostream>\nusing namespace std;\n\nclass Segitiga {\npublic:\n    int alas, tinggi;\n    // Buat method luas() di sini\n    \n};\n\nint main() {\n    Segitiga s;\n    cin >> s.alas >> s.tinggi;\n    // Cetak luasnya\n    \n    return 0;\n}\n",
       stdin: "8 5\n",
       expected: "Luas segitiga: 20",
+      uji: [{stdin: "6 4\n", h: "b8f092b821ab5748658c32a86ae46f996d57f58172b184b3c3a8c159a67b8503"}, {stdin: "10 7\n", h: "5e42c20b316dd5fd047cc61a8eff242be58e94c31a50c4e249d12cbfd85ec17a"}],
       petunjuk: `<code>int luas() { return alas * tinggi / 2; }</code>`
     },
     {
@@ -120,6 +123,7 @@ Motor B: 20</pre><p>Motor B tidak berubah — itulah bukti tiap objek berdiri se
       starter: "#include <iostream>\nusing namespace std;\n\nclass Motor {\npublic:\n    int kecepatan;\n    // Buat method gas(int n) di sini\n    \n};\n\nint main() {\n    Motor a, b;\n    cin >> a.kecepatan >> b.kecepatan;\n    // Panggil a.gas(5), lalu cetak keduanya\n    \n    return 0;\n}\n",
       stdin: "10 20\n",
       expected: "Motor A: 15\nMotor B: 20",
+      uji: [{stdin: "30 40\n", h: "d4bfb35e295344c3c784d4414e52af5e8d6db27ba6fb3a7186484ec911017ea4"}, {stdin: "0 5\n", h: "06f3cde4883d01183237af6b9e614151c6bee23541044c54e02c3db53cae88db"}],
       petunjuk: `<code>void gas(int n) { kecepatan += n; }</code>`
     },
     {
@@ -128,6 +132,7 @@ Motor B: 20</pre><p>Motor B tidak berubah — itulah bukti tiap objek berdiri se
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Buku {\npublic:\n    string judul;\n    int halaman;\n    // Buat method info() di sini\n    \n};\n\nint main() {\n    Buku b;\n    cin >> b.judul >> b.halaman;\n    // Panggil b.info()\n    \n    return 0;\n}\n",
       stdin: "Fisika 250\n",
       expected: "Fisika, 250 halaman",
+      uji: [{stdin: "Kimia 180\n", h: "16b21675cb995e446d50e27c19dd25d1aa6ff5d9c73639edac8dcdcb2ed9a994"}, {stdin: "Sejarah 320\n", h: "ccd59503dba0703058af35692246d6a734c36aaf08961bfe886625880ae35a88"}],
       petunjuk: `Method langsung mencetak: <code>cout &lt;&lt; judul &lt;&lt; ", " &lt;&lt; halaman &lt;&lt; " halaman";</code>`
     }
   ]

@@ -95,6 +95,7 @@ int main() {
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Mobil {\npublic:\n    string merek;\n    int kursi;\n    // Buat constructor Mobil(string, int) dan method info()\n    \n};\n\nint main() {\n    string m;\n    int k;\n    cin >> m >> k;\n    Mobil mob(m, k);\n    mob.info();\n    return 0;\n}\n",
       stdin: "Avanza 7\n",
       expected: "Mobil Avanza, 7 kursi",
+      uji: [{stdin: "Brio 5\n", h: "cf64e3d90715ca0f324d89652ad903debe70b6697bdfab4ada5cbc51c35a75e4"}, {stdin: "Innova 8\n", h: "3324f8dcfd3a7235d28d1aeda69c6523978088b547c2366477480d7aae58e418"}],
       petunjuk: `<code>Mobil(string m, int k) { merek = m; kursi = k; }</code>`
     },
     {
@@ -103,6 +104,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Persegi {\npublic:\n    int sisi;\n    // Buat constructor Persegi(int) dan method luas()\n    \n};\n\nint main() {\n    int s;\n    cin >> s;\n    Persegi p(s);\n    // Cetak luasnya\n    \n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Luas: 49",
+      uji: [{stdin: "12\n", h: "313f695f8116103268d09de353e5a05070ddf9ae8c528405e27cf64e09525755"}, {stdin: "3\n", h: "5ca78ba6a54c548fc946cc0ef877f35f34fa982debce5b12a794b77014e1c7b7"}],
       petunjuk: `Objek dibuat dengan nilai: <code>Persegi p(s);</code> — nilainya masuk ke constructor.`
     },
     {
@@ -111,6 +113,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Rekening {\nprivate:\n    int saldo;\npublic:\n    // Buat constructor yang mengisi saldo = 0,\n    // lalu setor(int) dan getSaldo()\n    \n};\n\nint main() {\n    int j;\n    cin >> j;\n    Rekening r;\n    r.setor(j);\n    cout << \"Saldo awal 0, setelah setor: \" << r.getSaldo();\n    return 0;\n}\n",
       stdin: "500\n",
       expected: "Saldo awal 0, setelah setor: 500",
+      uji: [{stdin: "1250\n", h: "5ddbf93a53359e86e19cf1ed186b5c84a14c566f2196a204bfef127e4aaa8765"}, {stdin: "75\n", h: "0c93daa5d1f06d1b2b4131f7e09d1a765e5d31f07f280afc3f855e56139a9ab8"}],
       petunjuk: `Tanpa constructor, isi <code>saldo</code> tidak menentu — bisa berupa angka sampah.`
     },
     {
@@ -120,6 +123,7 @@ Halo, Sari!</pre><p>Perhatikan: kamu hanya membuat dua objek — sapaan muncul s
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\npublic:\n    string nama;\n    // Buat constructor Siswa(string) yang mencetak sapaan\n    \n};\n\nint main() {\n    string a, b;\n    cin >> a >> b;\n    Siswa s1(a);\n    Siswa s2(b);\n    return 0;\n}\n",
       stdin: "Andi Sari\n",
       expected: "Halo, Andi!\nHalo, Sari!",
+      uji: [{stdin: "Budi Rina\n", h: "c9a17bc966f8890079c12cd6d1a9972b4830eb7729ea171d288aa055f24de2b5"}, {stdin: "Dewi Eko\n", h: "28a01f4879f519065f657e38bc53ee7973c21d09b1681746305e0cc048a68062"}],
       petunjuk: `Di dalam constructor: <code>cout &lt;&lt; "Halo, " &lt;&lt; nama &lt;&lt; "!" &lt;&lt; endl;</code>`
     }
   ]

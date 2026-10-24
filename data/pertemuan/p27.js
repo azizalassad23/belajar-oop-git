@@ -87,6 +87,7 @@ public:
       starter: "#include <iostream>\nusing namespace std;\n\nclass Bentuk {\npublic:\n    // pure virtual luas()\n    \n};\n\n// class Persegi : constructor Persegi(int), isi luas()\n\nint main() {\n    int s;\n    cin >> s;\n    Bentuk* b = new Persegi(s);\n    cout << \"Luas: \" << b->luas();\n    delete b;\n    return 0;\n}\n",
       stdin: "6\n",
       expected: "Luas: 36",
+      uji: [{stdin: "9\n", h: "6b432012435989bcc77dca30ec91cee1b4678781982396c21a3f91ca9df51bf5"}, {stdin: "12\n", h: "2e2d87258c162382bdd1abae269e4eab8010f1847591270f248ce377d6e2062c"}],
       petunjuk: `Menulis <code>Bentuk b;</code> akan error — abstract class tidak bisa dijadikan objek.`
     },
     {
@@ -105,6 +106,7 @@ Andi mengajar</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Pegawai {\nprotected:\n    string nama;\npublic:\n    Pegawai(string n) { nama = n; }\n    // method biasa absen() dan pure virtual tugas()\n    \n};\n\n// class Guru : mewarisi Pegawai, isi tugas()\n\nint main() {\n    string n;\n    cin >> n;\n    Guru g(n);\n    g.absen();\n    g.tugas();\n    return 0;\n}\n",
       stdin: "Andi\n",
       expected: "Andi hadir\nAndi mengajar",
+      uji: [{stdin: "Sari\n", h: "ca2890dab369ef6585772008716de70c410dd00b30dad428dd847940c3fe019a"}, {stdin: "Budi\n", h: "4e88f395d622eb148ca9adfc06f5430595130d02d0b85e4ba46ca33fdde4e999"}],
       petunjuk: `Constructor Guru harus mengirim nama ke induk: <code>Guru(string n) : Pegawai(n) {}</code>`
     },
     {
@@ -114,6 +116,7 @@ Kotak: 15</pre><p>Persegi dibuat dari angka pertama, Kotak dari dua angka beriku
       starter: "#include <iostream>\nusing namespace std;\n\nclass Bangun {\npublic:\n    // dua pure virtual: luas() dan nama()\n    \n};\n\n// class Persegi : Persegi(int), isi luas() dan nama()\n\n// class Kotak : Kotak(int,int), isi luas() dan nama()\n\nint main() {\n    int a, b, c;\n    cin >> a >> b >> c;\n    Bangun* d[2] = { new Persegi(a), new Kotak(b, c) };\n    for (int i = 0; i < 2; i++) {\n        d[i]->nama();\n        cout << d[i]->luas() << endl;\n    }\n    for (int i = 0; i < 2; i++) delete d[i];\n    return 0;\n}\n",
       stdin: "4 5 3\n",
       expected: "Persegi: 16\nKotak: 15",
+      uji: [{stdin: "6 2 7\n", h: "c1fc62543e9f77220500e8edcd9534c7cecd65696b742cd0a80026d0cba73ebc"}, {stdin: "1 10 10\n", h: "3b3542107cfde479fdaa2c99598a8c7eea81769bd1276eed5316c7f803b167eb"}],
       petunjuk: `Method <code>nama()</code> mencetak tanpa pindah baris supaya angkanya menyambung.`
     }
   ]

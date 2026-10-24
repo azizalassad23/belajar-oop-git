@@ -83,6 +83,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Siswa {\npublic:\n    static int jumlah;\n    // Buat constructor yang menambah jumlah\n    \n};\n\n// Definisikan atribut static di sini (WAJIB)\n\nint main() {\n    int n;\n    cin >> n;\n    for (int i = 0; i < n; i++) {\n        Siswa s;\n    }\n    cout << \"Jumlah objek: \" << Siswa::jumlah;\n    return 0;\n}\n",
       stdin: "3\n",
       expected: "Jumlah objek: 3",
+      uji: [{stdin: "5\n", h: "78322191458333cc710c19554999bed746212b35a4b6ef1ac2ae34479c8ec945"}, {stdin: "12\n", h: "22185bc1707fb9f6884806b1eef83571b8724c530cc9994c1e26b7142ed19095"}],
       petunjuk: `Definisi di luar class: <code>int Siswa::jumlah = 0;</code>`
     },
     {
@@ -92,6 +93,7 @@ Lewat objek b: 100</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Kelas {\npublic:\n    static int spidol;\n};\n\n// Definisikan atribut static di sini\n\nint main() {\n    int n;\n    cin >> n;\n    Kelas a, b;\n    // Isi lewat objek a saja, lalu cetak lewat a dan b\n    \n    return 0;\n}\n",
       stdin: "100\n",
       expected: "Lewat objek a: 100\nLewat objek b: 100",
+      uji: [{stdin: "25\n", h: "24a191335a7a19ad1201680ae0da981b13d21a0af94a04633e5bcf76cf90b967"}, {stdin: "7\n", h: "0f61f8d715e8bce6b5a4e7fd671571d09d630d5a6138aea6bf4b7096d5b80234"}],
       petunjuk: `Objek b tidak pernah diisi, tapi nilainya ikut berubah — itulah maksud <em>dipakai bersama</em>.`
     },
     {
@@ -100,6 +102,7 @@ Lewat objek b: 100</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Hitung {\npublic:\n    // Buat method static tambah(int, int)\n    \n};\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    // Panggil lewat Hitung::tambah(...)\n    \n    return 0;\n}\n",
       stdin: "5 3\n",
       expected: "Hasil: 8",
+      uji: [{stdin: "12 30\n", h: "54474f0fe43608e281c0e969bf67f4fbd99b4ae595c2b3f477468d8ebcfb5247"}, {stdin: "100 1\n", h: "333f9449306c041c3c49dc79759cb1e4ca4092ed0c4b8aeb29e654f24dc39fe3"}],
       petunjuk: `Perhatikan: di <code>main()</code> tidak ada satu pun objek <code>Hitung</code> yang dibuat.`
     },
     {
@@ -109,6 +112,7 @@ Sari - SMK Negeri 1</pre><p>Nama berbeda tiap objek, tapi sekolahnya satu untuk 
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\npublic:\n    string nama;\n    static string sekolah;\n    // Buat constructor Siswa(string) dan method info()\n    \n};\n\n// Definisikan sekolah di sini, isi \"SMK Negeri 1\"\n\nint main() {\n    string a, b;\n    cin >> a >> b;\n    Siswa s1(a), s2(b);\n    s1.info();\n    s2.info();\n    return 0;\n}\n",
       stdin: "Andi Sari\n",
       expected: "Andi - SMK Negeri 1\nSari - SMK Negeri 1",
+      uji: [{stdin: "Budi Rina\n", h: "df7d1ba454c60b7a81115d02f1701ae0465b8ecb2f28d417abb2544d76568a7c"}, {stdin: "Eko Dewi\n", h: "d5ae9e3cb0daac562eabda10809424bdc294dc375582a4a9d249f6c5d0ae4847"}],
       petunjuk: `Definisinya: <code>string Siswa::sekolah = "SMK Negeri 1";</code>`
     },
     {
@@ -118,6 +122,7 @@ Sari: ID 2</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Anggota {\npublic:\n    static int berikutnya;\n    int id;\n    string nama;\n    // Buat constructor Anggota(string) yang memberi id otomatis\n    \n};\n\n// Definisikan berikutnya di sini, mulai dari 1\n\nint main() {\n    string a, b;\n    cin >> a >> b;\n    Anggota x(a), y(b);\n    cout << x.nama << \": ID \" << x.id << endl;\n    cout << y.nama << \": ID \" << y.id;\n    return 0;\n}\n",
       stdin: "Andi Sari\n",
       expected: "Andi: ID 1\nSari: ID 2",
+      uji: [{stdin: "Budi Rina\n", h: "5273d1bf045cf99fc5938b3b8b4fd6f67c4851108a27add59443d3575d12e3ef"}, {stdin: "Eko Dewi\n", h: "56dd3ca27598ba033c1644a1f1d62d85484c9f515f733f857a8783fe3dcefb1d"}],
       petunjuk: `Di constructor: ambil dulu <code>id = berikutnya;</code> baru <code>berikutnya++;</code>`
     }
   ]

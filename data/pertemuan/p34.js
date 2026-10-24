@@ -94,6 +94,7 @@ Sisa stok: 2</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Buku {\nprivate:\n    string judul;\n    int stok;\npublic:\n    // constructor, pinjam(), getJudul(), getStok()\n    \n};\n\nint main() {\n    string j;\n    int s;\n    cin >> j >> s;\n    Buku b(j, s);\n    b.pinjam();\n    cout << \"Buku: \" << b.getJudul() << endl;\n    cout << \"Sisa stok: \" << b.getStok();\n    return 0;\n}\n",
       stdin: "Fisika 3\n",
       expected: "Buku: Fisika\nSisa stok: 2",
+      uji: [{stdin: "Biologi 10\n", h: "98099b81d587652f634a6e2e48af8f0ea46e5ec92b756afdf2f8d9b514db991e"}, {stdin: "Sejarah 0\n", h: "ff4377c719e7ec3e2885cac400c5fce134c160b00239a76e83be403b4bf79998"}],
       petunjuk: `Stok bersifat private supaya tidak bisa diubah tanpa lewat <code>pinjam()</code>.`
     },
     {
@@ -104,6 +105,7 @@ Kode uji: 5</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Anggota {\nprotected:\n    string nama;\npublic:\n    Anggota(string n) { nama = n; }\n    // pure virtual batasPinjam() dan method info()\n    \n};\n\n// Buat Siswa (3) dan Guru (10)\n\nint main() {\n    string n;\n    int x;\n    cin >> n >> x;\n    Siswa s(n);\n    Guru g(n);\n    s.info();\n    g.info();\n    cout << \"Kode uji: \" << x;\n    return 0;\n}\n",
       stdin: "Andi 5\n",
       expected: "Andi boleh pinjam 3 buku\nAndi boleh pinjam 10 buku\nKode uji: 5",
+      uji: [{stdin: "Budi 9\n", h: "906297b3128f8bd3cf276c317307605dfc1c39672039bc3bad9df913dbb908ee"}, {stdin: "Sari 1\n", h: "0d160265935bf4f9134beb4b37cbeecb0be9d1ba479dc159f6a121af0210881d"}],
       petunjuk: `<code>info()</code> ditulis sekali di induk tapi hasilnya berbeda per jenis anggota.`
     },
     {
@@ -113,6 +115,7 @@ Denda guru: 1400</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Denda {\npublic:\n    // pure virtual hitung(int) dan virtual destructor\n    \n};\n\n// Buat DendaSiswa (500/hari) dan DendaGuru (200/hari)\n\nint main() {\n    int h;\n    cin >> h;\n    Denda* d[2] = { new DendaSiswa(), new DendaGuru() };\n    cout << \"Denda siswa: \" << d[0]->hitung(h) << endl;\n    cout << \"Denda guru: \" << d[1]->hitung(h);\n    for (int i = 0; i < 2; i++) delete d[i];\n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Denda siswa: 3500\nDenda guru: 1400",
+      uji: [{stdin: "3\n", h: "12501ad2d3470a476eabb74f704f5f049cf179a36e6bc45460f8262276a95ebe"}, {stdin: "10\n", h: "92dd19a2a0783bbd113b0a65ca8926a9f523db45413226d1fc1befa3bcbac127"}],
       petunjuk: `Aturan denda yang berbeda dipisah jadi class masing-masing, bukan ditumpuk dengan <code>if</code>.`
     },
     {
@@ -124,6 +127,7 @@ Judul tersedia: 2</pre>`,
       starter: "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Buku {\npublic:\n    string judul;\n    int stok;\n    // constructor dan method tersedia()\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    vector<Buku> rak;\n    // Baca n pasang data\n    \n    // Cetak status tiap buku, lalu hitung yang tersedia\n    \n    return 0;\n}\n",
       stdin: "3\nFisika 2 Kimia 0 Biologi 5\n",
       expected: "Fisika: tersedia\nKimia: kosong\nBiologi: tersedia\nJudul tersedia: 2",
+      uji: [{stdin: "2\nKimia 0 Sejarah 3\n", h: "4d65ffc981aa195bffd7c2e5688c89c812490682b39262ee24bd4ecc48224684"}, {stdin: "3\nAgama 1 Bahasa 1 Seni 0\n", h: "fca201f19901636597ece0f463668cd86d9abcdb0ef6446c763e6e6e9c672390"}],
       petunjuk: `Gunakan <code>(rak[i].tersedia() ? "tersedia" : "kosong")</code>.`
     },
     {
@@ -133,6 +137,7 @@ Pinjam 2: gagal - Stok habis</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Buku {\nprivate:\n    string judul;\n    int stok;\npublic:\n    Buku(string j, int s) { judul = j; stok = s; }\n    // pinjam() yang melempar, getStok(), getJudul()\n    \n};\n\nint main() {\n    string j;\n    int s;\n    cin >> j >> s;\n    Buku b(j, s);\n    try {\n        b.pinjam();\n        cout << \"Pinjam 1: berhasil, sisa \" << b.getStok() << endl;\n        b.pinjam();\n        cout << \"Pinjam 2: berhasil\" << endl;\n    } catch (const char* e) {\n        \n    }\n    return 0;\n}\n",
       stdin: "Fisika 1\n",
       expected: "Pinjam 1: berhasil, sisa 0\nPinjam 2: gagal - Stok habis",
+      uji: [{stdin: "Kimia 3\n", h: "b231f2d48159bc6b21f36aacb14d8abe0c2aed82acbceb8546600d35a8a5d928"}, {stdin: "Biologi 5\n", h: "321dd4b11735e5e29dc94ef31c163f7150ebf4171dad12aab3e5f5b094bb0e9b"}],
       petunjuk: `Blok catch mencetak <code>"Pinjam 2: gagal - "</code> diikuti pesannya.`
     }
   ]

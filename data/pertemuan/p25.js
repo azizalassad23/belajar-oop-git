@@ -81,6 +81,7 @@ Teks: halo</pre><p>Nilai <code>2.5</code> dan <code>halo</code> sudah ditulis di
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Cetak {\npublic:\n    // Buat tiga method tampil() dengan tipe parameter berbeda\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    Cetak c;\n    c.tampil(n);\n    c.tampil(2.5);\n    c.tampil(\"halo\");\n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Bilangan: 7\nDesimal: 2.5\nTeks: halo",
+      uji: [{stdin: "12\n", h: "dcbe63944ce6173b6fd2fb8224b8527118d1f03a834ec2e009782c161278a7a8"}, {stdin: "-3\n", h: "2b9a2581c45cde821c952619ce394384c2c346cf4d909a913de2b271f542d4fd"}],
       petunjuk: `Compiler memilih berdasarkan tipe argumennya, tanpa kamu perlu menyebut versinya.`
     },
     {
@@ -90,6 +91,7 @@ Tiga angka: 12</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Jumlah {\npublic:\n    // Buat dua method hitung() dengan jumlah parameter berbeda\n    \n};\n\nint main() {\n    int a, b, c;\n    cin >> a >> b >> c;\n    Jumlah j;\n    cout << \"Dua angka: \" << j.hitung(a, b) << endl;\n    cout << \"Tiga angka: \" << j.hitung(a, b, c);\n    return 0;\n}\n",
       stdin: "3 4 5\n",
       expected: "Dua angka: 7\nTiga angka: 12",
+      uji: [{stdin: "1 2 3\n", h: "724c672b7e6928960adcdb1d9b3f64a2f622f3ff6fd6c106383468824237f067"}, {stdin: "10 20 30\n", h: "668a1af5001e11466820b1dcd4f252029e510f92f5ee19eb3204709ddd761215"}],
       petunjuk: `Keduanya bernama sama; yang membedakan hanya banyaknya parameter.`
     },
     {
@@ -108,6 +110,7 @@ Persegi</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Bentuk {\npublic:\n    // Dua method luas() (overloading)\n    // Satu method virtual nama()\n    \n};\n\n// class Persegi yang meng-override nama()\n\nint main() {\n    int s;\n    cin >> s;\n    Persegi p;\n    cout << \"Overloading 1: \" << p.luas(s) << endl;\n    cout << \"Overloading 2: \" << p.luas(s, 2) << endl;\n    Bentuk* b = &p;\n    b->nama();\n    return 0;\n}\n",
       stdin: "6\n",
       expected: "Overloading 1: 36\nOverloading 2: 12\nPersegi",
+      uji: [{stdin: "5\n", h: "66b044fc4c44dbe500805493eaa0def364b3b64353f2d422f09e84311ab6085d"}, {stdin: "9\n", h: "6a75a5420970e694d9ec9797deedc7e28c895c7bcb816f05b068cc7ce967b747"}],
       petunjuk: `Overloading diwariskan apa adanya; <code>nama()</code> yang di-override oleh Persegi.`
     },
     {

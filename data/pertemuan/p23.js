@@ -117,6 +117,7 @@ Salinan Pensil: 14</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Alat {\npublic:\n    int nomor;\n};\n\n// Buat Pena dan Pensil yang mewarisi Alat (TANPA virtual)\n\n// Buat PenaPensil yang mewarisi Pena dan Pensil\n\nint main() {\n    int n;\n    cin >> n;\n    PenaPensil p;\n    // Isi kedua salinan: Pena::nomor = n, Pensil::nomor = n*2\n    \n    cout << \"Salinan Pena: \" << p.Pena::nomor << endl;\n    cout << \"Salinan Pensil: \" << p.Pensil::nomor;\n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Salinan Pena: 7\nSalinan Pensil: 14",
+      uji: [{stdin: "5\n", h: "eea2ae51b1213a71d12a63f9c8b4d247c316d85fe97c25506c221f785ebd97d7"}, {stdin: "12\n", h: "a698bce70e7e2bd74fa426e2364c5b460c7e281e9c5170242d75ffc58e582d97"}],
       petunjuk: `Menulis <code>p.nomor</code> saja akan error — C++ tidak tahu salinan yang mana.`
     },
     {
@@ -125,6 +126,7 @@ Salinan Pensil: 14</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Alat {\npublic:\n    int nomor;\n};\n\n// Buat Pena dan Pensil yang mewarisi Alat secara virtual public\n\n// Buat PenaPensil yang mewarisi Pena dan Pensil\n\nint main() {\n    int n;\n    cin >> n;\n    PenaPensil p;\n    p.nomor = n;\n    cout << \"Hanya satu salinan: \" << p.nomor;\n    return 0;\n}\n",
       stdin: "9\n",
       expected: "Hanya satu salinan: 9",
+      uji: [{stdin: "4\n", h: "116971f986534ce67227280359221ad66fd88ef3133af1950af416296d6f0a45"}, {stdin: "100\n", h: "bded2d136c212dc30c17dab3c5072039edd29bbffe24a14212da30b728e275ac"}],
       petunjuk: `<code>class Pena : virtual public Alat {};</code> — kata virtual ditulis di kedua jalur.`
     }
   ]

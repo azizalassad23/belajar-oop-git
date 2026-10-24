@@ -120,6 +120,7 @@ Semua bersih</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Sumber {\npublic:\n    // destructor virtual\n    \n};\n\n// class Berkas : atribut id, constructor Berkas(int), destructor\n\nint main() {\n    int n;\n    cin >> n;\n    for (int i = 1; i <= n; i++) {\n        Sumber* s = new Berkas(i);\n        delete s;\n    }\n    cout << \"Semua bersih\";\n    return 0;\n}\n",
       stdin: "3\n",
       expected: "Berkas 1 ditutup\nSumber dibebaskan\nBerkas 2 ditutup\nSumber dibebaskan\nBerkas 3 ditutup\nSumber dibebaskan\nSemua bersih",
+      uji: [{stdin: "2\n", h: "6912541b4b403ab0f1e771f6498aaecedde060c287f2b3b218d4c347486ed879"}, {stdin: "1\n", h: "a563ab0965d24470903cfcab247c0413d35e378d808581a10a1e9e5667ee731d"}],
       petunjuk: `Tiap putaran menghapus satu berkas dengan benar — tanpa virtual, semuanya akan bocor.`
     }
   ]

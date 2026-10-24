@@ -92,6 +92,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Nilai {\nprivate:\n    int skor;\npublic:\n    // Buat setSkor(int s) dengan validasi, dan getSkor()\n    \n};\n\nint main() {\n    Nilai n;\n    int x;\n    cin >> x;\n    n.setSkor(x);\n    cout << \"Skor: \" << n.getSkor();\n    return 0;\n}\n",
       stdin: "150\n",
       expected: "Skor: 100",
+      uji: [{stdin: "-20\n", h: "e987b1f74c711ac34b591274cebc82fe36dd10ce2b12116dded33be73a7a9f8d"}, {stdin: "88\n", h: "a251187f2b648e8c2b0f2ed4a29f1a00d5b0196b5e820de78a48637e9a68c7f3"}],
       petunjuk: "Di dalam setSkor: <code>if (s > 100) skor = 100; else if (s < 0) skor = 0; else skor = s;</code>"
     },
     {
@@ -107,6 +108,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Akun {\nprivate:\n    int saldo;\npublic:\n    void setSaldo(int s) { saldo = s; }\n    // Buat setor(int), tarik(int) dengan validasi, dan getSaldo()\n    \n};\n\nint main() {\n    Akun a;\n    int awal, jumlahSetor, jumlahTarik;\n    cin >> awal >> jumlahSetor >> jumlahTarik;\n    a.setSaldo(awal);\n    // Panggil setor(), tarik(), lalu cetak saldo\n    \n    return 0;\n}\n",
       stdin: "1000 500 2000\n",
       expected: "Saldo: 1500",
+      uji: [{stdin: "1000 500 1500\n", h: "4f238f1b1deccfe8acb9172aeea0db04ca517409331eb7eaa18768154245a432"}, {stdin: "200 300 100\n", h: "90b5013c5527825aac0c100e550092f5e258ea89500ad532373b53b666f04183"}],
       petunjuk: "Di dalam tarik: <code>if (jumlah &lt;= saldo) saldo -= jumlah;</code> — inilah validasi yang menjaga saldo tidak minus."
     },
     {
@@ -115,6 +117,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Orang {\nprivate:\n    int umur;\npublic:\n    // Buat setUmur(int) dengan validasi, dan getUmur()\n    \n};\n\nint main() {\n    Orang o;\n    int x;\n    cin >> x;\n    o.setUmur(x);\n    cout << \"Umur: \" << o.getUmur();\n    return 0;\n}\n",
       stdin: "-5\n",
       expected: "Umur: 0",
+      uji: [{stdin: "17\n", h: "7b54bf57af20fa461124423e58c452d47be1b1e2d8e03d94db598ec2727a643b"}, {stdin: "45\n", h: "fcfd872d6b89835b800924737bcadbbfe42b3fa5b4ed3099db83dd86fb3b9b75"}],
       petunjuk: `Di dalam setUmur: <code>umur = (u &lt; 0) ? 0 : u;</code>`
     },
     {
@@ -123,6 +126,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Barang {\nprivate:\n    int stok;\npublic:\n    void setStok(int s) { stok = s; }\n    // Buat kurangi(int) dengan validasi, dan getStok()\n    \n};\n\nint main() {\n    Barang b;\n    int awal, ambil;\n    cin >> awal >> ambil;\n    b.setStok(awal);\n    b.kurangi(ambil);\n    cout << \"Stok: \" << b.getStok();\n    return 0;\n}\n",
       stdin: "10 15\n",
       expected: "Stok: 10",
+      uji: [{stdin: "10 4\n", h: "38776f794b211a70d4c9f0553ed2683d5e9fd6d685d0508ee9360f134a5539b0"}, {stdin: "8 8\n", h: "f3f514b88e38531e9e814a9b13d12cb530b0bc3e8a757dd368af740e01b7dd73"}],
       petunjuk: `<code>if (j &lt;= stok) stok -= j;</code> — inilah yang menjaga stok tidak minus.`
     },
     {
@@ -131,6 +135,7 @@ int main() {
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Akun {\nprivate:\n    string sandi;\npublic:\n    // Buat setSandi(string) dengan validasi, dan getSandi()\n    \n};\n\nint main() {\n    Akun a;\n    string s;\n    cin >> s;\n    a.setSandi(s);\n    cout << \"Password: \" << a.getSandi();\n    return 0;\n}\n",
       stdin: "abc\n",
       expected: "Password: lemah",
+      uji: [{stdin: "rahasia\n", h: "5c5fdb996ee84e993c0529900405e93df246f26e6b97c86c9f6e5805baa49635"}, {stdin: "abcdef\n", h: "594f40707b544898fa92a6ced1beabfa02b3f45e7d7a2cd99d8f454481983c06"}],
       petunjuk: `Panjang teks didapat dengan <code>s.length()</code>.`
     }
   ]

@@ -94,6 +94,7 @@ Lulus: 2 dari 3</pre>`,
       starter: "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Siswa {\nprivate:\n    string nama;\n    int nilai;\npublic:\n    // constructor, getNama(), getNilai(), lulus()\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    vector<Siswa> kelas;\n    // Baca n pasang data\n    \n    // Cetak status tiap siswa dan hitung yang lulus\n    \n    return 0;\n}\n",
       stdin: "3\nAndi 85 Budi 60 Sari 90\n",
       expected: "Andi: Lulus\nBudi: Remedial\nSari: Lulus\nLulus: 2 dari 3",
+      uji: [{stdin: "2\nRina 75 Eko 74\n", h: "4f7a7ecc0c276a6f669def4e1cd1c88d8150135fd0561d3d11967a008e39b329"}, {stdin: "4\nAgus 100 Bela 80 Cici 50 Doni 76\n", h: "5a39d6996bd04ec2a6205ddda8ea045f2e938cd754b505bde31dcfa53bbfa47f"}],
       petunjuk: `Aturan kelulusan disimpan di dalam class, bukan diulang-ulang di <code>main()</code>.`
     },
     {
@@ -104,6 +105,7 @@ Total belanja: 31000</pre>`,
       starter: "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Barang {\nprivate:\n    string nama;\n    int jumlah, harga;\npublic:\n    // constructor, subtotal(), getNama()\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    vector<Barang> keranjang;\n    // Baca n data (nama, jumlah, harga)\n    \n    // Cetak subtotal tiap barang dan jumlahkan totalnya\n    \n    return 0;\n}\n",
       stdin: "2\nPensil 3 2000 Buku 5 5000\n",
       expected: "Pensil: 6000\nBuku: 25000\nTotal belanja: 31000",
+      uji: [{stdin: "1\nTas 2 75000\n", h: "4bd74842c437b5f9e4b0eff548e49a7379176ea3495d659872a488e25e715188"}, {stdin: "3\nPena 1 1000 Map 2 2000 Spidol 3 3000\n", h: "99d1f50ae3a3a37835aa67cde7aef766b8cc2ec1c1eb09a4a4cf6260c6e02234"}],
       petunjuk: `Perhitungan subtotal ada di dalam class — <code>main()</code> cukup memanggilnya.`
     },
     {
@@ -114,6 +116,7 @@ Total gaji: 5000000</pre>`,
       starter: "#include <iostream>\n#include <memory>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Pegawai {\nprotected:\n    int gajiPokok;\npublic:\n    Pegawai(int g) { gajiPokok = g; }\n    // dua pure virtual dan virtual destructor\n    \n};\n\n// Buat Staf dan Manager\n\nint main() {\n    int g;\n    cin >> g;\n    vector<unique_ptr<Pegawai>> daftar;\n    daftar.push_back(make_unique<Staf>(g));\n    daftar.push_back(make_unique<Manager>(g));\n    // Cetak tiap pegawai dan jumlahkan totalnya\n    \n    return 0;\n}\n",
       stdin: "2000000\n",
       expected: "Staf: 2000000\nManager: 3000000\nTotal gaji: 5000000",
+      uji: [{stdin: "1000000\n", h: "64f5162a63feb47745007dcf376fd402e372fb3be10a594bdcd2b3bf9c7cdc9b"}, {stdin: "3500000\n", h: "c531669f183b3cdb87baffba43169f8e92c5adeedf259dc8c847b1902c50a624"}],
       petunjuk: `Perulangannya sama untuk semua jabatan — itulah nilai polymorphism.`
     },
     {
@@ -123,6 +126,7 @@ Stok tetap 5</pre><p>Kalau berhasil, cetak <code>Berhasil, sisa &lt;jumlah&gt;</
       starter: "#include <iostream>\nusing namespace std;\n\nclass Stok {\nprivate:\n    int jumlah;\npublic:\n    Stok(int j) { jumlah = j; }\n    // keluar(int) yang melempar, dan getJumlah()\n    \n};\n\nint main() {\n    int awal, minta;\n    cin >> awal >> minta;\n    Stok s(awal);\n    try {\n        s.keluar(minta);\n        cout << \"Berhasil, sisa \" << s.getJumlah();\n    } catch (const char* e) {\n        \n    }\n    return 0;\n}\n",
       stdin: "5 100\n",
       expected: "Gagal: Stok tidak mencukupi\nStok tetap 5",
+      uji: [{stdin: "100 30\n", h: "6f0f6c8be7fa8114cdc1cea15c63a99c135eed1279dd629d80c61c4ef4460e9f"}, {stdin: "8 8\n", h: "31b620d9aeef9983d25b2638d2883458cedcd29d37c7919239d9951f8c0e7c7c"}],
       petunjuk: `Blok catch mencetak pesan gagal lalu pindah baris, baru stok yang tetap utuh.`
     },
     {
@@ -133,6 +137,7 @@ Total luas: 15</pre>`,
       starter: "#include <iostream>\n#include <memory>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Bentuk {\npublic:\n    // pure virtual luas() dan nama(), plus virtual destructor\n    \n};\n\n// Buat Persegi(int) dan Segitiga(int alas, int tinggi)\n\nint main() {\n    int n;\n    cin >> n;\n    vector<unique_ptr<Bentuk>> d;\n    d.push_back(make_unique<Persegi>(n));\n    d.push_back(make_unique<Segitiga>(n, n + 1));\n    // Cetak tiap bentuk dan jumlahkan luasnya\n    \n    return 0;\n}\n",
       stdin: "3\n",
       expected: "Persegi: 9\nSegitiga: 6\nTotal luas: 15",
+      uji: [{stdin: "4\n", h: "5eed31bead3f454ee4c677febeaa1f69229d98a1fe437f28445539bb543d8c40"}, {stdin: "5\n", h: "dcaef323961508652055d202cba5559b4e91d8038715656fe9437b67e6b0ec34"}],
       petunjuk: `Luas segitiga <code>alas * tinggi / 2</code>. Selamat, ini soal terakhirmu!`
     }
   ]

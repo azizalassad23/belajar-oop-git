@@ -91,6 +91,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Persegi {\npublic:\n    int sisi;\n    // Buat setSisi(int sisi) memakai this, dan luas()\n    \n};\n\nint main() {\n    Persegi p;\n    int s;\n    cin >> s;\n    p.setSisi(s);\n    cout << \"Luas: \" << p.luas();\n    return 0;\n}\n",
       stdin: "6\n",
       expected: "Luas: 36",
+      uji: [{stdin: "9\n", h: "8d45c17a171ae31a3f75c3c811bab1e2e5d343e71a317d9c0e700821f72d75e8"}, {stdin: "4\n", h: "9a13651f48e0c7552d46b845903924bf7cfc9ac3b63b4430b28f5c85fb33f439"}],
       petunjuk: `<code>this-&gt;sisi = sisi;</code> — kiri atribut objek, kanan parameter.`
     },
     {
@@ -99,6 +100,7 @@ int main() {
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\npublic:\n    string nama;\n    // Buat setNama(string nama) memakai this, dan tampil()\n    \n};\n\nint main() {\n    Siswa s;\n    string n;\n    cin >> n;\n    s.setNama(n);\n    s.tampil();\n    return 0;\n}\n",
       stdin: "Andi\n",
       expected: "Nama: Andi",
+      uji: [{stdin: "Sari\n", h: "fef6dfb55a601eb4d3213fddcdcf2490fd82be40e13224c6d9eb8504b0c2e9e0"}, {stdin: "Budi\n", h: "663faa39501805a8d3f893c768627a2b6f38c88c71c510a4d8b6f5b8214e6060"}],
       petunjuk: `Di dalam <code>tampil()</code> kamu boleh menulis <code>this-&gt;nama</code> atau <code>nama</code> saja.`
     },
     {
@@ -107,6 +109,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Kotak {\npublic:\n    int panjang, lebar;\n    // Buat setPanjang() & setLebar() yang mengembalikan Kotak&,\n    // lalu luas()\n    \n};\n\nint main() {\n    Kotak k;\n    int p, l;\n    cin >> p >> l;\n    k.setPanjang(p).setLebar(l);\n    cout << \"Luas: \" << k.luas();\n    return 0;\n}\n",
       stdin: "5 3\n",
       expected: "Luas: 15",
+      uji: [{stdin: "7 4\n", h: "df3794c44cc7531de4f72c1195e5ab9ab2dc72d54bdc81bd2f9d825a016de9c2"}, {stdin: "10 6\n", h: "f0ff772bb33aa9e4401734ef6524ee666725439eab971d7fa9357a60a0c53995"}],
       petunjuk: `Tipe kembaliannya <code>Kotak&amp;</code> dan barisnya diakhiri <code>return *this;</code>`
     },
     {
@@ -116,6 +119,7 @@ Saya Sari</pre><p>Method yang sama menghasilkan nama berbeda — karena <code>th
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\npublic:\n    string nama;\n    // Buat constructor Siswa(string nama) memakai this,\n    // dan perkenalan()\n    \n};\n\nint main() {\n    string a, b;\n    cin >> a >> b;\n    Siswa s1(a), s2(b);\n    s1.perkenalan();\n    s2.perkenalan();\n    return 0;\n}\n",
       stdin: "Andi Sari\n",
       expected: "Saya Andi\nSaya Sari",
+      uji: [{stdin: "Budi Rina\n", h: "9a0ceaf2eb2b054c4b97848aa0d6ce0f9e2735297f470dbf808f93e3b73829d8"}, {stdin: "Eko Dewi\n", h: "970a6927e0cd2a8a01dd5264ee2b54a9dd6be102b77886f62c989db454e97e25"}],
       petunjuk: `Constructor juga boleh memakai <code>this-&gt;nama = nama;</code>`
     },
     {
@@ -124,6 +128,7 @@ Saya Sari</pre><p>Method yang sama menghasilkan nama berbeda — karena <code>th
       starter: "#include <iostream>\nusing namespace std;\n\nclass Penghitung {\npublic:\n    int nilai;\n    // Buat mulai(int nilai) & naik() yang mengembalikan Penghitung&,\n    // lalu hasil()\n    \n};\n\nint main() {\n    Penghitung c;\n    int awal;\n    cin >> awal;\n    c.mulai(awal).naik().naik().naik();\n    cout << \"Hitungan: \" << c.hasil();\n    return 0;\n}\n",
       stdin: "10\n",
       expected: "Hitungan: 13",
+      uji: [{stdin: "0\n", h: "e4dee9ba5e45638147fd40c8cbec114ab418337328c165694290e45948f4fa56"}, {stdin: "47\n", h: "9ddcbfc0a61c99274ed6d467db229cb8b5a082ef0bb5fa3a54bfbe51981a2651"}],
       petunjuk: `Tiap method diakhiri <code>return *this;</code> supaya bisa disambung method berikutnya.`
     }
   ]

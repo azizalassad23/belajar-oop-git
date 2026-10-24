@@ -92,6 +92,7 @@ Andi pulang</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\npublic:\n    string nama;\n    // Buat constructor Siswa(string) dan destructor\n    \n};\n\nint main() {\n    string n;\n    cin >> n;\n    Siswa s(n);\n    return 0;\n}\n",
       stdin: "Andi\n",
       expected: "Andi masuk kelas\nAndi pulang",
+      uji: [{stdin: "Sari\n", h: "b61e97c1beadf1df66e4fdb9344b879e3e25eeaa643f4b5ed40a19c475c263c3"}, {stdin: "Budi\n", h: "a08284696cb2b6504b2f1e20ca6b52f4d446dd3e28e4c172cfce2c5b3ec66db4"}],
       petunjuk: `Destructor masih bisa membaca atribut objeknya, termasuk <code>nama</code>.`
     },
     {
@@ -123,6 +124,7 @@ Semua item dibersihkan</pre><p>Objek yang dibuat di dalam badan perulangan langs
       starter: "#include <iostream>\nusing namespace std;\n\nclass Item {\npublic:\n    int id;\n    // Buat constructor Item(int) dan destructor\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    for (int i = 1; i <= n; i++) {\n        // Buat objek Item di sini\n    }\n    cout << \"Semua item dibersihkan\";\n    return 0;\n}\n",
       stdin: "3\n",
       expected: "Item 1 dihapus\nItem 2 dihapus\nItem 3 dihapus\nSemua item dibersihkan",
+      uji: [{stdin: "5\n", h: "9218fd71f3d9c808f64776aecd758a261d010f86ca6b264e91423ce01923ff08"}, {stdin: "1\n", h: "9b33aedc3da02709cc1fb088919d9938bd33921e86adcd385d80e99be344dde8"}],
       petunjuk: `Objek dalam blok perulangan hidup satu putaran saja, jadi urutannya justru 1, 2, 3.`
     }
   ]

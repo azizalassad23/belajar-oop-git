@@ -99,6 +99,7 @@ Keliling: 16</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Kotak {\npublic:\n    int panjang, lebar;\n    // Buat method luas() dan keliling() di sini\n    \n};\n\nint main() {\n    Kotak k;\n    cin >> k.panjang >> k.lebar;\n    // Cetak Luas dan Keliling\n    \n    return 0;\n}\n",
       stdin: "5 3\n",
       expected: "Luas: 15\nKeliling: 16",
+      uji: [{stdin: "8 2\n", h: "7b5bb2ad22661b3c3bb5551c6042b560ccc2a38e67e86b4a88012d22d79ddf2c"}, {stdin: "10 10\n", h: "6e5e0b591286bb0fef1b5598233a69ab4f5c908b91e769921b24c6f7ac8d9e1b"}],
       petunjuk: "<code>int luas(){ return panjang * lebar; }</code> dan <code>int keliling(){ return 2*(panjang+lebar); }</code>."
     },
     {
@@ -113,6 +114,7 @@ Keliling: 16</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Rekening {\npublic:\n    int saldo;\n    // Buat method setor(), tarik(), dan cekSaldo() di sini\n    \n};\n\nint main() {\n    Rekening r;\n    int awal, jumlahSetor, jumlahTarik;\n    cin >> awal >> jumlahSetor >> jumlahTarik;\n    r.saldo = awal;\n    // Panggil setor(), tarik(), lalu cetak saldo akhir\n    \n    return 0;\n}\n",
       stdin: "1000 500 300\n",
       expected: "Saldo akhir: 1200",
+      uji: [{stdin: "2000 300 1000\n", h: "1360c2ed4af64667683c25a8caec86dba2abbb0273bc8e42aeebed561042f1d9"}, {stdin: "500 500 1000\n", h: "6fa22ab7d73d80b10ae3efca729dcd785a375943f8ee96310fa50dde69bcd027"}],
       petunjuk: "<code>void setor(int j){ saldo += j; }</code>, <code>void tarik(int j){ saldo -= j; }</code>."
     },
     {
@@ -122,6 +124,7 @@ Kurang: 7</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Kalkulator {\npublic:\n    int a, b;\n    // Buat method tambah() dan kurang()\n    \n};\n\nint main() {\n    Kalkulator k;\n    cin >> k.a >> k.b;\n    // Cetak dua baris hasilnya\n    \n    return 0;\n}\n",
       stdin: "12 5\n",
       expected: "Tambah: 17\nKurang: 7",
+      uji: [{stdin: "20 8\n", h: "0455a0a69abf1ec2de008f4c9801ef65e8b534682dad0ffb8cd19681b7e0b04b"}, {stdin: "9 9\n", h: "11a174f4fd7847dfe197fb4388fda297afcad4423798d62b6a830947293d3782"}],
       petunjuk: `Kedua method mengembalikan <code>int</code> dan membaca atribut langsung tanpa titik.`
     },
     {
@@ -130,6 +133,7 @@ Kurang: 7</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Suhu {\npublic:\n    int celsius;\n    // Buat method keFahrenheit() di sini\n    \n};\n\nint main() {\n    Suhu s;\n    cin >> s.celsius;\n    // Cetak hasil konversinya\n    \n    return 0;\n}\n",
       stdin: "25\n",
       expected: "Fahrenheit: 77",
+      uji: [{stdin: "100\n", h: "e31f3121cb2246ca8a071f7663e309e827b1154c82f913e792ba357131fa1015"}, {stdin: "0\n", h: "eccf0ea7cd0e7421e6edc37a559df0b243037c3b2ac7943d6cab23db198f809b"}],
       petunjuk: `Urutan operasi penting: <code>celsius * 9 / 5 + 32</code>, bukan <code>celsius * (9/5)</code>.`
     },
     {
@@ -138,6 +142,7 @@ Kurang: 7</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Penghitung {\npublic:\n    int nilai;\n    // Buat method naik() di sini\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    Penghitung c;\n    c.nilai = 0;\n    // Panggil naik() sebanyak n kali, lalu cetak\n    \n    return 0;\n}\n",
       stdin: "5\n",
       expected: "Hitungan: 5",
+      uji: [{stdin: "3\n", h: "d8d267809ec4cebb5f9a91e6311df7e62c7d30966e1993dccefedced22b0db4c"}, {stdin: "12\n", h: "0247444073309aa712fea04970feea6f45d66d8b5630f76f58b8f86454224fc6"}],
       petunjuk: `<code>void naik() { nilai++; }</code> lalu panggil di dalam perulangan.`
     }
   ]

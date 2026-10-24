@@ -81,6 +81,7 @@ Dengan parameter: 49</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Persegi {\npublic:\n    int sisi;\n    // Buat dua constructor dan method luas()\n    \n};\n\nint main() {\n    int s;\n    cin >> s;\n    Persegi a;\n    Persegi b(s);\n    cout << \"Tanpa parameter: \" << a.luas() << endl;\n    cout << \"Dengan parameter: \" << b.luas();\n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Tanpa parameter: 1\nDengan parameter: 49",
+      uji: [{stdin: "4\n", h: "6698ca50328c66e16c1c768f1f66a67af7f6562d31a5374a4bae449d0ab1f409"}, {stdin: "10\n", h: "720f96fce4a8a6be95e029640438be0e63bb7bee101a99531c963846a4b773be"}],
       petunjuk: `Keduanya bernama <code>Persegi</code>, yang membedakan hanya daftar parameternya.`
     },
     {
@@ -91,6 +92,7 @@ Avanza (7 kursi)</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Mobil {\npublic:\n    string merek;\n    int kursi;\n    // Buat tiga constructor dan method info()\n    \n};\n\nint main() {\n    string m;\n    int k;\n    cin >> m >> k;\n    Mobil a;\n    Mobil b(m);\n    Mobil c(m, k);\n    a.info();\n    b.info();\n    c.info();\n    return 0;\n}\n",
       stdin: "Avanza 7\n",
       expected: "Belum diisi (0 kursi)\nAvanza (4 kursi)\nAvanza (7 kursi)",
+      uji: [{stdin: "Brio 5\n", h: "f5efb2a6467ba286021db8b2af80a17c9ca5f266c5c001ad6aa74649f77f1b1d"}, {stdin: "Innova 8\n", h: "f208e4e23cd7fa1a535682f8cfccecf35571edbd871da3d45079c9d46440aef8"}],
       petunjuk: `C++ memilih constructor berdasarkan jumlah argumen yang kamu tulis di dalam kurung.`
     },
     {
@@ -100,6 +102,7 @@ Lebar diisi: 50</pre><p>Objek pertama dibuat dengan <code>Kotak a(p)</code>, yan
       starter: "#include <iostream>\nusing namespace std;\n\nclass Kotak {\npublic:\n    int panjang, lebar;\n    // Buat satu constructor dengan default argument, dan luas()\n    \n};\n\nint main() {\n    int p;\n    cin >> p;\n    Kotak a(p);\n    Kotak b(p, 10);\n    cout << \"Lebar bawaan: \" << a.luas() << endl;\n    cout << \"Lebar diisi: \" << b.luas();\n    return 0;\n}\n",
       stdin: "5\n",
       expected: "Lebar bawaan: 10\nLebar diisi: 50",
+      uji: [{stdin: "7\n", h: "29c83c1155828dd028a107d88bafa37b77ccd2dafe0e548909cc59552552adf9"}, {stdin: "3\n", h: "7ba09bf7074f9053dc2865f06b65987addb44471db69d34b7c32b0cd63d2d17a"}],
       petunjuk: `Nilai bawaan ditulis langsung di parameternya: <code>int l = 2</code>.`
     },
     {
@@ -109,6 +112,7 @@ Andi: 90</pre><p>Objek kedua dibuat dengan nilai 90.</p>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Siswa {\npublic:\n    string nama;\n    int nilai;\n    // Buat dua constructor dan method tampil()\n    \n};\n\nint main() {\n    string n;\n    cin >> n;\n    Siswa a(n);\n    Siswa b(n, 90);\n    a.tampil();\n    b.tampil();\n    return 0;\n}\n",
       stdin: "Andi\n",
       expected: "Andi: 0\nAndi: 90",
+      uji: [{stdin: "Sari\n", h: "c1aca527265aac82b4ae98f32b2c8451de50b4db822b7508a72da0fc049aae4b"}, {stdin: "Budi\n", h: "38892ea03ef0e02b746989fc5166a9255b1ed8efd496b69883222e90e277f7d0"}],
       petunjuk: `Constructor pertama cukup mengisi <code>nilai = 0;</code> sendiri.`
     },
     {
@@ -118,6 +122,7 @@ Diisi: 10 15 20</pre><p>Objek kedua dibuat dengan <code>Deret b(10, 5)</code>.</
       starter: "#include <iostream>\nusing namespace std;\n\nclass Deret {\npublic:\n    int mulai, langkah;\n    // Buat constructor dengan dua default argument,\n    // dan method cetak(int n)\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    Deret a;\n    Deret b(10, 5);\n    cout << \"Bawaan: \";\n    a.cetak(n);\n    cout << endl << \"Diisi: \";\n    b.cetak(n);\n    return 0;\n}\n",
       stdin: "3\n",
       expected: "Bawaan: 1 2 3\nDiisi: 10 15 20",
+      uji: [{stdin: "5\n", h: "4ca675c1589caedced70ebeec3359739699e59f2e0019797d6060eded855b573"}, {stdin: "1\n", h: "48e6f595a8b671d0e1cf1a7762d7ea5f35495c757e6939fedc38a103e70666b0"}],
       petunjuk: `Supaya tidak ada spasi berlebih di akhir: cetak spasi hanya kalau <code>i &lt; n-1</code>.`
     }
   ]

@@ -80,6 +80,7 @@ Hasil kali: 24</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    // Cetak jumlah, selisih, dan hasil kali\n    \n    return 0;\n}\n",
       stdin: "8 3\n",
       expected: "Jumlah: 11\nSelisih: 5\nHasil kali: 24",
+      uji: [{stdin: "20 7\n", h: "f4c9b2d57637d2d5dfb62f8328e5f920ef203dd12bc5ff4f8d3d83413e9b9144"}, {stdin: "15 15\n", h: "5b172592804047e6deeb560a57b0f8e009d5c59b998eb718f154acf27560afbb"}],
       petunjuk: "Selisih = a - b (asumsikan a &ge; b pada uji ini)."
     },
     {
@@ -91,6 +92,7 @@ Hasil kali: 24</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int c;\n    cin >> c;\n    // Hitung dan cetak hasil konversi\n    \n    return 0;\n}\n",
       stdin: "100\n",
       expected: "Fahrenheit: 212",
+      uji: [{stdin: "25\n", h: "737e2b1c6882a513598d02a5bac76b989fd7841944145087b7337d8f2572ad57"}, {stdin: "40\n", h: "ed71191d6bc11e957ffa97fb66378eaa5f1b0d712a9a64fd293182efa04cdd94"}],
       petunjuk: "Gunakan <code>c * 9 / 5 + 32</code>. Karena semua int, urutan operasi tetap benar untuk uji ini."
     },
     {
@@ -99,6 +101,7 @@ Hasil kali: 24</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b, c;\n    // Baca tiga nilai lalu cetak rata-ratanya\n    \n    return 0;\n}\n",
       stdin: "80 90 85\n",
       expected: "Rata-rata: 85",
+      uji: [{stdin: "70 75 80\n", h: "a14acc4445f5ecc7ff6840e4f9ab0a8ea15f6d216b6436023e70771ae7d60e56"}, {stdin: "90 85 88\n", h: "881f852365cce15ec750c8ae363efdf0cfbad8f7d4893a1f963c4aa00b7b8c78"}],
       petunjuk: `Jumlahkan dulu, baru bagi 3: <code>(a + b + c) / 3</code>.`
     },
     {
@@ -108,6 +111,7 @@ Sesudah: 9 5</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    // Cetak sebelum, tukar, cetak sesudah\n    \n    return 0;\n}\n",
       stdin: "5 9\n",
       expected: "Sebelum: 5 9\nSesudah: 9 5",
+      uji: [{stdin: "12 3\n", h: "4d17e6be2512c8a63b7727ca393434a24017adde211d023558abbf52a85082a3"}, {stdin: "100 200\n", h: "54aa4ea4cdb1251eb44d8ffaac21812d03eee207e4db230db9c3ae17c458f582"}],
       petunjuk: `Butuh satu variabel bantu: <code>int t = a; a = b; b = t;</code>`
     },
     {
@@ -117,6 +121,7 @@ Umur : 16 tahun</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string nama;\n    int umur;\n    // Baca lalu cetak dua baris biodata\n    \n    return 0;\n}\n",
       stdin: "Sari 16\n",
       expected: "Nama : Sari\nUmur : 16 tahun",
+      uji: [{stdin: "Budi 17\n", h: "4038259904b370349a16d0d90d8a8be602ce182d843bf40c017d616f2548ce15"}, {stdin: "Ayu 15\n", h: "89139dd7d0f46a7f93f47de33c5956f253af77615053c72ab7c26174c684e806"}],
       petunjuk: `Tulis persis <code>"Nama : "</code> dengan spasi sebelum titik dua.`
     }
   ]

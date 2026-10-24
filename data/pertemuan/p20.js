@@ -114,6 +114,7 @@ Kucing Bimo siap</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Hewan {\npublic:\n    string nama;\n    // Buat constructor Hewan(string n)\n    \n};\n\n// Buat class Kucing yang mewarisi Hewan.\n// Constructornya harus mengirim n ke Hewan lewat : Hewan(n)\n\nint main() {\n    string n;\n    cin >> n;\n    Kucing k(n);\n    return 0;\n}\n",
       stdin: "Bimo\n",
       expected: "Hewan Bimo lahir\nKucing Bimo siap",
+      uji: [{stdin: "Mochi\n", h: "68794bde662ffab4002947a301fbb95ccb8026d657820683239ba6da6facb0ae"}, {stdin: "Kiko\n", h: "1ad66cfaa73057dd1088e0db9cfbb219c2f4b966f51c85ddae3b7380cd8f17de"}],
       petunjuk: `Bentuknya: <code>Kucing(string n) : Hewan(n) { ... }</code>`
     },
     {
@@ -134,6 +135,7 @@ C
       starter: "#include <iostream>\nusing namespace std;\n\nclass Bentuk {\nprotected:\n    int panjang;\npublic:\n    Bentuk(int p) { panjang = p; }\n};\n\n// Buat class Kotak yang mewarisi Bentuk.\n// Constructornya: Kotak(int p, int l) : Bentuk(p) { ... }\n\nint main() {\n    int p, l;\n    cin >> p >> l;\n    Kotak k(p, l);\n    cout << \"Luas: \" << k.luas();\n    return 0;\n}\n",
       stdin: "5 3\n",
       expected: "Luas: 15",
+      uji: [{stdin: "8 2\n", h: "3518c17b1232ef5acecbc42fd9d1cca604348e0d2cb8e9bed50a39842602497f"}, {stdin: "6 6\n", h: "7a23fa80784c4d83cbcc53808e0d6d392855ef5dfaf1ee0f73dcf98553c5a260"}],
       petunjuk: `Karena <code>Bentuk</code> tidak punya constructor kosong, <code>: Bentuk(p)</code> wajib ditulis.`
     },
     {

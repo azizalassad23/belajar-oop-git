@@ -93,6 +93,7 @@ Kucing mengeong</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Hewan {\npublic:\n    string nama;\n    int kaki;\n};\n\n// Buat class Kucing yang mewarisi Hewan, dengan method info()\n\nint main() {\n    string n;\n    int k;\n    cin >> n >> k;\n    Kucing c;\n    c.nama = n;\n    c.kaki = k;\n    c.info();\n    return 0;\n}\n",
       stdin: "Bimo 4\n",
       expected: "Bimo punya 4 kaki",
+      uji: [{stdin: "Mochi 4\n", h: "4358160c26d3d544d3062c4a464f6a7989ab6524b2983f133cb7eaebb7dc16e1"}, {stdin: "Kiko 2\n", h: "bc88296dd6eea7cde32f06190f15b688324b12d125d8a562861970eceb77d158"}],
       petunjuk: `Di dalam <code>info()</code>, tulis <code>nama</code> dan <code>kaki</code> langsung — keduanya sudah jadi milik Kucing.`
     },
     {
@@ -101,6 +102,7 @@ Kucing mengeong</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Kendaraan {\npublic:\n    int kecepatan;\n    // Buat method gas(int n)\n    \n};\n\n// Buat class Motor yang mewarisi Kendaraan, dengan method tampil()\n\nint main() {\n    int n;\n    cin >> n;\n    Motor m;\n    m.kecepatan = n;\n    m.gas(20);\n    m.tampil();\n    return 0;\n}\n",
       stdin: "100\n",
       expected: "Kecepatan: 120",
+      uji: [{stdin: "0\n", h: "6892c082638350762ceb37ea52e56e8642c45f95e7e6bebb3857b7782d98c88e"}, {stdin: "45\n", h: "9cee90ee4d1be59eeac4dccaf78bbf945f7ce4b146aa99cae0c2683281d927ac"}],
       petunjuk: `Method <code>gas()</code> ditulis sekali di induk, tapi bisa dipakai objek Motor.`
     },
     {
@@ -110,6 +112,7 @@ Andi sedang belajar OOP</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Orang {\npublic:\n    string nama;\n    // Buat method perkenalan()\n    \n};\n\n// Buat class Siswa yang mewarisi Orang, dengan tambahan method belajar()\n\nint main() {\n    string n;\n    cin >> n;\n    Siswa s;\n    s.nama = n;\n    s.perkenalan();\n    s.belajar();\n    return 0;\n}\n",
       stdin: "Andi\n",
       expected: "Saya Andi\nAndi sedang belajar OOP",
+      uji: [{stdin: "Sari\n", h: "9be882ca445a65d108c4392fee54f5ada3343c624f67507ec5d992f8d04e3960"}, {stdin: "Budi\n", h: "61acf07cfb9d85716b3d7741be28b474dfd8fa851b6fa72d73c152e3843d4b17"}],
       petunjuk: `Method baru di anak tetap boleh memakai atribut warisan seperti <code>nama</code>.`
     },
     {
@@ -119,6 +122,7 @@ Meong</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Hewan {\npublic:\n    string suara;\n    // Buat method bersuara()\n    \n};\n\n// Buat class Anjing dan Kucing yang keduanya mewarisi Hewan\n\nint main() {\n    string a, b;\n    cin >> a >> b;\n    Anjing d;\n    Kucing c;\n    d.suara = a;\n    c.suara = b;\n    d.bersuara();\n    c.bersuara();\n    return 0;\n}\n",
       stdin: "Guk Meong\n",
       expected: "Guk\nMeong",
+      uji: [{stdin: "Gukguk Miaw\n", h: "b20a55ff53b8af0cb73fc889bb2f6840d3301c644ff1e40fcce448e37297b159"}, {stdin: "Auk Ngeong\n", h: "37f28b8d085d2f97fd78f9dd14c769ba3052e10be3c711c63b067cc7992bed1f"}],
       petunjuk: `Class anak yang tidak menambah apa pun cukup ditulis <code>class Anjing : public Hewan {};</code>`
     }
   ]

@@ -84,6 +84,7 @@ Mengeong</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Makhluk {\npublic:\n    string nama;\n};\n\n// class Hewan : mewarisi Makhluk, tambah atribut kaki\n\n// class Anjing : mewarisi Hewan, tambah method info()\n\nint main() {\n    string n;\n    int k;\n    cin >> n >> k;\n    Anjing a;\n    a.nama = n;\n    a.kaki = k;\n    a.info();\n    return 0;\n}\n",
       stdin: "Bimo 3\n",
       expected: "Bimo berkaki 3",
+      uji: [{stdin: "Mochi 4\n", h: "b2a2acc0560117519193637f90dd674a02422c8400c83f7a5716b9b4c06939ad"}, {stdin: "Kiko 2\n", h: "16b9cca3eb15d3750074a68d5772c576546d25f7392664a55c60ad18b8124dba"}],
       petunjuk: `<code>nama</code> datang dari kakek, <code>kaki</code> dari ayah — keduanya jadi milik Anjing.`
     },
     {
@@ -94,6 +95,7 @@ Kubus: 1000</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Bentuk {\npublic:\n    int sisi;\n};\n\n// Buat Persegi, Segitiga, dan Kubus yang mewarisi Bentuk\n\nint main() {\n    int s;\n    cin >> s;\n    Persegi p;\n    Segitiga t;\n    Kubus k;\n    p.sisi = s;\n    t.sisi = s;\n    k.sisi = s;\n    cout << \"Persegi: \" << p.luas() << endl;\n    cout << \"Segitiga: \" << t.luas() << endl;\n    cout << \"Kubus: \" << k.volume();\n    return 0;\n}\n",
       stdin: "10\n",
       expected: "Persegi: 100\nSegitiga: 50\nKubus: 1000",
+      uji: [{stdin: "6\n", h: "417cb07fe50cf74c9c33f01adeaa16701768d55da3f5101c494a392bf4af74ec"}, {stdin: "4\n", h: "8622e8e959bb7035c189ca553d8ade5bd9a9adb4e3dc798fdf9595944b5189ea"}],
       petunjuk: `Atribut <code>sisi</code> cukup ditulis sekali di induk untuk dipakai ketiganya.`
     },
     {
@@ -115,6 +117,7 @@ D dibuat</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Produk {\nprotected:\n    int harga;\npublic:\n    void setHarga(int h) { harga = h; }\n};\n\n// class Makanan : mewarisi Produk, method total()\n\n// class MakananBeku : mewarisi Makanan, method totalPlusOngkir()\n\nint main() {\n    int h;\n    cin >> h;\n    MakananBeku m;\n    m.setHarga(h);\n    cout << \"Harga akhir: \" << m.totalPlusOngkir();\n    return 0;\n}\n",
       stdin: "5000\n",
       expected: "Harga akhir: 7500",
+      uji: [{stdin: "10000\n", h: "062aa785f92ae4f3d862491d6ee97d61b437662087a1757c05a014d1f3603b04"}, {stdin: "2000\n", h: "57cf82ad8ffdd66f3afbc948ff6e78c303a3e9e0a82ed419d0b997a3a016e0ed"}],
       petunjuk: `<code>totalPlusOngkir()</code> boleh memanggil <code>total()</code> milik ayahnya.`
     }
   ]

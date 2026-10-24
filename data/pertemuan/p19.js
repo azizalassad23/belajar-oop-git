@@ -96,6 +96,7 @@ int main() {
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Hewan {\npublic:\n    string nama;\n    // Buat method makan()\n    \n};\n\n// Buat class Kucing yang mewarisi Hewan secara public\n\nint main() {\n    string n;\n    cin >> n;\n    Kucing k;\n    k.nama = n;\n    k.makan();\n    return 0;\n}\n",
       stdin: "Bimo\n",
       expected: "Bimo sedang makan",
+      uji: [{stdin: "Mochi\n", h: "1b3364aac23744b8236fcdfd4bfd883b5ee5877ce8d7b0c95b5058d4c2cd227d"}, {stdin: "Kiko\n", h: "5147049325c87322bcdc16dc03c5e0612b4da691343cc35844a77e1de89a08a2"}],
       petunjuk: `Dengan mode <code>public</code>, <code>k.nama</code> tetap bisa diisi dari luar.`
     },
     {
@@ -104,6 +105,7 @@ int main() {
       starter: "#include <iostream>\nusing namespace std;\n\nclass Orang {\nprotected:\n    int umur;\npublic:\n    void setUmur(int u) { umur = u; }\n};\n\n// Buat class Siswa yang mewarisi Orang, dengan method tampil()\n\nint main() {\n    int u;\n    cin >> u;\n    Siswa s;\n    s.setUmur(u);\n    s.tampil();\n    return 0;\n}\n",
       stdin: "90\n",
       expected: "Umur dari protected: 90",
+      uji: [{stdin: "17\n", h: "087d7f2e367526a8eaf25632fdf56fb0d1aabcb6892fbcabb7b362ce91209116"}, {stdin: "45\n", h: "d2dcc88832303e4128f3474c5cc417291d036bcbd952bae62763a1ff5da31bc6"}],
       petunjuk: `Di dalam <code>tampil()</code>, tulis <code>umur</code> langsung tanpa perantara.`
     },
     {
@@ -113,6 +115,7 @@ Lewat getter: 1500</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Induk {\nprivate:\n    int rahasia;\nprotected:\n    int catatan;\npublic:\n    void isi(int n) { rahasia = n; catatan = n * 2; }\n    int getRahasia() { return rahasia; }\n};\n\n// Buat class Anak yang mewarisi Induk, dengan method tampil()\n\nint main() {\n    int n;\n    cin >> n;\n    Anak a;\n    a.isi(n);\n    a.tampil();\n    return 0;\n}\n",
       stdin: "1500\n",
       expected: "Lewat protected: 3000\nLewat getter: 1500",
+      uji: [{stdin: "40\n", h: "020bf769ee3544aa53aa76c8b24bfff816fea868615d1286beb40631b0214fd6"}, {stdin: "333\n", h: "e854ad499f9755bcb670d3e19d65ec65aaa9fed11208872960915101d55749e2"}],
       petunjuk: `Menulis <code>rahasia</code> langsung di dalam Anak akan error — itulah beda private dan protected.`
     },
     {
@@ -121,6 +124,7 @@ Lewat getter: 1500</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Induk {\nprotected:\n    int nilai;\npublic:\n    void setNilai(int n) { nilai = n; }\n};\n\n// Buat class Anak yang mewarisi Induk secara protected,\n// dengan method pakai(int n)\n\nint main() {\n    int n;\n    cin >> n;\n    Anak a;\n    a.pakai(n);\n    return 0;\n}\n",
       stdin: "50\n",
       expected: "Anak memakai nilai: 50",
+      uji: [{stdin: "12\n", h: "05d65cfb906478324c42dda5e7e74d021ef121a8dc271f480554939e3847fdc7"}, {stdin: "999\n", h: "3d73fef27f902dd2b5295b7814f848ef4ebf0a577963ebe051afc86012f5b71a"}],
       petunjuk: `Sintaksnya: <code>class Anak : protected Induk { ... };</code>`
     },
     {
@@ -130,6 +134,7 @@ Volume kubus: 343</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Bentuk {\nprotected:\n    int sisi;\npublic:\n    void setSisi(int s) { sisi = s; }\n};\n\n// Buat class Persegi (luas) dan Kubus (volume), keduanya mewarisi Bentuk\n\nint main() {\n    int s;\n    cin >> s;\n    Persegi p;\n    Kubus k;\n    p.setSisi(s);\n    k.setSisi(s);\n    cout << \"Luas persegi: \" << p.luas() << endl;\n    cout << \"Volume kubus: \" << k.volume();\n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Luas persegi: 49\nVolume kubus: 343",
+      uji: [{stdin: "3\n", h: "2b71467282a2d24bc023bc05a1d8d8068fd729b09ce81687384eda43717d6a72"}, {stdin: "10\n", h: "31b6d5a00543007e056127ee02202d4f8b69be14191d33492f6173347ae387f4"}],
       petunjuk: `Satu atribut protected di induk bisa dipakai semua turunannya tanpa ditulis ulang.`
     }
   ]

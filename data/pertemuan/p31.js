@@ -86,6 +86,7 @@ catch (string e) { cout &lt;&lt; "Tertangkap teks: "  &lt;&lt; e; }</code></pre>
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    try {\n        // lempar kalau n == 0, selain itu cetak hasilnya\n        \n    } catch (const char* pesan) {\n        // tangani di sini\n        \n    }\n    return 0;\n}\n",
       stdin: "0\n",
       expected: "Error: Pembagi tidak boleh nol",
+      uji: [{stdin: "4\n", h: "62d8f21c0f0e3e7ef15cbb17079bbfc74f3bfda68c9068fe997d131751b79f49"}, {stdin: "50\n", h: "82363e40c7d822d9119373d1e9143a977d078095d9485d010694ec6885ad6529"}],
       petunjuk: `Teks yang dilempar ditangkap dengan <code>catch (const char* pesan)</code>.`
     },
     {
@@ -95,6 +96,7 @@ Program tetap jalan</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int umur;\n    cin >> umur;\n    try {\n        // lempar umur kalau negatif\n        \n    } catch (int e) {\n        \n    }\n    cout << endl << \"Program tetap jalan\";\n    return 0;\n}\n",
       stdin: "-5\n",
       expected: "Umur tidak valid: -5\nProgram tetap jalan",
+      uji: [{stdin: "17\n", h: "5aa9fac0de381ed7f001a618f4e2a4f4bd9b4ae07d88572063e7cc688379f1a6"}, {stdin: "-1\n", h: "9d1c04682fa374d6ea092a88acb90e571781029b91d65ce2516d55a3856a448f"}],
       petunjuk: `Baris terakhir tetap jalan — exception yang tertangani tidak menghentikan program.`
     },
     {
@@ -103,6 +105,7 @@ Program tetap jalan</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\n// Buat fungsi bagi(int a, int b)\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    try { cout << \"Hasil: \" << bagi(a, b); }\n    catch (const char* e) { \n        \n    }\n    return 0;\n}\n",
       stdin: "20 0\n",
       expected: "Hasil: Gagal: Pembagian dengan nol",
+      uji: [{stdin: "20 4\n", h: "392f6f164500e636609662f2f4049fdc19b530644d2df1e4e849a138a1ee31d6"}, {stdin: "100 25\n", h: "6055b73f5f20eae96b53af4ae0d96cf9ef585302a8e0de7c8c3b3fc01fbac546"}],
       petunjuk: `Exception dari dalam fungsi tetap bisa ditangkap oleh pemanggilnya.`
     },
     {
@@ -111,6 +114,7 @@ Program tetap jalan</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int kode;\n    cin >> kode;\n    try {\n        // lempar sesuai kode\n        \n    }\n    // Buat dua catch: int dan string\n    \n    return 0;\n}\n",
       stdin: "2\n",
       expected: "Tertangkap teks: kesalahan teks",
+      uji: [{stdin: "1\n", h: "5308f983fff4dbb716af66638c86d7ef9f9645a33a9e959b61b2049f5292c392"}, {stdin: "5\n", h: "dd0c438a4643ec8238529ea3a2a10e7def7805356cc12cd27d284d5e9f122e26"}],
       petunjuk: `C++ memilih blok catch yang tipenya cocok dengan yang dilempar.`
     },
     {
@@ -120,6 +124,7 @@ Saldo tetap: 1000</pre><p>Perhatikan saldonya <strong>tidak berubah</strong> —
       starter: "#include <iostream>\nusing namespace std;\n\nclass Rekening {\n    int saldo;\npublic:\n    Rekening(int s) { saldo = s; }\n    // Buat tarik(int) yang melempar, dan getSaldo()\n    \n};\n\nint main() {\n    int awal, ambil;\n    cin >> awal >> ambil;\n    Rekening r(awal);\n    try { r.tarik(ambil); cout << \"Sisa: \" << r.getSaldo(); }\n    catch (const char* e) {\n        \n    }\n    return 0;\n}\n",
       stdin: "1000 5000\n",
       expected: "Gagal: Saldo tidak cukup\nSaldo tetap: 1000",
+      uji: [{stdin: "1000 300\n", h: "40c2c17bbf6f08a2a19e0df9f2e904399760f01d096c98b6d3d2e1ad93c227d3"}, {stdin: "500 500\n", h: "4b2af9486774968f436772cf81879675fb0f625e9c660c90f3576ff925189f8e"}],
       petunjuk: `Urutannya penting: periksa dan lempar DULU, baru ubah datanya.`
     }
   ]

@@ -83,6 +83,7 @@ Dikali dua: 14</pre>`,
       starter: "#include <iostream>\n#include <memory>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    // Buat unique_ptr<int> dengan make_unique\n    \n    // Cetak *p dan (*p)*2\n    \n    return 0;\n}\n",
       stdin: "7\n",
       expected: "Nilai: 7\nDikali dua: 14",
+      uji: [{stdin: "21\n", h: "db4189bbf2d216a149805bee081092dc625d591c9d61ca41f961e6e7411b832e"}, {stdin: "-4\n", h: "af784ee25d0ba98282fd6767a7f2d56cc8a10d17271b1d5282c11e7f0ac458cd"}],
       petunjuk: `Isinya diakses dengan bintang: <code>*p</code>. Untuk dikali, tulis <code>(*p) * 2</code>.`
     },
     {
@@ -116,6 +117,7 @@ Tidak ada kebocoran</pre>`,
       starter: "#include <iostream>\n#include <memory>\nusing namespace std;\n\nclass Data {\n    int id;\npublic:\n    // constructor Data(int) dan destructor\n    \n};\n\nint main() {\n    int n;\n    cin >> n;\n    for (int i = 1; i <= n; i++) {\n        // Buat unique_ptr<Data> di sini\n        \n    }\n    cout << \"Tidak ada kebocoran\";\n    return 0;\n}\n",
       stdin: "3\n",
       expected: "Data 1 dibuat\nData 1 dibebaskan\nData 2 dibuat\nData 2 dibebaskan\nData 3 dibuat\nData 3 dibebaskan\nTidak ada kebocoran",
+      uji: [{stdin: "2\n", h: "146793c156dea7bf5e9080c8552338bb13c8336b0ba6da283eb62cf13557829d"}, {stdin: "1\n", h: "05d3ea4b0110808ec13ba4e23ab3062ef8e0ce8fb37762880978f9491d3db671"}],
       petunjuk: `Tiap putaran objeknya dibuat dan dibebaskan sendiri, tanpa <code>delete</code>.`
     },
     {

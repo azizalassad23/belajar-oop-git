@@ -78,6 +78,7 @@ Dua argumen: 20</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Hitung {\npublic:\n    // Buat dua method luas() dengan jumlah parameter berbeda\n    \n};\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    Hitung h;\n    cout << \"Satu argumen: \" << h.luas(a) << endl;\n    cout << \"Dua argumen: \" << h.luas(a, b);\n    return 0;\n}\n",
       stdin: "4 5\n",
       expected: "Satu argumen: 16\nDua argumen: 20",
+      uji: [{stdin: "3 7\n", h: "bb938fd81624fa0ecb565dce06965f77c4a89be690a814bca5f1a26f03abc230"}, {stdin: "10 2\n", h: "91bf22a01d43286c8791319b2c9e0d98738b5635968c11d2c76a2109b576d687"}],
       petunjuk: `Compiler memilih berdasarkan jumlah argumen — sudah pasti sebelum program jalan.`
     },
     {

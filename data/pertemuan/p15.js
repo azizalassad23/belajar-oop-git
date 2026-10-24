@@ -91,6 +91,7 @@ Roda dilepas</pre>
       starter: "#include <iostream>\nusing namespace std;\n\nclass Mesin {\npublic:\n    int cc;\n    // Buat method nyala()\n    \n};\n\nclass Motor {\npublic:\n    // Jadikan Mesin sebagai atribut di sini\n    \n};\n\nint main() {\n    int c;\n    cin >> c;\n    Motor m;\n    // Isi cc lewat objek mesin, lalu panggil nyala()\n    \n    return 0;\n}\n",
       stdin: "150\n",
       expected: "Mesin 150 cc menyala",
+      uji: [{stdin: "125\n", h: "8aa14136563cfb9f9fb500c448e5f7c6e78776de328bf02665316adb4d2299f4"}, {stdin: "250\n", h: "45eb26fcb161b74f5787a99520a82ff65be50e7dfe1ce6e4061b5ce0a20d4c2e"}],
       petunjuk: `Aksesnya bertingkat: <code>m.mesin.cc = c;</code> lalu <code>m.mesin.nyala();</code>`
     },
     {
@@ -99,6 +100,7 @@ Roda dilepas</pre>
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Alamat {\npublic:\n    string kota;\n};\n\nclass Siswa {\npublic:\n    string nama;\n    // Jadikan Alamat sebagai atribut, lalu buat info()\n    \n};\n\nint main() {\n    string n, k;\n    cin >> n >> k;\n    Siswa s;\n    // Isi nama dan kota, lalu panggil info()\n    \n    return 0;\n}\n",
       stdin: "Andi Bandung\n",
       expected: "Andi tinggal di Bandung",
+      uji: [{stdin: "Sari Surabaya\n", h: "efa32103d74dd11ec28d9198eaaa06d867745e13e406ed7a32e88755db86162e"}, {stdin: "Budi Medan\n", h: "d8de2586fbcc0da5d7cd0caa7eab896a245a1b1042992ea5ad132aaff3dc2810"}],
       petunjuk: `Di dalam <code>info()</code>, kota diakses dengan <code>alamat.kota</code>.`
     },
     {
@@ -117,6 +119,7 @@ Roda dilepas</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Harga {\nprivate:\n    int nilai;\npublic:\n    // Buat setNilai(int) dan getNilai()\n    \n};\n\nclass Barang {\npublic:\n    Harga harga;\n    int jumlah;\n    // Buat method total()\n    \n};\n\nint main() {\n    int h, j;\n    cin >> h >> j;\n    Barang b;\n    b.harga.setNilai(h);\n    b.jumlah = j;\n    cout << \"Total: \" << b.total();\n    return 0;\n}\n",
       stdin: "5000 3\n",
       expected: "Total: 15000",
+      uji: [{stdin: "12000 4\n", h: "331abcc965ebb149ecda166694dea9c0958f7956bbc4f9a0af26b8c56ac7cad2"}, {stdin: "2500 10\n", h: "a1033a407156efb719a0563e5eefa018e2ebaabed995f71f03200809639845b6"}],
       petunjuk: `Karena <code>nilai</code> private, <code>total()</code> harus lewat <code>harga.getNilai()</code>.`
     },
     {
@@ -125,6 +128,7 @@ Roda dilepas</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Jantung {\npublic:\n    // Buat method detak()\n    \n};\n\nclass Tubuh {\npublic:\n    // Jadikan Jantung sebagai atribut\n    \n};\n\nclass Manusia {\npublic:\n    string nama;\n    // Jadikan Tubuh sebagai atribut, lalu buat periksa()\n    \n};\n\nint main() {\n    string n;\n    cin >> n;\n    Manusia m;\n    m.nama = n;\n    m.periksa();\n    return 0;\n}\n",
       stdin: "Andi\n",
       expected: "Jantung Andi berdetak",
+      uji: [{stdin: "Sari\n", h: "7ac1bb340c92891761a217521d4401a0747da9fd2655054ddeaa2f16c7d12a2c"}, {stdin: "Budi\n", h: "aac80eb2b41eb9e17e851f80258f374eb06078371876840227fc278ac290f142"}],
       petunjuk: `Jalur aksesnya: <code>tubuh.jantung.detak()</code> — perhatikan spasi sebelum kata berdetak.`
     }
   ]

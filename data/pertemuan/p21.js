@@ -97,6 +97,7 @@ Pajak motor: 6</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Kendaraan {\npublic:\n    int harga;\n    // Buat method pajak()\n    \n};\n\n// Buat class Motor yang meng-override pajak()\n\nint main() {\n    int h;\n    cin >> h;\n    Kendaraan k;\n    Motor m;\n    k.harga = h;\n    m.harga = h;\n    cout << \"Pajak kendaraan: \" << k.pajak() << endl;\n    cout << \"Pajak motor: \" << m.pajak();\n    return 0;\n}\n",
       stdin: "120\n",
       expected: "Pajak kendaraan: 12\nPajak motor: 6",
+      uji: [{stdin: "200\n", h: "b2f4eb78136d7a666c2b22aaadfd71881b091b497bda27cc30095b993cba4389"}, {stdin: "1000\n", h: "4c41395d416e0cf5c1f5480a0855070d04c397370a819008b6e7c34044fe9b83"}],
       petunjuk: `Method di anak boleh memakai atribut warisan <code>harga</code> seperti biasa.`
     },
     {
@@ -106,6 +107,7 @@ Status: Siswa</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nclass Orang {\npublic:\n    string nama;\n    // Buat method info()\n    \n};\n\n// Buat class Siswa yang meng-override info()\n\nint main() {\n    string n;\n    cin >> n;\n    Siswa s;\n    s.nama = n;\n    s.info();\n    return 0;\n}\n",
       stdin: "Andi\n",
       expected: "Nama: Andi\nStatus: Siswa",
+      uji: [{stdin: "Sari\n", h: "1be1200a815a0027514b678b8bd9143d68baef8def1d5d0e1d2da68c7d23fe60"}, {stdin: "Budi\n", h: "260a8ceaa0a8f1d89786d7cbb5a4c2907bb9dffeae90083317ece1c6d2062fdf"}],
       petunjuk: `Pola ini sering dipakai: pertahankan perilaku induk, lalu tambahkan yang khas anak.`
     },
     {

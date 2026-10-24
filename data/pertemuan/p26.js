@@ -94,6 +94,7 @@ Luas: 15</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Bentuk {\npublic:\n    // method virtual luas() yang mengembalikan 0\n    \n};\n\n// class Persegi : constructor Persegi(int), override luas()\n\n// class Kotak : constructor Kotak(int,int), override luas()\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    Bentuk* d[2] = { new Persegi(a), new Kotak(a, b) };\n    for (int i = 0; i < 2; i++) cout << \"Luas: \" << d[i]->luas() << endl;\n    for (int i = 0; i < 2; i++) delete d[i];\n    return 0;\n}\n",
       stdin: "5 3\n",
       expected: "Luas: 25\nLuas: 15",
+      uji: [{stdin: "4 7\n", h: "04428015f66c83169406f0c5526eadfb95c59cdbb855514815840223b08d5d26"}, {stdin: "9 2\n", h: "b6a491c1fb06ae4aa69cc46b6da743ebd01a9a26cb315e172db655ef33099c11"}],
       petunjuk: `Perulangannya sama untuk kedua bentuk — rumusnya yang menyesuaikan sendiri.`
     },
     {
@@ -112,6 +113,7 @@ Manager: 1500</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nclass Pegawai {\nprotected:\n    int gaji;\npublic:\n    Pegawai(int g) { gaji = g; }\n    // method virtual total()\n    \n};\n\n// class Manager : mewarisi Pegawai, override total()\n\nint main() {\n    int g;\n    cin >> g;\n    Pegawai* a = new Pegawai(g);\n    Pegawai* b = new Manager(g);\n    cout << \"Pegawai: \" << a->total() << endl;\n    cout << \"Manager: \" << b->total();\n    delete a; delete b;\n    return 0;\n}\n",
       stdin: "1000\n",
       expected: "Pegawai: 1000\nManager: 1500",
+      uji: [{stdin: "2000\n", h: "003d9f2344bb862d51d11e61e0da1ce8cf4aca02470755aea3398e97db819d6b"}, {stdin: "3000\n", h: "79f5a7b240ccdd3d3040c1bb9e5b7f144afda01e6eb948d9ae0affc29c5da84b"}],
       petunjuk: `Constructor Manager harus mengirim gaji ke induk: <code>Manager(int g) : Pegawai(g) {}</code>`
     }
   ]

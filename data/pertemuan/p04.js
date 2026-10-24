@@ -91,6 +91,7 @@ tambahDua(n);    // n menjadi 7</code></pre>
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int a[100];\n    // Baca n angka ke dalam array, lalu jumlahkan\n    \n    return 0;\n}\n",
       stdin: "5\n10 20 30 40 50\n",
       expected: "Total: 150",
+      uji: [{stdin: "3\n5 15 25\n", h: "3a3eda9ae45befccdadbe5b6ff797fcfc852cc9e5fffbaf9943b0bd094557855"}, {stdin: "6\n1 2 3 4 5 6\n", h: "add51788105b22fbebaf190909fc4f72c17740864f6149f1a7da4b03e169befd"}],
       petunjuk: "Gunakan perulangan: <code>cin >> a[i];</code> lalu <code>total += a[i];</code>."
     },
     {
@@ -103,6 +104,7 @@ tambahDua(n);    // n menjadi 7</code></pre>
       starter: "#include <iostream>\nusing namespace std;\n\n// Buat fungsi tukar(int& a, int& b) di sini\n\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    // Panggil tukar(a, b), lalu cetak hasilnya\n    \n    return 0;\n}\n",
       stdin: "3 7\n",
       expected: "Setelah tukar: 7 3",
+      uji: [{stdin: "10 25\n", h: "889a3348bbd0efa89a4e0fc19a1c3a82214dda9262f8d72fc8860b8973e3c24b"}, {stdin: "8 1\n", h: "44480832d65f31364e89e483c1be47eae9f747be0789cdd3a4c2c7a36d74b827"}],
       petunjuk: "Di dalam fungsi: gunakan variabel sementara -> <code>int t = a; a = b; b = t;</code>."
     },
     {
@@ -111,6 +113,7 @@ tambahDua(n);    // n menjadi 7</code></pre>
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int a[100];\n    // Baca n data, lalu cari yang terbesar\n    \n    return 0;\n}\n",
       stdin: "5\n3 9 2 8 5\n",
       expected: "Terbesar: 9",
+      uji: [{stdin: "4\n15 2 7 11\n", h: "e4c3d20c7391b4b340e50372b47062187a294fcd700fe640416627db61b21592"}, {stdin: "6\n1 3 5 7 9 30\n", h: "4e51d0a4a0cc3cf47ea095a7c8e19bcf8a728b962d082e9fc44b5d685b64784d"}],
       petunjuk: `Anggap dulu <code>a[0]</code> yang terbesar, lalu bandingkan sisanya dalam perulangan.`
     },
     {
@@ -120,6 +123,7 @@ Sesudah: 20</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x;\n    cin >> x;\n    // Cetak sebelum, gandakan lewat pointer, cetak sesudah\n    \n    return 0;\n}\n",
       stdin: "10\n",
       expected: "Sebelum: 10\nSesudah: 20",
+      uji: [{stdin: "7\n", h: "c06e590c00608e46b49420ef5ada7597b31652f6cf09bf792169701937a50e8f"}, {stdin: "125\n", h: "3035ae9cc6a6f75072853076de869d9626ab380c32f588a79eeb8f5f73613db7"}],
       petunjuk: `<code>int* p = &amp;x;</code> lalu ubah isinya dengan <code>*p = x * 2;</code>`
     },
     {
@@ -128,6 +132,7 @@ Sesudah: 20</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int a[100], total = 0;\n    // Baca sambil menjumlahkan, lalu bagi n\n    \n    return 0;\n}\n",
       stdin: "4\n10 20 30 40\n",
       expected: "Rata-rata: 25",
+      uji: [{stdin: "3\n7 8 10\n", h: "649c3df0630ae7fbd98198db03463fdecbfd962638e930c7809fa93fdc2a78fe"}, {stdin: "5\n100 90 80 70 60\n", h: "8c59380e9e348e0bc07df497060077258326d6d1de9b6e997a93405e81c03d37"}],
       petunjuk: `Jumlahkan langsung saat membaca, baru bagi dengan <code>n</code>.`
     }
   ]

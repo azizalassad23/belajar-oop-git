@@ -100,6 +100,7 @@ Saya siap belajar C++.</pre>
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string nama;\n    int umur;\n    // Baca nama dan umur, lalu cetak kalimatnya\n    \n    return 0;\n}\n",
       stdin: "Budi 17\n",
       expected: "Halo Budi, umur 17 tahun.",
+      uji: [{stdin: "Sari 16\n", h: "d9b6a237642dca55864f847ba0dff3a9adacdcbd39962dd471dd785c94a03918"}, {stdin: "Dimas 20\n", h: "05d43aeda3b67b6382ebfd85c12669e0bc21d989dcf6413268522629f403c6af"}],
       petunjuk: "Baca input dengan <code>cin >> nama >> umur;</code> lalu cetak dengan <code>cout</code>."
     },
     {
@@ -118,6 +119,7 @@ Abstraction</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int panjang, lebar;\n    // Baca panjang & lebar, lalu cetak luasnya\n    \n    return 0;\n}\n",
       stdin: "6 4\n",
       expected: "Luas: 24",
+      uji: [{stdin: "9 7\n", h: "302bef5381eea0b7afe6403a5a299aa7f101bb5bdff5e1f381a490b19530a229"}, {stdin: "12 12\n", h: "d519d2a5c9f82a33ac6584b201918357f1285cb5ed2c4807de7acff8aa154be6"}],
       petunjuk: `Baca dengan <code>cin >> panjang >> lebar;</code> lalu cetak <code>panjang * lebar</code>.`
     },
     {
@@ -127,6 +129,7 @@ Perilaku: melaju</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string objek, perilaku;\n    // Baca keduanya, lalu cetak dua baris\n    \n    return 0;\n}\n",
       stdin: "Mobil melaju\n",
       expected: "Objek: Mobil\nPerilaku: melaju",
+      uji: [{stdin: "Kucing mengeong\n", h: "5ba953df6e8207e70fb9f0dbe247ae26705beb76797782aeb02bb7a68d0d3962"}, {stdin: "Pesawat terbang\n", h: "1cec0837678fbc1df3ff124f2151aa89555acbf3a24c3cda747b104c12e8ea9e"}],
       petunjuk: `Dua kata dibaca sekaligus: <code>cin >> objek >> perilaku;</code>`
     }
   ]

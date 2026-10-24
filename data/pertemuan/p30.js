@@ -85,6 +85,7 @@ Desimal: 3.75</pre><p>Nilai desimalnya sudah ditulis di <code>main()</code>.</p>
       starter: "#include <iostream>\nusing namespace std;\n\n// Buat function template tambah(T a, T b)\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << \"Bilangan: \" << tambah(a, b) << endl;\n    cout << \"Desimal: \" << tambah(1.5, 2.25);\n    return 0;\n}\n",
       stdin: "7 3\n",
       expected: "Bilangan: 10\nDesimal: 3.75",
+      uji: [{stdin: "20 22\n", h: "3adb0ebd472b515c0206465cc2f4166bb0a8e1937960092f95316522cbe0ac16"}, {stdin: "-5 5\n", h: "1418c2036a27e7b0b30e4ff3293b83169e1b1f16a130390466a23cfb68c3e9cf"}],
       petunjuk: `<code>template &lt;typename T&gt;</code> lalu <code>T tambah(T a, T b) { return a + b; }</code>`
     },
     {
@@ -94,6 +95,7 @@ Terbesar char: z</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\n// Buat function template terbesar(T a, T b)\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    cout << \"Terbesar int: \" << terbesar(a, b) << endl;\n    cout << \"Terbesar char: \" << terbesar('z', 'a');\n    return 0;\n}\n",
       stdin: "9 4\n",
       expected: "Terbesar int: 9\nTerbesar char: z",
+      uji: [{stdin: "3 11\n", h: "2639546da99df752ff853eaa32333652192e0d400fd493d17a1e3c890f7da268"}, {stdin: "-2 -7\n", h: "62ecfab713c6e0d19aeb73517e39b8e00617339232c223d87856e15c1c35fbbf"}],
       petunjuk: `<code>return (a &gt; b) ? a : b;</code> — perbandingan berlaku juga untuk char.`
     },
     {
@@ -103,6 +105,7 @@ Isi teks: halo</pre>`,
       starter: "#include <iostream>\n#include <string>\nusing namespace std;\n\n// Buat class template Kotak\n\nint main() {\n    int n;\n    cin >> n;\n    Kotak<int> a;\n    Kotak<string> b;\n    a.set(n);\n    b.set(\"halo\");\n    cout << \"Isi angka: \" << a.get() << endl;\n    cout << \"Isi teks: \" << b.get();\n    return 0;\n}\n",
       stdin: "5\n",
       expected: "Isi angka: 5\nIsi teks: halo",
+      uji: [{stdin: "42\n", h: "c74cf9850b1fcfa1b7d6e84995263e986d8f500d5f2f0ac9cf38c85e74ae0b22"}, {stdin: "0\n", h: "402923f1084fae5c03b3ec45065d5ab347f92dcae44d30101d0762a24e94e531"}],
       petunjuk: `Untuk class, tipenya wajib ditulis: <code>Kotak&lt;int&gt; a;</code>`
     },
     {
@@ -113,6 +116,7 @@ x x x</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\n// Buat function template cetakTiga(T n)\n\nint main() {\n    int n;\n    cin >> n;\n    cetakTiga(n);\n    cetakTiga(2.5);\n    cetakTiga('x');\n    return 0;\n}\n",
       stdin: "4\n",
       expected: "4 4 4\n2.5 2.5 2.5\nx x x",
+      uji: [{stdin: "9\n", h: "1d746c77462c3efd7f626d94b402c9068d8a4e2c98ededa00d425e108a8e23a0"}, {stdin: "15\n", h: "f904a65cfb97b17a7678e39409def614640b2416e336a25a279b50307c83afa8"}],
       petunjuk: `Perulangan tiga kali, tiap kali cetak nilai lalu spasi, lalu <code>endl</code> di akhir.`
     },
     {
@@ -122,6 +126,7 @@ Selisih: 6</pre>`,
       starter: "#include <iostream>\nusing namespace std;\n\n// Buat class template Pasangan\n\nint main() {\n    int x, y;\n    cin >> x >> y;\n    Pasangan<int> p(x, y);\n    cout << \"Jumlah: \" << p.jumlah() << endl;\n    cout << \"Selisih: \" << p.selisih();\n    return 0;\n}\n",
       stdin: "8 2\n",
       expected: "Jumlah: 10\nSelisih: 6",
+      uji: [{stdin: "15 4\n", h: "6c02411fa62665a407390311426e5c7f987c481a5d9b79f9d22fcae74dbf3670"}, {stdin: "6 6\n", h: "ab899ac28af8a4ac2d2cc0a7a89a5d3d866ee0075019ed9d526d416ad949f42e"}],
       petunjuk: `Constructor dan method tetap ditulis biasa; hanya tipenya yang diganti <code>T</code>.`
     }
   ]
