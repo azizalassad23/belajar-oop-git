@@ -109,7 +109,8 @@
       btn.dataset.id = id;
 
       if (pakai) {
-        btn.disabled = true;
+        // Kartu terpakai tidak bisa dipilih ulang, tapi guru bisa membukanya
+        // lagi (dengan sandi) untuk membahas jawaban murid.
         btn.innerHTML = `
           <span class="kartu-wajah kartu-depan">
             <span class="kartu-no">${i + 1}</span>
@@ -118,9 +119,20 @@
             <span class="kartu-catatan">${esc(pakai.nama || "Tanpa nama")}${
               pakai.durasi ? " · " + fmtWaktu(pakai.durasi) : ""}${
               pakai.hasil ? " · uji " + esc(pakai.hasil) : ""}</span>
+            <span class="kartu-aksi" aria-hidden="true">Buka pembahasan</span>
           </span>`;
         btn.setAttribute("aria-label",
-          `Kartu ${i + 1} sudah dipakai${pakai.nama ? " oleh " + pakai.nama : ""}: ${k.judul}`);
+          `Kartu ${i + 1} sudah dikerjakan${pakai.nama ? " oleh " + pakai.nama : ""}: ${k.judul}. Buka pembahasan.`);
+        if (pakai.selesai) {
+          btn.addEventListener("click", async () => {
+            if (state.aktif) return;
+            if (await mintaSandi("Masukkan sandi untuk membuka pembahasan kartu ini.")) {
+              bukaRuangKerja(id, true);
+            }
+          });
+        } else {
+          btn.disabled = true;   // masih dikerjakan
+        }
       } else {
         sisa++;
         btn.innerHTML = `
@@ -192,13 +204,22 @@
 
   /* ---------------- Ruang kerja ---------------- */
   let kartuKerja = null;
+  let idKerja = null;
+  /* Mode pembahasan: guru membuka kartu yang sudah selesai untuk menjelaskan.
+     Kode boleh diubah dan dijalankan, tapi TIDAK mengubah catatan murid
+     (kode akhir, durasi, hasil uji tetap seperti saat dikerjakan). */
+  let modeBahas = false;
 
-  function bukaRuangKerja(id) {
+  function bukaRuangKerja(id, bahas) {
     const k = kartuDari(id);
     const info = state.kartu[id];
     kartuKerja = k;
+    idKerja = id;
+    modeBahas = !!bahas;
+    document.body.classList.toggle("flash-bahas", modeBahas);
 
-    $("kerja-judul").textContent = `Kartu ${state.urutan.indexOf(id) + 1} · ${k.judul}`;
+    $("kerja-judul").textContent =
+      `${modeBahas ? "Pembahasan · " : ""}Kartu ${state.urutan.indexOf(id) + 1} · ${k.judul}`;
     // Kode kartu (F01–F30) sama dengan yang tertulis di PDF kunci jawaban.
     $("kerja-sub").textContent = `${k.id} · Pertemuan ${k.pertemuan} · ${NAMA_TINGKAT[k.tingkat]}`;
     $("kerja-murid").textContent = info.nama ? info.nama : "";
@@ -213,11 +234,31 @@
       <p class="catatan-uji">Tombol <strong>Cek jawaban</strong> menguji contoh di atas
         ditambah <strong>${k.uji.length} input lain</strong>.</p>`;
 
+    if (modeBahas) {
+      const ringkas = [
+        info.nama ? `Dikerjakan <strong>${esc(info.nama)}</strong>` : "Dikerjakan murid tanpa nama",
+        info.durasi ? "lama " + fmtWaktu(info.durasi) : "",
+        info.hasil ? "hasil uji " + esc(info.hasil) : "belum pernah dicek",
+      ].filter(Boolean).join(" · ");
+      $("soal").insertAdjacentHTML("afterbegin", `
+        <div class="flash-catatan-bahas">
+          <span class="io-label">Pembahasan</span>
+          <p>${ringkas}</p>
+          ${info.kodeAkhir == null ? `<p class="flash-catatan-kecil">Kode murid tidak tersimpan —
+            kartu ini diselesaikan sebelum fitur pembahasan ditambahkan. Editor berisi kode awal.</p>` : ""}
+        </div>`);
+    }
+
     $("panel-kunci").hidden = true;
     $("panel-kunci").innerHTML = "";
     $("kunci-btn").textContent = "Kunci jawaban";
 
-    $("editor").value = state.kode[id] != null ? state.kode[id] : k.starter;
+    $("editor").value = modeBahas
+      ? (info.kodeAkhir != null ? info.kodeAkhir : k.starter)
+      : (state.kode[id] != null ? state.kode[id] : k.starter);
+    $("selesai-btn").textContent = modeBahas ? "Kembali ke meja" : "Selesai";
+    $("reset-kode").textContent = modeBahas ? "Kode murid" : "Reset kode";
+    delete $("reset-kode").dataset.yakin;
     $("input-pane").hidden = !k.contoh.stdin;
     $("stdin").value = k.contoh.stdin;
     $("hasil-cek").hidden = true;
@@ -225,9 +266,16 @@
     $("run-status").textContent = "";
 
     clearInterval(jamTimer);
-    const detak = () => { $("stopwatch").textContent = fmtWaktu(Date.now() - info.mulai); };
-    detak();
-    jamTimer = setInterval(detak, 1000);
+    if (modeBahas) {
+      // Tidak berjalan lagi: yang ditampilkan lama pengerjaan murid.
+      $("stopwatch").textContent = info.durasi ? fmtWaktu(info.durasi) : "--:--";
+      $("stopwatch").setAttribute("aria-label", "Lama pengerjaan murid");
+    } else {
+      $("stopwatch").setAttribute("aria-label", "Waktu yang sudah berjalan");
+      const detak = () => { $("stopwatch").textContent = fmtWaktu(Date.now() - info.mulai); };
+      detak();
+      jamTimer = setInterval(detak, 1000);
+    }
 
     tampil("kerja");
     $("editor").focus();
@@ -237,7 +285,7 @@
   $("editor").addEventListener("input", () => {
     clearTimeout(simpanKode);
     simpanKode = setTimeout(() => {
-      if (state.aktif) { state.kode[state.aktif] = $("editor").value; simpan(); }
+      if (state.aktif && !modeBahas) { state.kode[state.aktif] = $("editor").value; simpan(); }
     }, 400);
   });
   $("editor").addEventListener("keydown", function (e) {
@@ -310,24 +358,32 @@
     el.className = "flash-hasil " + (semua ? "lulus" : "gagal");
     el.innerHTML = `<strong>${semua ? "SEMUA BENAR" : "BELUM SEMUA BENAR"} — ${benar}/${kasus.length} uji</strong>
                     <ul>${baris.join("")}</ul>`;
-    state.kartu[state.aktif].hasil = `${benar}/${kasus.length}`;
-    simpan();
+    if (!modeBahas && state.aktif) {
+      state.kartu[state.aktif].hasil = `${benar}/${kasus.length}`;
+      simpan();
+    }
   });
 
   $("reset-kode").addEventListener("click", () => {
     // Tidak memakai confirm(): dialog bawaan menutup layar penuh dan
     // terasa mengagetkan di depan kelas. Cukup dua kali tekan.
     const b = $("reset-kode");
+    const label = modeBahas ? "Kode murid" : "Reset kode";
     if (b.dataset.yakin) {
-      $("editor").value = kartuKerja.starter;
-      state.kode[state.aktif] = kartuKerja.starter;
-      simpan();
+      if (modeBahas) {
+        const info = state.kartu[idKerja];
+        $("editor").value = info.kodeAkhir != null ? info.kodeAkhir : kartuKerja.starter;
+      } else {
+        $("editor").value = kartuKerja.starter;
+        state.kode[state.aktif] = kartuKerja.starter;
+        simpan();
+      }
       delete b.dataset.yakin;
-      b.textContent = "Reset kode";
+      b.textContent = label;
     } else {
       b.dataset.yakin = "1";
-      b.textContent = "Tekan lagi untuk reset";
-      setTimeout(() => { delete b.dataset.yakin; b.textContent = "Reset kode"; }, 3000);
+      b.textContent = modeBahas ? "Tekan lagi untuk memuat kode murid" : "Tekan lagi untuk reset";
+      setTimeout(() => { delete b.dataset.yakin; b.textContent = label; }, 3000);
     }
   });
 
@@ -340,6 +396,8 @@
       <div class="pane-head flash-kunci-head"><span>Kunci jawaban — hanya untuk guru</span></div>
       <div class="problem-content">
         <h3>Kode kunci</h3>
+        ${modeBahas ? `<button class="btn btn-ghost btn-sm exam-ghost flash-muat-kunci" id="muat-kunci"
+          type="button">Muat kode kunci ke editor</button>` : ""}
         <pre>${esc(k.kunci)}</pre>
         <h3>Yang dinilai</h3>
         <ul>${k.poin.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
@@ -362,24 +420,41 @@
       $("kunci-btn").textContent = "Kunci jawaban";
       return;
     }
-    if (!(await mintaSandi("Masukkan sandi untuk membuka kunci jawaban kartu ini."))) return;
+    // Saat pembahasan, sandi sudah dimasukkan ketika kartu dibuka.
+    if (!modeBahas && !(await mintaSandi("Masukkan sandi untuk membuka kunci jawaban kartu ini."))) return;
     renderKunci();
+    if ($("muat-kunci")) {
+      $("muat-kunci").addEventListener("click", () => {
+        $("editor").value = kartuKerja.kunci;
+        $("hasil-cek").hidden = true;
+        $("editor").focus();
+      });
+    }
     panel.hidden = false;
     $("kunci-btn").textContent = "Tutup kunci";
     panel.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   $("selesai-btn").addEventListener("click", () => {
-    const id = state.aktif;
-    const info = state.kartu[id];
-    info.selesai = Date.now();
-    info.durasi = info.selesai - info.mulai;
-    state.aktif = null;
-    delete state.kode[id];
-    simpan();
+    if (!modeBahas) {
+      const id = state.aktif;
+      const info = state.kartu[id];
+      info.selesai = Date.now();
+      info.durasi = info.selesai - info.mulai;
+      // Kode akhir murid disimpan untuk pembahasan nanti.
+      info.kodeAkhir = $("editor").value;
+      state.aktif = null;
+      delete state.kode[id];
+      simpan();
+    }
     clearInterval(jamTimer);
     kartuKerja = null;
+    idKerja = null;
+    modeBahas = false;
+    document.body.classList.remove("flash-bahas");
+    $("panel-kunci").hidden = true;
     $("panel-kunci").innerHTML = "";
+    $("kunci-btn").textContent = "Kunci jawaban";
     renderMeja();
   });
 
@@ -421,6 +496,9 @@
     BANK = null;
     SANDI = null;
     kartuKerja = null;
+    idKerja = null;
+    modeBahas = false;
+    document.body.classList.remove("flash-bahas");
     clearInterval(jamTimer);
     // Semua yang pernah berasal dari bank soal dikosongkan — termasuk elemen
     // tersembunyi, yang tetap terbaca lewat DevTools walau tidak terlihat.

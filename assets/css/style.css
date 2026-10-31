@@ -1126,10 +1126,29 @@ body.alarm-aktif::after {
 .kartu-judul { font-family: var(--display); font-weight: 600; font-size: .95rem; line-height: 1.25; }
 .kartu-catatan { font-family: var(--mono); font-size: .64rem; color: var(--ink-mute); line-height: 1.45; }
 
-/* Kartu terpakai: wajahnya sudah terbuka, diredupkan, tidak bisa dipilih. */
-.kartu.terpakai { cursor: default; }
-.kartu.terpakai .kartu-depan { transform: none; opacity: .5; }
+/* Kartu terpakai: wajahnya sudah terbuka dan diredupkan. Tidak bisa dipilih
+   ulang, tapi bisa dibuka guru untuk pembahasan. */
+.kartu.terpakai .kartu-depan { transform: none; opacity: .5; transition: opacity .15s ease; }
 .kartu.terpakai .kartu-no { color: var(--ink-mute); }
+.kartu.terpakai:not(:disabled):hover .kartu-depan,
+.kartu.terpakai:focus-visible .kartu-depan { opacity: .95; }
+.kartu.terpakai:disabled { cursor: default; }
+.kartu-aksi {
+  font-family: var(--mono); font-size: .6rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--signal);
+  border-top: 1px solid var(--rule-firm); padding-top: 6px; margin-top: 2px;
+}
+
+/* Mode pembahasan: garis atas berwarna supaya jelas ini bukan ujian. */
+.flash-bahas .flash-kerja .exam-topbar { box-shadow: inset 0 3px 0 var(--signal-lt); }
+.flash-catatan-bahas {
+  border: 1px solid var(--deep-rule); border-left: 3px solid var(--signal-lt);
+  border-radius: var(--radius); background: var(--deep-2);
+  padding: 12px 16px; margin: 0 0 20px;
+}
+.flash-catatan-bahas p { margin: 4px 0 0; }
+.flash-catatan-kecil { font-size: .82rem; color: var(--chalk-mute) !important; }
+.flash-muat-kunci { margin: 0 0 10px; }
 
 /* ---------- Kartu terbuka (besar) ---------- */
 .flash-buka { z-index: 1100; }
