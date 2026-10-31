@@ -1014,6 +1014,200 @@ body.alarm-aktif::after {
   .tanda-awas { padding: 4px 7px; }
 }
 
+/* =========================================================
+   Flash Quiz — meja kartu live coding (flash-quiz.html)
+   Ruangnya gelap seperti ruang ujian, supaya kartu yang terang saat
+   dibalik benar-benar "muncul" di layar proyektor.
+   ========================================================= */
+.flash-page { --flash-mudah: #7cc489; --flash-sedang: #e0b450; --flash-menantang: #e8703f; }
+.flash-gerbang[hidden], .flash-meja[hidden], .flash-kerja[hidden], .flash-buka[hidden] { display: none !important; }
+
+/* ---------- Gerbang sandi ---------- */
+.flash-gerbang {
+  min-height: 100vh; display: grid; place-items: center;
+  padding: 32px 24px; overflow-y: auto;
+}
+@supports (height: 100dvh) { .flash-gerbang { min-height: 100dvh; } }
+.flash-gerbang-kartu {
+  width: 100%; max-width: 440px;
+  background: var(--deep-2); border: 1px solid var(--deep-rule);
+  border-top: 3px solid var(--signal-lt); border-radius: var(--radius);
+  padding: 40px 38px 34px;
+}
+.flash-gerbang-kartu h1 {
+  font-family: var(--display); font-size: 2.2rem; color: var(--chalk);
+  margin: 0 0 10px; letter-spacing: -.02em;
+}
+.flash-gerbang-ringkas { color: var(--chalk-mute); line-height: 1.6; margin: 0 0 24px; font-size: .92rem; }
+.flash-label {
+  display: block; font-family: var(--mono); font-size: .7rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--chalk-mute);
+  margin: 0 0 7px;
+}
+.flash-input {
+  width: 100%; box-sizing: border-box; min-height: 46px;
+  background: var(--deep); color: var(--chalk);
+  border: 1px solid var(--deep-rule); border-radius: var(--radius);
+  padding: 10px 14px; font-family: var(--mono); font-size: 1rem; margin: 0 0 18px;
+}
+.flash-input:focus-visible { outline: 3px solid var(--signal-lt); outline-offset: 1px; }
+
+/* ---------- Meja ---------- */
+.flash-meja { display: flex; flex-direction: column; height: 100vh; }
+@supports (height: 100dvh) { .flash-meja { height: 100dvh; } }
+.flash-meja-isi { flex: 1; overflow-y: auto; padding: 22px 28px 40px; }
+.flash-sisa { font-family: var(--mono); font-size: .78rem; color: var(--chalk-mute); }
+.flash-petunjuk { color: #d8d0c4; margin: 0 0 10px; font-size: .95rem; }
+.flash-petunjuk strong { color: var(--chalk); }
+.flash-legenda {
+  display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0 0 22px;
+  font-family: var(--mono); font-size: .72rem; color: var(--chalk-mute);
+}
+.flash-legenda span { display: inline-flex; align-items: center; gap: 4px; }
+
+.pips { display: inline-flex; gap: 5px; align-items: center; }
+.pip { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
+.pip.mudah { background: var(--flash-mudah); }
+.pip.sedang { background: var(--flash-sedang); }
+.pip.menantang { background: var(--flash-menantang); }
+
+.flash-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(124px, 1fr));
+}
+
+/* ---------- Kartu ---------- */
+.kartu {
+  position: relative; aspect-ratio: 3 / 4; width: 100%;
+  border: 0; padding: 0; background: none; cursor: pointer;
+  perspective: 900px; color: inherit; font: inherit;
+  transition: transform .18s ease;
+}
+.kartu:not(:disabled):hover { transform: translateY(-4px); }
+.kartu:focus-visible { outline: 3px solid var(--signal-lt); outline-offset: 4px; border-radius: 6px; }
+.kartu-dalam {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  transition: transform .7s cubic-bezier(.2, .7, .2, 1);
+}
+.kartu.terbuka .kartu-dalam { transform: rotateY(180deg); }
+.kartu-wajah {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: 6px; box-sizing: border-box; padding: 12px 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; text-align: center;
+}
+.kartu-belakang {
+  background:
+    repeating-linear-gradient(135deg, rgba(232, 112, 63, .10) 0 6px, transparent 6px 14px),
+    var(--deep-2);
+  border: 1px solid rgba(232, 112, 63, .45);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .35);
+}
+.kartu:not(:disabled):hover .kartu-belakang { border-color: var(--signal-lt); }
+.kartu-no {
+  position: absolute; top: 8px; left: 10px;
+  font-family: var(--mono); font-size: .72rem; font-weight: 600; color: var(--chalk-mute);
+}
+.kartu-tanya {
+  font-family: var(--display); font-size: 2.6rem; font-weight: 700;
+  color: var(--chalk); line-height: 1;
+}
+.kartu-tingkat {
+  font-family: var(--mono); font-size: .64rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--chalk-mute);
+}
+.kartu-depan {
+  background: var(--chalk); color: var(--ink); transform: rotateY(180deg);
+  border: 1px solid var(--chalk);
+}
+.kartu-depan .pip.mudah { background: var(--pass); }
+.kartu-depan .pip.sedang { background: var(--warn); }
+.kartu-depan .pip.menantang { background: var(--stop); }
+.kartu-judul { font-family: var(--display); font-weight: 600; font-size: .95rem; line-height: 1.25; }
+.kartu-catatan { font-family: var(--mono); font-size: .64rem; color: var(--ink-mute); line-height: 1.45; }
+
+/* Kartu terpakai: wajahnya sudah terbuka, diredupkan, tidak bisa dipilih. */
+.kartu.terpakai { cursor: default; }
+.kartu.terpakai .kartu-depan { transform: none; opacity: .5; }
+.kartu.terpakai .kartu-no { color: var(--ink-mute); }
+
+/* ---------- Kartu terbuka (besar) ---------- */
+.flash-buka { z-index: 1100; }
+.flash-kartu-besar {
+  width: 100%; max-width: 420px; box-sizing: border-box;
+  background: var(--chalk); color: var(--ink);
+  border-radius: 8px; border-top: 6px solid var(--signal);
+  padding: 34px 34px 30px; text-align: left;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+  animation: kartu-muncul .35s cubic-bezier(.2, .7, .2, 1);
+}
+.flash-kartu-besar.mudah { border-top-color: var(--pass); }
+.flash-kartu-besar.sedang { border-top-color: var(--warn); }
+.flash-kartu-besar.menantang { border-top-color: var(--stop); }
+.flash-kartu-besar .pip.mudah { background: var(--pass); }
+.flash-kartu-besar .pip.sedang { background: var(--warn); }
+.flash-kartu-besar .pip.menantang { background: var(--stop); }
+@keyframes kartu-muncul { from { transform: scale(.92); opacity: 0; } }
+.flash-tingkat {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .72rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+}
+.flash-pertemuan {
+  float: right; font-family: var(--mono); font-size: .72rem; color: var(--ink-mute);
+}
+.flash-kartu-besar h2 {
+  clear: both; font-family: var(--display); font-size: 1.9rem; line-height: 1.15;
+  margin: 18px 0 8px; color: var(--ink);
+}
+.flash-estimasi { color: var(--ink-mute); margin: 0 0 22px; font-size: .9rem; }
+.flash-kartu-besar .flash-label { color: var(--ink-mute); }
+.flash-kartu-besar .flash-input { background: #fff; color: var(--ink); border-color: var(--rule-firm); }
+.flash-kartu-besar .btn-primary { width: 100%; background: var(--ink); color: var(--paper); }
+.flash-kartu-besar .btn-primary:hover { background: var(--signal); }
+
+/* ---------- Ruang kerja ---------- */
+.flash-murid {
+  font-family: var(--mono); font-size: .78rem; color: var(--chalk);
+  border: 1px solid var(--deep-rule); border-radius: 2px; padding: 5px 10px;
+}
+.flash-murid:empty { display: none; }
+.flash-hasil {
+  margin: 0 18px 12px; padding: 12px 16px; border-radius: var(--radius);
+  font-family: var(--mono); font-size: .8rem; color: var(--on-accent);
+}
+.flash-hasil.lulus { background: var(--pass); }
+.flash-hasil.gagal { background: var(--stop); }
+.flash-hasil ul { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.flash-hasil li b { font-weight: 600; margin-right: 4px; }
+.flash-hasil li.gagal { text-decoration: underline; text-underline-offset: 3px; }
+
+.flash-kunci { border-top: 3px solid var(--signal-lt); background: var(--deep-2); }
+.flash-kunci-head { color: var(--signal-lt); }
+.flash-kunci h3 {
+  font-family: var(--mono); font-size: .72rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--signal-lt); margin: 22px 0 8px;
+}
+.flash-kunci h3:first-child { margin-top: 0; }
+.flash-kunci ul { color: #d8d0c4; padding-left: 20px; margin: 0; line-height: 1.7; }
+.flash-uji { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.flash-uji pre { margin: 4px 0 12px; }
+.flash-tanya input { margin-top: 14px; }
+
+@media (max-width: 760px) {
+  .flash-meja-isi { padding: 18px 16px 32px; }
+  .flash-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; }
+  .kartu-tanya { font-size: 2rem; }
+  .flash-uji { grid-template-columns: 1fr; }
+}
+
+/* Kartu tetap terbalik, hanya putarannya yang ditiadakan. */
+@media (prefers-reduced-motion: reduce) {
+  .kartu-dalam { transition: none; }
+  .kartu:not(:disabled):hover { transform: none; }
+  .flash-kartu-besar { animation: none; }
+}
+
 /* ---------- Gerak minimal ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

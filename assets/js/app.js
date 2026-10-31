@@ -133,6 +133,40 @@ function renderIndex() {
   });
 
   renderKuis(mount);
+  renderRuangGuru(mount);
+}
+
+/* ---------- Ruang Guru ----------
+   Menunya terlihat oleh semua orang, tapi isinya terenkripsi: tanpa sandi
+   guru, halaman Flash Quiz tidak bisa membuka soal maupun kuncinya. */
+function renderRuangGuru(mount) {
+  const section = document.createElement("section");
+  section.className = "module modul-kuis";
+  section.innerHTML = `
+    <div class="module-head">
+      <span class="num">GURU</span>
+      <h2>Ruang Guru</h2>
+      <span class="range">butuh sandi</span>
+      <p class="module-desc">Alat bantu mengajar. Hanya bisa dibuka dengan sandi guru.</p>
+    </div>
+    <div class="lessons">
+      <a class="lesson lesson-kuis" href="flash-quiz.html"
+         aria-label="Flash Quiz, kartu soal live coding Pertemuan 1 sampai 11. Khusus guru.">
+        <span class="no" aria-hidden="true">FQ</span>
+        <span class="body">
+          <h3>Flash Quiz <span class="kuis-cakupan">Pertemuan 1–11</span></h3>
+          <p>30 kartu soal live coding. Murid memilih kartu lalu mengerjakannya langsung di depan guru.</p>
+        </span>
+        <span class="meta">
+          <span class="badge badge-locked">Khusus guru</span>
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+        </span>
+      </a>
+    </div>`;
+  mount.appendChild(section);
 }
 
 /* ---------- Bagian Kuis ----------

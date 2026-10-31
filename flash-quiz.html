@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Flash Quiz — Kelas OOP C++</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="exam-page flash-page">
+
+  <!-- ================= Gerbang sandi ================= -->
+  <section class="flash-gerbang" id="gerbang" aria-labelledby="gerbang-judul">
+    <form class="flash-gerbang-kartu" id="form-sandi" autocomplete="off">
+      <span class="gerbang-tanda">Khusus guru</span>
+      <h1 id="gerbang-judul">Flash Quiz</h1>
+      <p class="flash-gerbang-ringkas">
+        Kartu soal live coding Pertemuan 1–11. Soal dan kunci jawabannya
+        terkunci — masukkan sandi guru untuk membukanya.
+      </p>
+      <label class="flash-label" for="sandi">Sandi guru</label>
+      <input class="flash-input" id="sandi" type="password" required
+             autocomplete="current-password" spellcheck="false">
+      <p class="gerbang-galat" id="sandi-galat" role="alert" hidden></p>
+      <div class="gerbang-aksi">
+        <button class="btn btn-primary btn-besar" id="sandi-buka" type="submit">Buka meja kartu</button>
+        <a class="btn btn-ghost exam-ghost" href="index.html">Kembali</a>
+      </div>
+    </form>
+  </section>
+
+  <!-- ================= Meja kartu ================= -->
+  <section class="flash-meja" id="meja" hidden aria-labelledby="meja-judul">
+    <div class="exam-topbar">
+      <div class="title">
+        <span id="meja-judul">Flash Quiz</span>
+        <small>Pertemuan 1–11 · live coding</small>
+      </div>
+      <span class="spacer"></span>
+      <span class="flash-sisa" id="sisa" aria-live="polite"></span>
+      <button class="btn btn-ghost btn-sm exam-ghost" id="kocok-btn" type="button">Kocok ulang</button>
+      <button class="btn btn-ghost btn-sm exam-ghost" id="kunci-layar" type="button">Kunci layar</button>
+    </div>
+    <div class="flash-meja-isi">
+      <p class="flash-petunjuk">Pilih satu kartu. Kartu yang sudah dibuka
+        <strong>harus diselesaikan</strong> dan tidak bisa dipilih murid berikutnya.</p>
+      <div class="flash-legenda" aria-hidden="true">
+        <span><i class="pip mudah"></i> Mudah ±5 menit</span>
+        <span><i class="pip sedang"></i><i class="pip sedang"></i> Sedang ±10 menit</span>
+        <span><i class="pip menantang"></i><i class="pip menantang"></i><i class="pip menantang"></i> Menantang ±15 menit</span>
+      </div>
+      <div class="flash-grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- ================= Kartu terbuka ================= -->
+  <div class="lock-overlay flash-buka" id="buka" role="dialog" aria-modal="true"
+       aria-labelledby="buka-judul" hidden>
+    <div class="flash-kartu-besar" id="buka-kartu">
+      <span class="flash-tingkat" id="buka-tingkat"></span>
+      <span class="flash-pertemuan" id="buka-pertemuan"></span>
+      <h2 id="buka-judul"></h2>
+      <p class="flash-estimasi" id="buka-estimasi"></p>
+      <label class="flash-label" for="nama-murid">Nama murid (opsional)</label>
+      <input class="flash-input" id="nama-murid" type="text" maxlength="40"
+             autocomplete="off" spellcheck="false">
+      <button class="btn btn-primary btn-besar" id="mulai-btn" type="button">Mulai kerjakan</button>
+    </div>
+  </div>
+
+  <!-- ================= Ruang kerja ================= -->
+  <section class="exam-shell flash-kerja" id="kerja" hidden>
+    <div class="exam-topbar">
+      <div class="title">
+        <span id="kerja-judul">Kartu</span>
+        <small id="kerja-sub"></small>
+      </div>
+      <span class="spacer"></span>
+      <span class="flash-murid" id="kerja-murid"></span>
+      <div class="timer" id="stopwatch" role="timer" aria-live="off"
+           aria-label="Waktu yang sudah berjalan">00:00</div>
+      <button class="btn btn-ghost btn-sm exam-ghost" id="kunci-btn" type="button">Kunci jawaban</button>
+      <button class="btn btn-ghost btn-sm exam-ghost" id="selesai-btn" type="button">Selesai</button>
+    </div>
+
+    <div class="exam-split">
+      <section class="pane pane-problem" aria-labelledby="pane-soal-label">
+        <div class="pane-head">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>
+          </svg>
+          <span id="pane-soal-label">Soal</span>
+        </div>
+        <div class="problem-content" id="soal"></div>
+        <div class="flash-kunci" id="panel-kunci" hidden></div>
+      </section>
+
+      <section class="pane pane-code" aria-labelledby="pane-editor-label">
+        <div class="pane-head">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/>
+          </svg>
+          <span id="pane-editor-label">Editor Kode C++</span>
+          <span class="spacer"></span>
+          <span class="pane-note">Kode tersimpan otomatis</span>
+        </div>
+        <div class="editor-wrap">
+          <label class="sr-only" for="editor">Tempat menulis kode C++</label>
+          <textarea class="code-editor" id="editor" spellcheck="false" autocomplete="off"
+                    autocorrect="off" autocapitalize="off"></textarea>
+        </div>
+        <div class="input-pane" id="input-pane" hidden>
+          <div class="input-head">
+            <label for="stdin">Input untuk coba-coba</label>
+            <span class="spacer"></span>
+            <span class="pane-note">Tombol Cek selalu memakai input soal</span>
+          </div>
+          <textarea class="stdin-editor" id="stdin" spellcheck="false"
+                    autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+        </div>
+        <div class="exam-actions">
+          <button class="btn btn-primary" id="jalan-btn" type="button">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8V4z"/></svg>
+            Jalankan
+          </button>
+          <button class="btn btn-success" id="cek-btn" type="button">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            Cek jawaban
+          </button>
+          <span class="spacer"></span>
+          <button class="btn btn-ghost btn-sm exam-ghost" id="reset-kode" type="button">Reset kode</button>
+        </div>
+        <div class="flash-hasil" id="hasil-cek" role="status" aria-live="polite" hidden></div>
+        <div class="output-pane">
+          <div class="output-head">
+            <span id="output-label">Output</span>
+            <span class="spacer"></span>
+            <span id="run-status" class="pane-note" role="status" aria-live="polite"></span>
+          </div>
+          <pre class="output-body" id="output" tabindex="0" role="region"
+               aria-labelledby="output-label"><span class="muted">Hasil program muncul di sini.</span></pre>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ================= Konfirmasi sandi ================= -->
+  <div class="lock-overlay tanya-overlay" id="tanya-sandi" role="dialog" aria-modal="true"
+       aria-labelledby="tanya-judul" hidden>
+    <form class="lock-card flash-tanya" id="form-tanya" autocomplete="off">
+      <h2 id="tanya-judul">Sandi guru</h2>
+      <p id="tanya-pesan"></p>
+      <input class="flash-input" id="tanya-input" type="password" spellcheck="false"
+             autocomplete="off" aria-labelledby="tanya-judul">
+      <p class="gerbang-galat" id="tanya-galat" role="alert" hidden>Sandi salah.</p>
+      <div class="lock-actions">
+        <button class="btn btn-primary" type="submit" id="tanya-ok">Lanjut</button>
+        <button class="btn btn-ghost exam-ghost" type="button" id="tanya-batal">Batal</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="assets/js/runner.js"></script>
+  <script src="data/flash/flash.enc.js"></script>
+  <script src="assets/js/flash.js"></script>
+</body>
+</html>
